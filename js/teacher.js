@@ -20,8 +20,31 @@
 
   injectIcons(document);
 
-  var DIMS = ["提示词", "智能检索", "对话", "内容创作", "数据分析", "工具工坊"];
-  var DIM_COLORS = ["#0ecf8e", "#ff9f43", "#22d3ee", "#9b6cff", "#5b6cf6", "#ff6b7a"];
+  var DIMS = ["AI基础认知", "提示词工程", "AI工具使用", "AI结果评估", "人机协同", "AI伦理合规"];
+  var DIM_COLORS = ["#0ecf8e", "#22d3ee", "#ff9f43", "#9b6cff", "#5b6cf6", "#ff6b7a"];
+  var DIMENSION_KEYS = ["basics", "prompting", "tools", "evaluation", "collaboration", "ethics"];
+  var LEVELS = [
+    { id: "academy", name: "智核学院", difficulty: "基础认知" },
+    { id: "labyrinth", name: "信息迷城", difficulty: "信息甄别" },
+    { id: "workshop", name: "创客工坊", difficulty: "实操创作" },
+    { id: "station", name: "协同空间站", difficulty: "压力协同" },
+    { id: "court", name: "伦理殿堂", difficulty: "伦理思辨" }
+  ];
+  var LEVEL_DIMENSIONS = {
+    academy: ["basics", "prompting", "tools", "ethics"],
+    labyrinth: ["evaluation", "ethics", "basics"],
+    workshop: ["prompting", "tools", "evaluation", "ethics"],
+    station: ["collaboration", "prompting", "evaluation"],
+    court: ["ethics", "evaluation", "basics", "collaboration"]
+  };
+  var TEACHING_TIPS = {
+    "AI基础认知": "回到任务、受众和输出目标，先讲清AI能做什么、不能做什么",
+    "提示词工程": "强化角色、目标、约束、格式四要素，并要求保留迭代记录",
+    "AI工具使用": "用创客工坊同款任务练习工具选择、输入输出与结果整理",
+    "AI结果评估": "训练事实核验、来源比对、质量打分和错误定位",
+    "人机协同": "重演星核AI危机对话，强调追问依据与人工决策边界",
+    "AI伦理合规": "结合学术诚信、算法偏见与隐私案例做判断说明"
+  };
   var compareMode = "classes";
 
   var COMPARE_DATA = {
@@ -58,83 +81,61 @@
     }
   };
 
-  var STORE_KEY = "ai-teacher-workspace-v1";
+  var STORE_KEY = "ai-teacher-workspace-v3";
   var editingClassId = null;
   var editingQuestionId = null;
   var selectedStudentId = null;
   var selectedMonitorAssessmentId = null;
 
   var CLASSES = [
-    { id: "c1", name: "高一 (1) 班", grade: "高一", teacher: "张老师", students: 32, completed: 30, participation: "94%", rating: "A-", weak: "智能检索" },
-    { id: "c2", name: "高一 (2) 班", grade: "高一", teacher: "李老师", students: 31, completed: 27, participation: "90%", rating: "B+", weak: "数据分析" },
-    { id: "c3", name: "高一 (3) 班", grade: "高一", teacher: "张老师", students: 30, completed: 26, participation: "92%", rating: "B+", weak: "工具工坊" },
-    { id: "c4", name: "高一 (4) 班", grade: "高一", teacher: "王老师", students: 32, completed: 29, participation: "93%", rating: "A-", weak: "对话" },
-    { id: "c5", name: "高二 (1) 班", grade: "高二", teacher: "赵老师", students: 31, completed: 28, participation: "91%", rating: "A", weak: "数据分析" },
-    { id: "c6", name: "高二 (2) 班", grade: "高二", teacher: "陈老师", students: 30, completed: 24, participation: "88%", rating: "B+", weak: "提示词" }
+    { id: "c1", name: "高一 (1) 班", grade: "高一", teacher: "张老师", students: 32, completed: 30, participation: "94%", rating: "A", weak: "AI结果评估" },
+    { id: "c2", name: "高一 (2) 班", grade: "高一", teacher: "李老师", students: 31, completed: 27, participation: "90%", rating: "B", weak: "人机协同" },
+    { id: "c3", name: "高一 (3) 班", grade: "高一", teacher: "张老师", students: 30, completed: 26, participation: "92%", rating: "B", weak: "AI工具使用" },
+    { id: "c4", name: "高一 (4) 班", grade: "高一", teacher: "王老师", students: 32, completed: 29, participation: "93%", rating: "A", weak: "AI伦理合规" },
+    { id: "c5", name: "高二 (1) 班", grade: "高二", teacher: "赵老师", students: 31, completed: 28, participation: "91%", rating: "S", weak: "AI结果评估" },
+    { id: "c6", name: "高二 (2) 班", grade: "高二", teacher: "陈老师", students: 30, completed: 24, participation: "88%", rating: "B", weak: "提示词工程" }
   ];
 
   var ASSESSMENTS = [
-    { id: "a1", name: "AI 能力测评 · 第一轮", cls: "高一 (3) 班", time: "2026-08-18 09:00", limit: "30 分钟", retest: "否", status: "进行中", progress: "68%" },
-    { id: "a2", name: "提示词专项测评", cls: "高一 (1) 班", time: "2026-08-16 14:00", limit: "20 分钟", retest: "是", status: "已结束", progress: "100%" },
-    { id: "a3", name: "数据素养测评", cls: "高二 (1) 班", time: "2026-08-15 10:00", limit: "25 分钟", retest: "否", status: "已结束", progress: "100%" },
-    { id: "a4", name: "工具工坊实战", cls: "高一 (2) 班", time: "2026-08-20 15:00", limit: "35 分钟", retest: "是", status: "未开始", progress: "0%" }
+    { id: "a1", name: "智核觉醒 · 第一轮", cls: "高一 (3) 班", time: "2026-08-18 09:00", limit: "30 分钟", retest: "否", status: "进行中", progress: "68%" },
+    { id: "a2", name: "智核觉醒 · 提示词专项", cls: "高一 (1) 班", time: "2026-08-16 14:00", limit: "20 分钟", retest: "是", status: "已结束", progress: "100%" },
+    { id: "a3", name: "智核觉醒 · 信息甄别专项", cls: "高二 (1) 班", time: "2026-08-15 10:00", limit: "25 分钟", retest: "否", status: "已结束", progress: "100%" },
+    { id: "a4", name: "智核觉醒 · 创客工坊实操", cls: "高一 (2) 班", time: "2026-08-20 15:00", limit: "35 分钟", retest: "是", status: "未开始", progress: "0%" }
   ];
 
   var TASKS = [
-    { id: "t1", name: "提示词巩固练习", type: "客观题练习", cls: "高一 (3) 班", deadline: "2026-08-25 18:00", status: "进行中", progress: "45%" },
-    { id: "t2", name: "对话表达训练", type: "对话式练习", cls: "高一 (1) 班", deadline: "2026-08-22 18:00", status: "待开始", progress: "0%" }
+    { id: "t1", name: "提示词工程巩固练习", type: "客观题练习", cls: "高一 (3) 班", deadline: "2026-08-25 18:00", status: "进行中", progress: "45%" },
+    { id: "t2", name: "协同空间站危机对话", type: "对话式练习", cls: "高一 (1) 班", deadline: "2026-08-22 18:00", status: "待开始", progress: "0%" }
   ];
 
   var MONITOR = [
-    { name: "林晓", id: "20260421", station: "数据分析", progress: "5 / 6 站", status: "已完成" },
-    { name: "陈诺", id: "20260408", station: "工具工坊", progress: "4 / 6 站", status: "测评中" },
-    { name: "王梓", id: "20260415", station: "内容创作", progress: "4 / 6 站", status: "测评中" },
-    { name: "周雨", id: "20260402", station: "智能检索", progress: "2 / 6 站", status: "测评中" },
-    { name: "赵铭", id: "20260419", station: "对话演练", progress: "3 / 6 站", status: "测评中" },
-    { name: "孙悦", id: "20260411", station: "未开始", progress: "0 / 6 站", status: "未开始" }
+    { name: "林晓", id: "20260421", station: "伦理殿堂", progress: "5 / 5 关", status: "已完成" },
+    { name: "陈诺", id: "20260408", station: "创客工坊 · 待实操", progress: "3 / 5 关", status: "测评中" },
+    { name: "王梓", id: "20260415", station: "协同空间站", progress: "4 / 5 关", status: "测评中" },
+    { name: "周雨", id: "20260402", station: "信息迷城", progress: "2 / 5 关", status: "测评中" },
+    { name: "赵铭", id: "20260419", station: "协同空间站 · 待对话", progress: "4 / 5 关", status: "测评中" },
+    { name: "孙悦", id: "20260411", station: "未开始", progress: "0 / 5 关", status: "未开始" }
   ];
 
   var STUDENTS = [
-    { id: "s1", name: "林晓", no: "20260421", cls: "高一 (3) 班", classId: "c3", status: "已完成", rating: "A-", scores: [86, 72, 88, 93, 75, 78] },
-    { id: "s2", name: "陈诺", no: "20260408", cls: "高一 (3) 班", classId: "c3", status: "已完成", rating: "B", scores: [72, 68, 75, 70, 66, 62] },
-    { id: "s3", name: "王梓", no: "20260415", cls: "高一 (1) 班", classId: "c1", status: "已完成", rating: "A", scores: [92, 88, 90, 95, 84, 86] },
-    { id: "s4", name: "周雨", no: "20260402", cls: "高一 (1) 班", classId: "c1", status: "已完成", rating: "B+", scores: [76, 70, 82, 74, 71, 69] },
-    { id: "s5", name: "赵铭", no: "20260419", cls: "高一 (2) 班", classId: "c2", status: "已完成", rating: "B", scores: [68, 74, 70, 72, 78, 65] },
-    { id: "s6", name: "孙悦", no: "20260411", cls: "高一 (2) 班", classId: "c2", status: "已完成", rating: "B+", scores: [80, 76, 78, 82, 74, 72] }
+    { id: "s1", name: "林晓", no: "20260421", cls: "高一 (3) 班", classId: "c3", status: "已完成", rating: "A", stars: 13, levels: ["done", "done", "done", "done", "done"], scores: [86, 82, 88, 83, 85, 88] },
+    { id: "s2", name: "陈诺", no: "20260408", cls: "高一 (3) 班", classId: "c3", status: "测评中", rating: "C", stars: 6, levels: ["done", "done", "active", "todo", "todo"], pendingTask: "practical", scores: [72, 68, 75, 66, 60, 62] },
+    { id: "s3", name: "王梓", no: "20260415", cls: "高一 (1) 班", classId: "c1", status: "已完成", rating: "S", stars: 15, levels: ["done", "done", "done", "done", "done"], scores: [92, 88, 90, 95, 94, 96] },
+    { id: "s4", name: "周雨", no: "20260402", cls: "高一 (1) 班", classId: "c1", status: "已完成", rating: "B", stars: 11, levels: ["done", "done", "done", "done", "done"], scores: [76, 80, 82, 84, 81, 79] },
+    { id: "s5", name: "赵铭", no: "20260419", cls: "高一 (2) 班", classId: "c2", status: "测评中", rating: "C", stars: 8, levels: ["done", "done", "done", "active", "todo"], pendingTask: "dialogue", scores: [78, 74, 80, 72, 78, 75] },
+    { id: "s6", name: "孙悦", no: "20260411", cls: "高一 (2) 班", classId: "c2", status: "已完成", rating: "B", stars: 12, levels: ["done", "done", "done", "done", "done"], scores: [80, 86, 88, 82, 84, 79] }
   ];
 
   var QUESTIONS = [
-    { id: "q1", dim: "提示词", type: "单选", difficulty: "入门", time: 2, knowledge: "角色设定", status: "已通过", text: "以下哪个提示词首先明确了 AI 角色？" },
-    { id: "q2", dim: "提示词", type: "多选", difficulty: "基础", time: 3, knowledge: "格式约束", status: "已通过", text: "高质量提示词通常包含哪些格式约束？" },
-    { id: "q3", dim: "智能检索", type: "判断", difficulty: "基础", time: 2, knowledge: "关键词", status: "已通过", text: "检索前应先提取核心关键词并限定时间范围。" },
-    { id: "q4", dim: "智能检索", type: "填空", difficulty: "进阶", time: 3, knowledge: "限定来源", status: "已通过", text: "请补全：可靠检索应优先限定______。" },
-    { id: "q5", dim: "对话", type: "对话", difficulty: "进阶", time: 5, knowledge: "追问技巧", status: "已通过", text: "AI 回答过泛时，你会如何追问？" },
-    { id: "q6", dim: "内容创作", type: "多选", difficulty: "熟练", time: 3, knowledge: "结构组织", status: "待审核", text: "让 AI 创作推文时，哪些结构信息有必要提供？" },
-    { id: "q7", dim: "数据分析", type: "单选", difficulty: "挑战", time: 4, knowledge: "指标对比", status: "已通过", text: "比较两个 AI 方案时，最合理的提问是？" },
-    { id: "q8", dim: "工具工坊", type: "实操", difficulty: "巅峰", time: 8, knowledge: "提示词迭代", status: "待审核", text: "设计一场 AI 工具分享会并记录提示词迭代。" }
+    { id: "q1", levelId: "academy", dim: "AI基础认知", type: "单选", difficulty: "入门", time: 2, knowledge: "工具边界", status: "已通过", text: "新生讲座中，哪项任务最适合先交给 AI 完成？" },
+    { id: "q2", levelId: "academy", dim: "提示词工程", type: "多选", difficulty: "基础", time: 3, knowledge: "提示词要素", status: "已通过", text: "高质量提示词通常需要写明哪些要素？" },
+    { id: "q3", levelId: "labyrinth", dim: "AI结果评估", type: "判断", difficulty: "基础", time: 2, knowledge: "信息核验", status: "已通过", text: "转发 AI 生成的地震配图前，应先核验原始来源。" },
+    { id: "q4", levelId: "labyrinth", dim: "AI伦理合规", type: "填空", difficulty: "进阶", time: 3, knowledge: "负责任传播", status: "已通过", text: "请补全：转发疑似 AI 生成信息时应标注______。" },
+    { id: "q5", levelId: "workshop", dim: "提示词工程", type: "实操", difficulty: "进阶", time: 8, knowledge: "提示词迭代", status: "已通过", text: "为 AI 创意写作工具发布会写宣传文案，50字内，专业亲切，突出创意伙伴，并至少迭代两次。" },
+    { id: "q6", levelId: "workshop", dim: "AI工具使用", type: "多选", difficulty: "熟练", time: 3, knowledge: "产物评估", status: "待审核", text: "评估 AI 宣传文案时，应检查哪些项目？" },
+    { id: "q7", levelId: "station", dim: "人机协同", type: "对话", difficulty: "挑战", time: 5, knowledge: "危机追问", status: "已通过", text: "星核AI建议关闭三号氧气模块时，应先追问哪些信息？" },
+    { id: "q8", levelId: "court", dim: "AI伦理合规", type: "单选", difficulty: "巅峰", time: 4, knowledge: "责任边界", status: "已通过", text: "AI 辅助完成作业后，最符合学术诚信的做法是？" }
   ];
-
-  var PROFILE_DETAIL = {
-    answers: [
-      ["提示词工坊", "单选题", "正确", "2 分", "解析：角色与格式约束到位"],
-      ["智能检索", "多选题", "部分正确", "1 分", "解析：漏选限定来源"],
-      ["对话演练", "判断题", "正确", "2 分", "解析：上下文清晰"],
-      ["内容创作", "填空题", "正确", "2 分", "解析：结构完整"]
-    ],
-    dialogue: [
-      ["灵犀", "你最想提升哪项能力？", "林晓", "数据分析，我想看懂图表"],
-      ["林晓", "请帮我整理成表格并给出结论", "灵犀", "关键词命中：表格，表达清晰"]
-    ],
-    practical: [
-      ["任务", "设计一场 AI 工具分享会", "得分", "86 / 100"],
-      ["提交产物", "主题 + 3 个环节 + 时长与负责人", "评价", "结构完整，可执行"]
-    ],
-    prompts: [
-      ["第 1 版", "给我设计一个分享会", "结果", "方案太笼统"],
-      ["第 2 版", "你是一名活动策划师，请列出 3 个环节", "结果", "已增加角色与结构"],
-      ["第 3 版", "补充每环节时长与负责人，用表格输出", "结果", "方案完整，采纳"]
-    ]
-  };
 
   var toastTimer = null;
 
@@ -253,6 +254,76 @@
     })[0];
   }
 
+  function localProgressFor() {
+    try {
+      var raw = localStorage.getItem("ai-student-progress-v2");
+      if (!raw) return null;
+      var data = JSON.parse(raw);
+      var levels = LEVELS.map(function (level) {
+        var item = data[level.id] || {};
+        return {
+          id: level.id,
+          status: item.status === "done" || item.status === "active" ? item.status : "todo",
+          stars: Math.max(0, Math.min(3, Number(item.stars) || 0)),
+          score: Math.max(0, Math.min(100, Number(item.score) || 0)),
+          pendingTask: item.pendingTask === "practical" || item.pendingTask === "dialogue" ? item.pendingTask : null
+        };
+      });
+      if (!levels.some(function (item) { return item.status !== "todo"; })) return null;
+      var totals = data.dimensionScores || {};
+      var weights = data.dimensionWeights || {};
+      var scores = DIMENSION_KEYS.map(function (key) {
+        var total = Number(totals[key]) || 0;
+        var weight = Number(weights[key]) || 0;
+        return weight ? Math.max(0, Math.min(100, Math.round(total / weight))) : 0;
+      });
+      var stars = levels.reduce(function (sum, item) { return sum + item.stars; }, 0);
+      var avg = scores.length ? Math.round(scores.reduce(function (a, b) { return a + b; }, 0) / scores.length) : 0;
+      return {
+        levels: levels,
+        scores: scores,
+        stars: stars,
+        avg: avg,
+        rating: avg >= 90 ? "S" : avg >= 80 ? "A" : avg >= 70 ? "B" : avg >= 60 ? "C" : "D"
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function syncLocalStudent() {
+    var local = localProgressFor();
+    if (!local) {
+      STUDENTS = STUDENTS.filter(function (s) { return s.id !== "local-student"; });
+      return;
+    }
+    var nickname = "探险者";
+    try {
+      nickname = localStorage.getItem("ai-student-nickname") || nickname;
+    } catch (e) {
+      /* keep the default demo nickname */
+    }
+    var cls = CLASSES.filter(function (c) { return c.id === "c3"; })[0] || CLASSES[0];
+    var student = STUDENTS.filter(function (s) { return s.id === "local-student"; })[0];
+    if (!student) {
+      student = { id: "local-student" };
+      STUDENTS.push(student);
+    }
+    var done = local.levels.filter(function (item) { return item.status === "done"; }).length;
+    student.name = nickname;
+    student.no = "20260000";
+    student.cls = cls ? cls.name : "本机体验";
+    student.classId = cls ? cls.id : "";
+    student.status = done === 0 ? "未开始" : done === LEVELS.length ? "已完成" : "测评中";
+    student.rating = local.rating;
+    student.stars = local.stars;
+    student.levels = local.levels.map(function (item) { return item.status; });
+    student.pendingTask = (local.levels.filter(function (item) {
+      return item.status === "active";
+    })[0] || {}).pendingTask || null;
+    student.scores = local.scores;
+  }
+
   function completedStudents() {
     return STUDENTS.filter(function (s) {
       return Array.isArray(s.scores) && s.scores.length === DIMS.length && s.scores.some(function (v) {
@@ -285,16 +356,47 @@
     }, 0) / scores.length);
   }
 
+  function studentLevels(s) {
+    var levels = Array.isArray(s.levels) ? s.levels : [];
+    return LEVELS.map(function (level, i) {
+      var source = levels[i];
+      var item = source && typeof source === "object" ? source : {};
+      var status = typeof source === "string" ? source : item.status;
+      return {
+        id: level.id,
+        name: level.name,
+        status: status === "done" || status === "active" ? status : "todo",
+        pendingTask: item.pendingTask === "practical" || item.pendingTask === "dialogue" ? item.pendingTask : (s.pendingTask || null)
+      };
+    });
+  }
+
+  function studentStars(s) {
+    var levels = studentLevels(s);
+    var stars = levels.reduce(function (sum, item) { return sum + (item.status === "done" ? 3 : 0); }, 0);
+    if (s.stars !== undefined && s.stars !== null && s.stars !== "") return Math.max(0, Number(s.stars) || 0);
+    return stars;
+  }
+
   function studentProgress(s) {
-    var scores = Array.isArray(s.scores) ? s.scores : DIMS.map(function () { return 0; });
-    var count = DIMS.filter(function (_, i) {
-      return (Number(scores[i]) || 0) > 0;
+    var levels = studentLevels(s);
+    var count = levels.filter(function (item) {
+      return item.status === "done";
     }).length;
+    var reached = levels.filter(function (item) {
+      return item.status !== "todo";
+    }).length;
+    var current = levels.filter(function (item) {
+      return item.status !== "todo";
+    }).pop() || levels[0];
+    var station = count >= LEVELS.length ? "已完成" : current.name;
+    if (current.status === "active" && current.pendingTask === "practical") station += " · 待实操";
+    if (current.status === "active" && current.pendingTask === "dialogue") station += " · 待对话";
     return {
       count: count,
-      text: count + " / 6 站",
-      station: count >= DIMS.length ? "已完成" : DIMS[count],
-      status: count === 0 ? "未开始" : count >= DIMS.length ? "已完成" : "测评中"
+      text: reached + " / 5 关",
+      station: station,
+      status: count === 0 ? "未开始" : count >= LEVELS.length ? "已完成" : "测评中"
     };
   }
 
@@ -309,14 +411,14 @@
     var roster = assessmentRoster(a);
     if (!roster.length) return a.progress || "0%";
     var done = roster.filter(function (s) {
-      return studentProgress(s).count === DIMS.length;
+      return studentProgress(s).count === LEVELS.length;
     }).length;
     return Math.round((done / roster.length) * 100) + "%";
   }
 
   function switchView(view) {
     var titles = {
-      overview: ["教学数据中心", "数据总览"],
+      overview: ["智核觉醒 · 教学数据中心", "数据总览"],
       classes: ["班级管理", "班级管理"],
       assessments: ["测评管理", "测评管理"],
       profile: ["学生分析", "学生画像"],
@@ -344,6 +446,19 @@
 
   function esc(value) {
     return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function normalizeQuestionDim(value) {
+    var map = {
+      "提示词": "提示词工程",
+      "智能检索": "AI结果评估",
+      "对话": "人机协同",
+      "内容创作": "AI工具使用",
+      "数据分析": "AI结果评估",
+      "工具工坊": "AI工具使用"
+    };
+    var text = String(value || "").trim();
+    return DIMS.indexOf(text) >= 0 ? text : map[text] || DIMS[0];
   }
 
   function renderOverview() {
@@ -379,32 +494,32 @@
       { name: "中位数", scores: dimensionStats.map(function (d) { return d.median; }), color: "#22d3ee" }
     ]);
     drawRing("overviewRing", participation);
-    drawBar("overviewRatingBar", ["A", "A-", "B+", "B", "C"].map(function (rating, i) {
+    drawBar("overviewRatingBar", ["S", "A", "B", "C", "D"].map(function (rating, i) {
       return { label: rating, value: ratingCounts[rating] || 0, color: DIM_COLORS[i] };
     }));
 
-    var teachingTips = {
-      "提示词": "补充角色、目标和输出格式三要素训练",
-      "智能检索": "练习关键词提取、来源限定与时间范围",
-      "对话": "增加背景信息、约束条件和追问训练",
-      "内容创作": "用结构模板强化开头、要点与收束",
-      "数据分析": "增加指标拆解、对比维度与图表解读",
-      "工具工坊": "开展提示词迭代与执行记录实操"
-    };
     var weak = CLASSES.map(function (c) {
       var classStudents = measured.filter(function (s) {
         return classForStudent(s) === c;
       });
+      if (!classStudents.length) {
+        return {
+          dim: c.weak || DIMS[0],
+          cls: c.name,
+          score: 0,
+          tip: "该班暂无完整六维数据，先完成一轮智核觉醒测评"
+        };
+      }
       var stats = dimensionAverages(classStudents);
       var minIndex = 0;
       stats.forEach(function (stat, i) {
         if (stat.avg < stats[minIndex].avg) minIndex = i;
       });
       return {
-        dim: DIMS[minIndex] || c.weak || "提示词",
+        dim: DIMS[minIndex] || c.weak || DIMS[0],
         cls: c.name,
         score: stats.length ? stats[minIndex].avg : 0,
-        tip: teachingTips[DIMS[minIndex]] || "先完成一轮基础测评后再定位短板"
+        tip: TEACHING_TIPS[DIMS[minIndex]] || "先完成一轮基础测评后再定位短板"
       };
     }).sort(function (a, b) {
       return a.score - b.score;
@@ -499,7 +614,7 @@
       );
     }).join("") || '<tr><td colspan="6" class="t-empty">暂无学生数据</td></tr>';
     document.getElementById("monitorTable").innerHTML =
-      "<thead><tr><th>姓名</th><th>学号</th><th>当前站点</th><th>进度</th><th>状态</th><th>操作</th></tr></thead><tbody>" + monitorRows + "</tbody>";
+      "<thead><tr><th>姓名</th><th>学号</th><th>当前关卡</th><th>进度</th><th>状态</th><th>操作</th></tr></thead><tbody>" + monitorRows + "</tbody>";
     renderTasks();
     renderResults();
   }
@@ -541,7 +656,7 @@
         s: s,
         cls: cls ? cls.name : (s.cls || "未分班"),
         avg: avg,
-        stars: Number(s.stars) || (avg ? Math.max(1, Math.round(avg / 20)) : 0),
+        stars: studentStars(s),
         noNum: Number(String(s.no).slice(-4))
       };
     }).filter(function (r) {
@@ -564,7 +679,7 @@
         "<td>" + esc(r.cls) + "</td>" +
         "<td>" + badge(r.s.status || "已完成") + "</td>" +
         "<td>" + esc(r.s.rating) + "</td>" +
-        "<td>" + r.stars + " 星</td>" +
+        "<td>" + r.stars + " / 15 星</td>" +
         '<td class="t-score-cell"><div class="t-mini-score-row">' + scoreBars + "</div></td>" +
         '<td><button class="t-mini-btn" type="button" data-profile-open="' + r.s.id + '" data-profile-name="' + esc(r.s.name) + '">' + icon("CircleUserRound") + "画像</button></td>" +
         "</tr>"
@@ -592,7 +707,7 @@
         cls: studentClass ? studentClass.name : (s.cls || "未分班"),
         rating: s.rating || "-",
         scores: scores,
-        stars: Number(s.stars) || (avg ? Math.max(1, Math.round(avg / 20)) : 0)
+        stars: studentStars(s)
       };
     }).filter(function (r) {
       return r.cls === cls.name;
@@ -638,9 +753,10 @@
 
   function localPracticalFor(s) {
     try {
+      var isLocalStudent = s.id === "local-student";
       var nickname = localStorage.getItem("ai-student-nickname");
-      if (nickname && s.name && nickname !== s.name) return null;
-      var raw = localStorage.getItem("ai-student-practical");
+      if (!isLocalStudent && nickname && s.name && nickname !== s.name) return null;
+      var raw = localStorage.getItem("ai-student-practical-v2");
       if (!raw) return null;
       var data = JSON.parse(raw);
       if (!Array.isArray(data.versions) || !data.versions.length) return null;
@@ -652,24 +768,32 @@
 
   function profileDetails(s) {
     var scores = Array.isArray(s.scores) ? s.scores : DIMS.map(function () { return 0; });
-    var resultFor = function (score) {
-      return score >= 85 ? "正确" : score >= 70 ? "基本正确" : score > 0 ? "待巩固" : "未作答";
-    };
-    var notes = [
-      "角色、目标与输出格式表述完整",
-      "关键词和来源限定仍需加强",
-      "会补充背景，可继续练习追问",
-      "内容结构较完整，注意语气统一",
-      "建议先明确指标与对比维度",
-      "提示词迭代记录有助于稳定产出"
-    ];
-    var answers = DIMS.map(function (dim, i) {
-      return [dim + "测评", i % 2 ? "综合题" : "基础题", resultFor(Number(scores[i]) || 0), Math.round((Number(scores[i]) || 0) / 50) + " 分", notes[i]];
+    var local = s.id === "local-student" ? localProgressFor() : null;
+    var localLevels = {};
+    if (local) {
+      local.levels.forEach(function (item) {
+        localLevels[item.id] = item;
+      });
+    }
+    var answers = LEVELS.map(function (level, index) {
+      var keys = LEVEL_DIMENSIONS[level.id] || [];
+      var values = keys.map(function (key) {
+        return scores[DIMENSION_KEYS.indexOf(key)] || 0;
+      });
+      var status = ((Array.isArray(s.levels) && s.levels[index]) || "todo").toString();
+      var score = localLevels[level.id] ? localLevels[level.id].score :
+        values.length ? Math.round(values.reduce(function (a, b) { return a + b; }, 0) / values.length) : 0;
+      var result = status === "todo" ? "未解锁" : score >= 85 ? "优秀" : score >= 70 ? "通过" : score >= 60 ? "待巩固" : "待复测";
+      var note = status === "todo" ? "完成前一关后自动解锁"
+        : score >= 85 ? "本关目标掌握稳固，可作为同伴示范"
+        : score >= 70 ? "已达成本关核心目标，可挑战更高星数"
+        : "建议结合守护者反馈重练关键题";
+      return [level.name, "剧情闯关", result, score + " 分", note];
     });
-    var dialogueScore = Number(scores[2]) || 0;
+    var dialogueScore = Number(scores[4]) || 0;
     var dialogue = [
-      ["灵犀", "请说明你的学习目标和希望得到的帮助", s.name, dialogueScore >= 80 ? "表达完整，能主动补充背景" : dialogueScore >= 60 ? "需求基本清楚，追问可更具体" : "建议先练习角色、目标、格式三要素"],
-      [s.name, "请把结论整理成表格，并给出下一步建议", "灵犀", dialogueScore >= 75 ? "格式约束清晰" : "已收到请求，建议补充输出格式"]
+      ["星核AI", "检测到三号氧气循环异常，建议立即关闭该模块。", s.name, dialogueScore >= 80 ? "请先给出异常依据、备选方案和风险等级，不能直接关闭。" : "这个建议会影响安全，我需要先确认依据。"],
+      [s.name, "请对比两个方案的有效性、恢复时间和安全边界。", "周队长", dialogueScore >= 70 ? "追问到位，保留人工确认环节，协同决策合格。" : "已记录，建议继续练习依据追问。"]
     ];
     var practicalLog = localPracticalFor(s);
     var practical;
@@ -682,14 +806,16 @@
         return ["第 " + item.version + " 版", shortText(item.prompt, 46), "运行", "第 " + item.version + " 次产物已记录"];
       });
     } else {
-      var toolScore = Number(scores[5]) || 0;
+      var toolScore = Number(scores[2]) || 0;
       practical = [
-        ["工具工坊任务", "设计 AI 工具分享会", "得分", toolScore + " / 100"],
-        ["提交产物", "活动主题 + 3 个环节 + 时间与负责人", "评价", toolScore >= 80 ? "结构完整，可执行" : "需要补充格式约束与迭代记录"]
+        ["任务", "AI 创意写作工具宣传文案", "得分", toolScore + " / 100"],
+        ["要求", "50字内，专业亲切，突出创意伙伴", "迭代", "至少两版提示词"],
+        ["提交产物", "让AI成为你的创意伙伴：输入灵感，获得选题、初稿与润色建议。", "评价", toolScore >= 80 ? "目标、语气与字数约束完整" : "需要继续补齐角色、语气和字数约束"]
       ];
       prompts = [
-        ["第 1 版", "请设计一个班级分享会", "运行", "目标较笼统"],
-        ["建议版", "补充活动策划师角色、表格格式与验收要求", "待复测", "按工具维度训练后提交"]
+        ["第 1 版", "帮我写一个AI写作工具宣传文案。", "运行", "缺少角色、语气和字数约束"],
+        ["第 2 版", "你是产品文案，请用专业亲切的语气写50字内宣传文案。", "运行", "要素基本完整，创意伙伴还不够突出"],
+        ["第 3 版", "你是产品文案，请面向学生，用专业亲切语气写50字内文案，突出AI是创意伙伴。", "采纳", "目标、角色、语气、字数与卖点完整"]
       ];
     }
     return { answers: answers, dialogue: dialogue, practical: practical, prompts: prompts };
@@ -706,6 +832,8 @@
       { name: s.name, scores: scores, color: "#4f46e5" },
       { name: "班级均值", scores: classAvg, color: "#9b6cff" }
     ]);
+    var profileChip = document.getElementById("profileMetaChip");
+    if (profileChip) profileChip.textContent = "评级 " + (s.rating || "-") + " · " + studentStars(s) + " / 15 星";
     document.getElementById("profileScores").innerHTML = '<div class="t-score-row">' + DIMS.map(function (d, i) {
       return (
         '<div class="t-score-item">' +
@@ -726,7 +854,7 @@
     var details = current ? profileDetails(current) : { answers: [], dialogue: [], practical: [], prompts: [] };
     var data = details[tab] || [];
     var head = tab === "answers"
-      ? "<th>站点</th><th>题型</th><th>结果</th><th>得分</th><th>解析</th>"
+      ? "<th>关卡</th><th>题型</th><th>结果</th><th>得分</th><th>解析</th>"
       : tab === "dialogue"
         ? "<th>角色</th><th>内容</th><th>角色</th><th>内容</th>"
         : tab === "practical"
@@ -749,21 +877,13 @@
       { label: "学期目标", value: Math.max(overall, 85) }
     ]);
     renderCompare();
-    var weakTips = {
-      "提示词": "补充角色、目标和输出格式三要素训练",
-      "智能检索": "练习关键词提取、来源限定与时间范围",
-      "对话": "增加背景信息、约束条件和追问训练",
-      "内容创作": "用结构模板强化开头、要点与收束",
-      "数据分析": "增加指标拆解、对比维度与图表解读",
-      "工具工坊": "开展提示词迭代与执行记录实操"
-    };
     var weakest = stats.map(function (item, i) {
       return { dim: DIMS[i], avg: item.avg };
     }).sort(function (a, b) { return a.avg - b.avg; }).slice(0, 3);
     document.getElementById("analysisAdvice").innerHTML = [
-      [weakest[0].dim, weakTips[weakest[0].dim], "Lightbulb"],
-      [weakest[1].dim, weakTips[weakest[1].dim], "Wrench"],
-      [weakest[2].dim, weakTips[weakest[2].dim], "Search"]
+      [weakest[0].dim, TEACHING_TIPS[weakest[0].dim], "Lightbulb"],
+      [weakest[1].dim, TEACHING_TIPS[weakest[1].dim], "Wrench"],
+      [weakest[2].dim, TEACHING_TIPS[weakest[2].dim], "Search"]
     ].map(function (a) {
       return (
         '<div class="t-advice"><strong>' + icon(a[2]) + a[0] + "</strong><p>" + a[1] + "</p></div>"
@@ -830,12 +950,12 @@
   }
 
   function exportRawCsv() {
-    var header = ["学号", "姓名", "班级", "状态", "提示词", "智能检索", "对话", "内容创作", "数据分析", "工具工坊", "评级", "星数"];
+    var header = ["学号", "姓名", "班级", "状态"].concat(DIMS).concat(["评级", "星数"]);
     var rows = STUDENTS.map(function (s) {
       var cls = classForStudent(s);
       var scores = Array.isArray(s.scores) ? s.scores : DIMS.map(function () { return 0; });
       var avg = scores.length ? scores.reduce(function (a, b) { return a + (Number(b) || 0); }, 0) / scores.length : 0;
-      var stars = Number(s.stars) || (avg ? Math.max(1, Math.round(avg / 20)) : 0);
+      var stars = studentStars(s);
       return [maskNo(s.no), maskName(s.name), cls ? cls.name : (s.cls || "未分班"), s.status || "已完成"].concat(scores).concat([s.rating || "-", stars]);
     });
     downloadCsv("原始测评数据-脱敏.csv", [header].concat(rows));
@@ -895,13 +1015,14 @@
     html += '<style>text{font-family:' + font + ";} .t1{fill:#f8fafc;font-size:30px;font-weight:800;} .t2{fill:#e0e7ff;font-size:14px;} .lbl{fill:#64748b;font-size:14px;} .val{fill:#0f172a;font-size:16px;font-weight:700;} .mut{fill:#94a3b8;font-size:12px;}</style>";
     html += '<rect width="' + W + '" height="' + H + '" fill="#f8fafc"/>';
     html += '<rect width="' + W + '" height="240" fill="url(#tHdr)"/>';
-    html += '<text x="56" y="90" class="t1">学生画像报告</text>';
-    html += '<text x="56" y="122" class="t2">Student Profile Report · 六维能力测评</text>';
+    html += '<text x="56" y="90" class="t1">智核觉醒 · 学生画像报告</text>';
+    html += '<text x="56" y="122" class="t2">五关闯关记录 · 六维能力测评</text>';
     html += '<text x="944" y="82" text-anchor="end" class="t2">生成日期：' + dateStr + "</text>";
     html += '<text x="944" y="106" text-anchor="end" class="t2">' + esc(s.name) + " · " + esc(s.no) + "</text>";
     html += '<circle cx="844" cy="180" r="44" fill="rgba(255,255,255,.18)"/>';
     html += '<text x="844" y="196" text-anchor="middle" font-size="30" font-weight="800" fill="#ffffff">' + esc(s.rating) + "</text>";
     html += '<text x="844" y="214" text-anchor="middle" font-size="12" fill="#e0e7ff">综合评级</text>';
+    html += '<text x="844" y="238" text-anchor="middle" font-size="12" fill="#e0e7ff">' + studentStars(s) + ' / 15 星</text>';
 
     html += '<g transform="translate(20,270)">' + teacherRadarMarkup(190, 190, 130, s.scores) + "</g>";
 
@@ -937,7 +1058,7 @@
     html += '<text x="84" y="1132" class="val">' + esc(s.name) + "（" + esc(s.rating) + "）" + "</text>";
     html += '<text x="84" y="1164" class="lbl">建议：强化' + esc(weak) + "训练，保持" + esc(strong) + "优势。</text>";
 
-    html += '<text x="56" y="1280" class="mut">数据说明：本报告由 AI 能力测评智能体生成，敏感字段已脱敏，仅用于教学分析。</text>';
+    html += '<text x="56" y="1280" class="mut">数据说明：本报告由智核觉醒教师端生成，敏感字段已脱敏，仅用于教学分析。</text>';
     html += '<text x="56" y="1304" class="mut">加密传输：HTTPS / TLS 1.3 · 存储加密：AES-256</text>';
     html += "</svg>";
     return html;
@@ -1303,7 +1424,7 @@
     })[0];
     document.getElementById("questionModalTitle").textContent = q ? "编辑题目" : "新增题目";
     document.getElementById("questionTypeInput").value = q ? q.type : "单选";
-    document.getElementById("questionDimInput").value = q ? q.dim : "提示词";
+    document.getElementById("questionDimInput").value = normalizeQuestionDim(q ? q.dim : DIMS[1]);
     document.getElementById("questionDifficultyInput").value = q ? q.difficulty : "基础";
     document.getElementById("questionTimeInput").value = q ? q.time : 2;
     document.getElementById("questionTextInput").value = q ? q.text : "";
@@ -1320,7 +1441,7 @@
     }
     var values = {
       type: document.getElementById("questionTypeInput").value,
-      dim: document.getElementById("questionDimInput").value,
+      dim: normalizeQuestionDim(document.getElementById("questionDimInput").value),
       difficulty: document.getElementById("questionDifficultyInput").value,
       time: Number(document.getElementById("questionTimeInput").value) || 2,
       knowledge: knowledge,
@@ -1379,7 +1500,7 @@
   function downloadQuestionTemplate() {
     downloadCsv("题库导入模板.csv", [
       ["题型", "能力维度", "难度", "预计用时", "知识点", "状态", "题干"],
-      ["单选", "提示词", "基础", "2", "角色设定", "待审核", "以下哪个提示词首先明确了 AI 角色？"]
+      ["单选", "提示词工程", "基础", "2", "提示词要素", "待审核", "高质量提示词通常需要写明角色、目标、约束和格式。"]
     ]);
   }
 
@@ -1436,7 +1557,7 @@
       records.forEach(function (record) {
         var text = record["题干"] || record.text || "";
         var type = record["题型"] || record.type || "单选";
-        var dim = record["能力维度"] || record.dim || "提示词";
+        var dim = normalizeQuestionDim(record["能力维度"] || record.dim || DIMS[1]);
         if (!text || QUESTIONS.some(function (q) { return q.text === text; })) return;
         QUESTIONS.unshift({
           id: nextId("q", QUESTIONS),
@@ -1646,6 +1767,7 @@
   }
 
   loadWorkspace();
+  syncLocalStudent();
   renderImportTargets();
   bindEvents();
   switchView("overview");

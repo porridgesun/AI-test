@@ -137,6 +137,11 @@ button {
   flex-direction: column;
   gap: 6px;
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(224, 220, 255, 0.22) transparent;
 }
 
 .nav-label {
@@ -186,6 +191,29 @@ button {
   color: var(--text-strong);
   background: rgba(255, 255, 255, 0.06);
   transform: translateX(3px);
+}
+
+.nav-item.level-item {
+  height: 50px;
+}
+
+.nav-item.level-item .nav-icon {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+}
+
+.nav-item.level-item .nav-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.nav-item.level-item.locked {
+  opacity: 0.58;
+}
+
+.nav-item.level-item.locked:hover {
+  transform: none;
 }
 
 .nav-item:hover::before {
@@ -610,7 +638,7 @@ button {
 
 .station-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(208px, 1fr));
   gap: 28px;
 }
 
@@ -1588,6 +1616,60 @@ button {
   background: #ff6b7a;
 }
 
+.prompt-versions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  border-radius: 8px;
+  background: rgba(34, 211, 238, 0.07);
+}
+
+.prompt-version-title {
+  margin: 0 0 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.prompt-version-title svg {
+  width: 15px;
+  height: 15px;
+  color: var(--accent-2);
+}
+
+.prompt-version-empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.prompt-version-item {
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.prompt-version-item strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #a5f3fc;
+  font-size: 0.72rem;
+}
+
+.prompt-version-item p {
+  margin: 0;
+  color: rgba(244, 242, 255, 0.82);
+  font-size: 0.74rem;
+  line-height: 1.55;
+  word-break: break-word;
+}
+
 .result-box {
   padding: 14px;
   border: 1px solid rgba(14, 207, 142, 0.35);
@@ -2339,6 +2421,12 @@ button {
   color: rgba(244, 242, 255, 0.9);
 }
 
+.npc-feedback-line {
+  margin: 0 0 8px;
+  color: rgba(159, 233, 248, 0.92);
+  font-weight: 700;
+}
+
 .npc-meta {
   margin: 16px 0;
   padding: 12px 14px;
@@ -2825,6 +2913,7 @@ button {
     flex-direction: row;
     flex: 1;
     overflow-x: auto;
+    overflow-y: hidden;
     gap: 8px;
     padding-bottom: 2px;
   }
@@ -2854,6 +2943,16 @@ button {
   .nav-icon {
     width: 30px;
     height: 30px;
+    flex: 0 0 30px;
+  }
+
+  .nav-item.level-item,
+  .nav-item.level-item .nav-icon {
+    height: 46px;
+  }
+
+  .nav-item.level-item .nav-icon {
+    width: 30px;
     flex: 0 0 30px;
   }
 

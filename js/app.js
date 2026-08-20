@@ -337,7 +337,7 @@
     }
   });
 
-  document.getElementById("loginForm").addEventListener("submit", function (event) {
+    document.getElementById("loginForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     var valid = true;
@@ -380,13 +380,29 @@
     submitButton.disabled = true;
     submitButton.querySelector(".spinner").hidden = false;
 
-    setTimeout(function () {
-      submitButton.classList.remove("loading");
-      submitButton.disabled = false;
-      submitButton.querySelector(".spinner").hidden = true;
-      showSuccess();
-    }, 950);
-  });
+      try {
+        var response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ account: usernameValue, password: passwordValue })
+        });
+        var data = await response.json().catch(function () { return {}; });
+        if (!response.ok || !data.token) {
+          var remoteError = data.error && typeof data.error === "object" ? data.error.message : data.error;
+          throw new Error(remoteError || data.message || "账号或密码不正确");
+        }
+        localStorage.setItem("ai-auth-token", data.token);
+        localStorage.setItem("ai-auth-role", data.user && data.user.role ? data.user.role : "student");
+        setRole(data.user && data.user.role === "teacher" ? "teacher" : "student");
+        showSuccess();
+      } catch (error) {
+        showToast(error.message || "登录失败，请稍后重试");
+      } finally {
+        submitButton.classList.remove("loading");
+        submitButton.disabled = false;
+        submitButton.querySelector(".spinner").hidden = true;
+      }
+    });
 
   var remembered = null;
   try {

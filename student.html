@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AI能力测评智能体学生端，六关闯关、测评与学习分析。">
-  <title>AI能力测评 · 学生端</title>
+  <meta name="description" content="智核觉醒学生端，五大剧情关卡、AI实操与六维能力报告。">
+  <title>智核觉醒 · 学生端</title>
   <link rel="stylesheet" href="css/student.css">
 </head>
 <body class="student-app">
@@ -15,18 +15,18 @@
       <div class="side-brand">
         <span class="brand-mark" data-icon="Brain"></span>
         <span class="brand-copy">
-          <strong>AI能力测评</strong>
+          <strong>智核觉醒</strong>
           <span>学生端</span>
         </span>
       </div>
 
       <nav class="side-nav" aria-label="学生端导航">
-        <p class="nav-label">闯关挑战</p>
+        <p class="nav-label">测评中心</p>
         <button class="nav-item active" type="button" data-view="stations" style="--nav:#0ecf8e">
           <span class="nav-icon" data-icon="LayoutDashboard"></span>
           <span class="nav-text">
-            <strong>闯关</strong>
-            <small>六关客观题</small>
+            <strong>闯关模块</strong>
+            <small>客观题 · 对话式测评</small>
           </span>
           <span class="nav-arrow" data-icon="ChevronRight"></span>
         </button>
@@ -34,20 +34,28 @@
           <span class="nav-icon" data-icon="MessageCircle"></span>
           <span class="nav-text">
             <strong>对话式测评</strong>
-            <small>NPC 灵犀</small>
+            <small>星核AI · 4轮对话</small>
           </span>
           <span class="nav-arrow" data-icon="ChevronRight"></span>
         </button>
-        <button class="nav-item" type="button" data-view="practical" style="--nav:#ff6b7a">
+        <button class="nav-item" type="button" data-view="practical" style="--nav:#ff9f43">
           <span class="nav-icon" data-icon="Terminal"></span>
           <span class="nav-text">
             <strong>实操任务</strong>
-            <small>AI 生成终端</small>
+            <small>百宝箱API · 迭代记录</small>
           </span>
           <span class="nav-arrow" data-icon="ChevronRight"></span>
         </button>
 
         <p class="nav-label growth-label">成长中心</p>
+        <button class="nav-item" type="button" data-view="analysis" style="--nav:#9b6cff">
+          <span class="nav-icon" data-icon="BarChart3"></span>
+          <span class="nav-text">
+            <strong>觉醒报告</strong>
+            <small>六维能力与建议</small>
+          </span>
+          <span class="nav-arrow" data-icon="ChevronRight"></span>
+        </button>
         <button class="nav-item" type="button" data-view="history" style="--nav:#5b6cf6">
           <span class="nav-icon" data-icon="History"></span>
           <span class="nav-text">
@@ -56,20 +64,12 @@
           </span>
           <span class="nav-arrow" data-icon="ChevronRight"></span>
         </button>
-        <button class="nav-item" type="button" data-view="analysis" style="--nav:#9b6cff">
-          <span class="nav-icon" data-icon="BarChart3"></span>
-          <span class="nav-text">
-            <strong>学习分析</strong>
-            <small>报告与建议</small>
-          </span>
-          <span class="nav-arrow" data-icon="ChevronRight"></span>
-        </button>
       </nav>
 
       <div class="side-progress">
         <div class="side-progress-head">
           <span>闯关进度</span>
-          <strong id="sideProgressText">12 / 18</strong>
+          <strong id="sideProgressText">0 / 15</strong>
         </div>
         <div class="side-progress-bar" aria-hidden="true"><span id="sideProgressBar"></span></div>
         <div class="side-level-dots" id="sideLevelDots"></div>
@@ -94,15 +94,15 @@
     <div class="main-col">
       <header class="topbar">
         <div class="page-heading">
-          <p class="page-kicker" id="pageKicker">六大能力站点</p>
-          <h1 id="pageTitle">闯关</h1>
+          <p class="page-kicker" id="pageKicker">闯关模块</p>
+          <h1 id="pageTitle">闯关模块</h1>
         </div>
         <div class="topbar-meta">
           <span class="star-total">
             <span data-icon="Star"></span>
-            <span id="headerStars">12 / 18</span>
+            <span id="headerStars">0 / 15</span>
           </span>
-          <span class="overall-rating">综合评级 A-</span>
+          <span class="overall-rating">综合评级 B</span>
         </div>
       </header>
 
@@ -122,8 +122,8 @@
           <div class="retest-goal" id="retestGoal" hidden>
             <span class="retest-goal-icon" data-icon="Target"></span>
             <div class="retest-goal-copy">
-              <strong id="retestGoalTitle">上次测评：B+ · 14 星</strong>
-              <p id="retestGoalText">本次目标：冲击 A-，重点突破数据分析与工具工坊。</p>
+              <strong id="retestGoalTitle">上次测评：B · 14 星</strong>
+              <p id="retestGoalText">本次目标：冲击 A，重点突破提示词工程与人机协同。</p>
             </div>
             <button class="btn ghost small" type="button" id="retestGoalBtn">
               <span data-icon="TrendingUp"></span>
@@ -132,8 +132,8 @@
           </div>
           <div class="section-toolbar">
             <div>
-              <h2>选择站点，开始探索</h2>
-              <p>六站线性推进，每站完成可获得 1-3 颗星。</p>
+              <h2>闯关模块</h2>
+              <p>五个剧情关卡线性推进，每关可获得 1-3 颗星。</p>
             </div>
             <div class="toolbar-actions">
               <button class="quick-btn primary" type="button" id="startLevelBtn">
@@ -151,7 +151,7 @@
             <div class="level-start-info">
               <span class="next-level-badge" id="nextLevelBadge">下一关</span>
               <div>
-                <strong id="nextLevelName">提示词工坊</strong>
+                <strong id="nextLevelName">智核学院</strong>
                 <span id="nextLevelMeta">第 1 关 · 入门</span>
               </div>
             </div>
@@ -168,15 +168,15 @@
               <div class="npc-avatar" id="npcAvatar"></div>
               <div>
                 <p class="card-eyebrow">对话式测评</p>
-                <h2>灵犀</h2>
-                <p class="npc-desc">AI 能力引导官，正在站点“对话演练”等你。</p>
+                <h2>星核AI</h2>
+              <p class="npc-desc">协同空间站氧气循环异常，周队长要求你在压力下完成人机协作。</p>
               </div>
               <div class="npc-script">
                 <p><strong>本轮目标</strong></p>
                 <ul>
-                  <li>完成 2-4 轮自然对话</li>
-                  <li>练习清晰表达需求</li>
-                  <li>根据关键词获得即时回应</li>
+                  <li>追问星核AI的依据与风险</li>
+                  <li>补充实时数据和安全边界</li>
+                  <li>完成人工复核与最终决策</li>
                 </ul>
               </div>
               <button class="btn ghost full" type="button" id="chatReset">
@@ -189,7 +189,7 @@
                 <div class="chat-npc">
                   <span class="mini-avatar" data-icon="Bot"></span>
                   <div>
-                    <strong>灵犀</strong>
+                    <strong>星核AI</strong>
                     <span class="online-dot">在线</span>
                   </div>
                 </div>
@@ -210,23 +210,24 @@
         <section class="view" id="view-practical">
           <div class="practical-layout">
             <aside class="task-panel">
-              <p class="card-eyebrow">实操任务 · 工具工坊</p>
-              <h2>设计一场 AI 工具分享会</h2>
-              <p class="task-desc">为班级设计一场 45 分钟的 AI 工具分享会。请使用提示词让 AI 生成：活动主题、3 个环节，以及每个环节的时长与负责人建议。</p>
+              <p class="card-eyebrow">实操任务 · 创客工坊</p>
+              <h2>AI 创意写作工具宣传文案</h2>
+              <p class="task-desc">为明天的产品发布会写一段 50 字内宣传文案，语气专业亲切，突出“让 AI 成为你的创意伙伴”。请先写提示词，再根据生成结果至少迭代两次。</p>
               <div class="criteria">
                 <p><strong>评分要点</strong></p>
                 <ul>
-                  <li>角色与目标明确</li>
-                  <li>输出格式清晰</li>
-                  <li>包含迭代优化过程</li>
+                  <li>角色、受众与语气明确</li>
+                  <li>50 字内且突出创意伙伴</li>
+                  <li>至少记录两次提示词迭代</li>
                 </ul>
               </div>
+              <div class="prompt-versions" id="promptVersions"></div>
               <div class="result-box" id="practicalResult" hidden>
                 <div class="result-head">
                   <span data-icon="BadgeCheck"></span>
                   <div>
                     <strong>提交成功</strong>
-                    <span>评分 86 · 2 颗星</span>
+                    <span>按提交结果更新</span>
                   </div>
                 </div>
                 <p id="practicalResultText"></p>
@@ -240,7 +241,7 @@
               </div>
               <div class="terminal-body" id="terminalBody"></div>
               <div class="terminal-input">
-                <textarea id="promptInput" rows="3" maxlength="300" placeholder="输入你的提示词，例如：你是一名活动策划师，请帮我……"></textarea>
+              <textarea id="promptInput" rows="3" maxlength="300" placeholder="输入你的提示词，例如：你是产品文案专家，请为AI创意写作工具写50字内发布会文案，语气专业亲切……"></textarea>
                 <div class="terminal-actions">
                   <button class="btn ghost" type="button" id="promptRun">
                     <span data-icon="Sparkles"></span>
@@ -284,7 +285,7 @@
                 <div id="radarChart"></div>
               </div>
               <div class="report-card rating-card">
-                <div class="rating-badge" id="ratingBadge">A-</div>
+                <div class="rating-badge" id="ratingBadge">B</div>
                 <p class="rating-caption">综合评级</p>
                 <div class="dimension-scores" id="dimensionScores"></div>
               </div>
@@ -323,7 +324,7 @@
                   <span class="growth-icon" data-icon="Trophy"></span>
                   <div>
                     <strong id="growthTitle">提示词工程突破历史最高！</strong>
-                    <p id="growthText">上次 B+ 级，本次冲击 A- 级成功，六维总分 +44。</p>
+                    <p id="growthText">上次 B 级，本次继续冲击 A 级，六维变化将在这里更新。</p>
                   </div>
                 </div>
                 <div id="growthChart"></div>
@@ -428,13 +429,13 @@
       </button>
       <div class="quiz-modal-head">
         <p class="card-eyebrow">闯关关卡 · 客观题测评</p>
-        <h2 id="quizModalTitle">第 1 关 · 提示词工坊</h2>
+        <h2 id="quizModalTitle">第 1 关 · 智核学院</h2>
       </div>
       <div class="quiz-intro" id="quizIntro">
         <div class="npc-talk">
           <div class="npc-avatar-lg" id="npcModalAvatar"></div>
           <div class="npc-bubble" id="npcBubble">
-            <span class="npc-name">灵犀</span>
+            <span class="npc-name">守护者</span>
             <p id="npcBubbleText"></p>
           </div>
         </div>
@@ -535,14 +536,14 @@
       <div class="npc-ending" id="npcEnding" hidden>
         <div class="npc-avatar-sm" data-icon="Bot"></div>
         <div>
-          <strong>灵犀</strong>
+          <strong>智核系统</strong>
           <p id="npcEndingText"></p>
         </div>
       </div>
       <div class="result-actions">
         <button class="btn ghost" type="button" id="resultBack">
           <span data-icon="LayoutDashboard"></span>
-          <span>返回站点</span>
+          <span>返回关卡</span>
         </button>
         <button class="btn solid" type="button" id="resultAnalysis">
           <span data-icon="BarChart3"></span>

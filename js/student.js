@@ -22,151 +22,143 @@
 
   var STATIONS = [
     {
-      id: "prompt",
+      id: "academy",
       level: 1,
       shift: 0,
       tilt: -2,
-      name: "提示词工坊",
-      en: "Prompt Craft",
-      icon: "WandSparkles",
+      name: "智核学院",
+      en: "Awakening Academy",
+      icon: "GraduationCap",
       color: "#0ecf8e",
-      status: "done",
-      stars: 2,
-      score: 86,
-      difficulty: "入门",
-      desc: "用角色、目标与格式约束写出清晰可执行的提示词。",
-      objective: "本关目标：掌握角色、目标与输出格式三件套。",
-      humor: "记住：明确角色、目标和格式，比“给我写点东西”有用一百倍。",
-      opening: "第一关先轻松热热身。你猜 AI 最怕哪种人？怕只会说“写点东西”的人。"
+      status: "active",
+      stars: 0,
+      score: 0,
+      pendingTask: null,
+      difficulty: "基础认知",
+      guardian: "林教授",
+      desc: "协助林教授筹备新生AI科普讲座，在真实场景中理解AI基础概念、提示词与工具边界。",
+      objective: "本关目标：综合运用AI基础认知、提示词工程、工具选择与伦理意识。",
+      humor: "别急着背名词，先说清任务、受众和你希望AI输出什么。",
+      opening: "欢迎来到智核学院。我今天要举办一场面向新生的AI科普讲座，但一个人实在忙不过来。你愿意协助我解答这些问题吗？",
+      ending: "谢谢你的帮助！这些问题同时涉及基础认知、提示词、工具使用和伦理规范，你的表现我都记录下来了。"
     },
     {
-      id: "search",
+      id: "labyrinth",
       level: 2,
       shift: 30,
       tilt: 2,
-      name: "智能检索",
-      en: "Smart Search",
+      name: "信息迷城",
+      en: "Information Labyrinth",
       icon: "Search",
       color: "#ff9f43",
-      status: "active",
-      stars: 1,
-      score: 72,
-      difficulty: "基础",
-      desc: "练习把模糊问题转化为可检索的关键词与限定条件。",
-      objective: "本关目标：把模糊问题拆成关键词、来源和时间范围。",
-      humor: "AI 猜不到你心里想什么，但你能用关键词把它框得明明白白。",
-      opening: "第二关，咱们练习把问题“说人话”。关键词给得越准，AI 越像你肚子里的蛔虫。"
+      status: "todo",
+      stars: 0,
+      score: 0,
+      pendingTask: null,
+      difficulty: "信息甄别",
+      guardian: "苏记者",
+      desc: "和苏记者调查AI生成假新闻配图事件，练习识别生成痕迹并负责任地传播信息。",
+      objective: "本关目标：完成信息核验、生成痕迹判断与传播决策。",
+      humor: "越像“真的”的图，越要问一句：原始出处在哪里？",
+      opening: "我是苏记者，正在调查一起AI生成的假地震配图事件。这个案子里藏着不少门道，看你能不能抽丝剥茧。",
+      ending: "调查报告里会提到你的贡献。你展现了辨别AI内容、核验事实和负责任传播的能力。"
     },
     {
-      id: "dialogue",
+      id: "workshop",
       level: 3,
       shift: 10,
       tilt: -1.5,
-      name: "对话演练",
-      en: "Dialogue Lab",
-      icon: "MessagesSquare",
-      color: "#22d3ee",
-      status: "done",
-      stars: 2,
-      score: 88,
-      difficulty: "进阶",
-      desc: "练习在问答中把需求说清楚，并用追问让回答更具体。",
-      objective: "本关目标：识别好提示词要素，学会高质量追问。",
-      humor: "回答太笼统？别客气，直接要求它“举例子、给格式、列步骤”。",
-      opening: "第三关开始上强度。记住：好答案往往是被追问出来的。"
+      name: "创客工坊",
+      en: "Maker Workshop",
+      icon: "PenLine",
+      color: "#9b6cff",
+      status: "todo",
+      stars: 0,
+      score: 0,
+      pendingTask: null,
+      difficulty: "实操创作",
+      guardian: "陈创客",
+      desc: "为明天的AI创意写作工具发布会出现宣传文案，完成提示词迭代与产物评估。",
+      objective: "本关目标：先完成客观题，再进入AI终端，至少迭代两次提示词。",
+      humor: "不是写完一版就结束，会评估、会修改，才是真的会用AI。",
+      opening: "我是陈创客。产品明天发布，宣传文案还没准备好。请用AI终端帮我写一段，并至少迭代两次提示词。",
+      ending: "你会写提示词、会评估AI输出、知道不断迭代，还注意版权伦理，这正是好用AI的关键。"
     },
     {
-      id: "create",
+      id: "station",
       level: 4,
       shift: 38,
       tilt: 2.5,
-      name: "内容创作",
-      en: "Content Studio",
-      icon: "PenLine",
-      color: "#9b6cff",
-      status: "done",
-      stars: 3,
-      score: 93,
-      difficulty: "熟练",
-      desc: "综合运用提示词技巧生成结构完整、有亮点的内容。",
-      objective: "本关目标：组合角色、示例与格式，产出完整内容。",
-      humor: "你已不是新手村的人，AI 看了你的提示词都想鼓掌。",
-      opening: "第四关，把前面的技巧组装起来。这一关打完，你的提示词已经有“体系感”了。"
+      name: "协同空间站",
+      en: "Collaboration Station",
+      icon: "Rocket",
+      color: "#5b6cf6",
+      status: "todo",
+      stars: 0,
+      score: 0,
+      pendingTask: null,
+      difficulty: "压力协同",
+      guardian: "周队长",
+      desc: "氧气循环系统出现异常，与星核AI协作分析方案，但不要盲从AI建议。",
+      objective: "本关目标：先完成客观题，再与星核完成多轮危机对话。",
+      humor: "AI可以给方案，但安全边界和最终决策必须由人确认。",
+      opening: "空间站AI星核检测到氧气循环异常，它给出的修复方案我不敢直接采信。请你协作分析，并保留人的判断。",
+      ending: "危机解除。你在压力下与AI协作，又能验证依据和风险，这正是人机协同的关键。"
     },
     {
-      id: "data",
+      id: "court",
       level: 5,
       shift: 6,
       tilt: -2.5,
-      name: "数据分析",
-      en: "Data Insight",
-      icon: "ChartColumn",
-      color: "#5b6cf6",
-      status: "active",
-      stars: 1,
-      score: 75,
-      difficulty: "挑战",
-      desc: "把业务问题拆成指标、比较维度与可视化思路。",
-      objective: "本关目标：用指标、对比和趋势把“分析一下”升级成专业问题。",
-      humor: "把“分析一下”换成“对比、占比、趋势”，分数会自己涨上来。",
-      opening: "第五关，数据不会说谎，但提示词会。写清楚指标，AI 才敢给你靠谱结论。"
-    },
-    {
-      id: "tools",
-      level: 6,
-      shift: 26,
-      tilt: 1.5,
-      name: "工具工坊",
-      en: "Tool Workshop",
-      icon: "Wrench",
+      name: "伦理殿堂",
+      en: "Ethics Court",
+      icon: "ShieldCheck",
       color: "#ff6b7a",
       status: "todo",
       stars: 0,
       score: 0,
-      difficulty: "巅峰",
-      desc: "综合运用全部技巧，完成一份可直接执行的方案。",
-      objective: "本关目标：给出完整、结构化、可直接执行的方案提示词。",
-      humor: "先深呼吸，再写提示词。写完记得检查：角色、目标、格式都齐了吗？",
-      opening: "最后一关，通关之后你就是六边形战士。我会在终点等你，别让我等太久。"
+      pendingTask: null,
+      difficulty: "伦理思辨",
+      guardian: "方法官",
+      desc: "作为人民陪审员审理AI学术诚信、算法偏见与隐私保护案件。",
+      objective: "本关目标：综合运用伦理判断、结果评估、基础认知与人机责任边界。",
+      humor: "伦理不是最后补的一句免责声明，而是设计开始时的约束条件。",
+      opening: "我是方法官。今天有三起AI相关案件需要你担任人民陪审员。别急着下结论，先把问题看清楚。",
+      ending: "你在学术诚信、AI偏见和隐私保护中的判断，展现了AI时代公民应有的素养。五关全部完成，觉醒报告已生成。"
     }
   ];
 
-  var REPORT_NAMES = ["提示词", "检索", "对话", "创作", "数据", "工具"];
-  var REPORT_COLORS = ["#0ecf8e", "#ff9f43", "#22d3ee", "#9b6cff", "#5b6cf6", "#ff6b7a"];
-  var QUESTION_DIFFICULTY = {
-    q1: 1, q2: 2, q3: 1, q4: 2, q5: 1, q6: 2,
-    q7: 1, q8: 2, q9: 2, q10: 2, q11: 2, q12: 2,
-    q13: 3, q14: 3, q15: 3, q16: 3, q17: 3, q18: 3,
-    q19: 1, q20: 2, q21: 1, q22: 2, q23: 2, q24: 3
-  };
+  var REPORT_NAMES = ["AI基础认知", "提示词工程", "AI工具使用", "AI结果评估", "人机协同", "AI伦理合规"];
+  var REPORT_COLORS = ["#0ecf8e", "#22d3ee", "#ff9f43", "#9b6cff", "#5b6cf6", "#ff6b7a"];
+  var DIMENSION_KEYS = ["basics", "prompting", "tools", "evaluation", "collaboration", "ethics"];
 
   var HISTORY_SEED = [
     {
       id: "h1",
       date: "2026-05-18",
-      title: "AI 能力测评 · 第一轮",
-      rating: "B",
+      title: "智核觉醒 · 第一轮",
+      rating: "C",
       stars: 9,
       scores: [66, 64, 70, 68, 60, 62],
-      note: "首次测评整体偏基础，数据分析与工具工坊是主要短板。"
+      note: "首次测评整体偏基础，提示词工程与人机协同是主要短板。"
     },
     {
       id: "h2",
       date: "2026-06-12",
-      title: "AI 能力测评 · 第二轮",
-      rating: "B+",
+      title: "智核觉醒 · 第二轮",
+      rating: "B",
       stars: 12,
       scores: [72, 68, 76, 74, 66, 70],
-      note: "提示词与内容创作提升明显，继续巩固检索和数据表达。"
+      note: "提示词与工具使用提升明显，继续巩固结果评估和伦理判断。"
     },
     {
       id: "h3",
       date: "2026-07-08",
-      title: "AI 能力测评 · 第三轮",
-      rating: "B+",
+      title: "智核觉醒 · 第三轮",
+      rating: "B",
       stars: 14,
       scores: [80, 74, 82, 86, 72, 76],
-      note: "六维能力更均衡，距离 A 级还差数据分析和工具工坊的持续突破。"
+      note: "六维能力更均衡，距离 A 级还差人机协同与结果评估的持续突破。"
     }
   ];
 
@@ -204,7 +196,7 @@
     { id: "violet", hair: "#3a1d56", skin: "#f3d3b8", shirt: "#9b6cff", accent: "#ffd166" }
   ];
 
-  var QUESTIONS = [
+  var LEGACY_QUESTIONS_V1 = [
     {
       id: "q1",
       levelId: "prompt",
@@ -421,32 +413,195 @@
     }
   ];
 
+  var QUESTIONS_V2 = [
+    {
+      id: "q_ac_1",
+      levelId: "academy",
+      type: "single",
+      difficulty: 2,
+      dimensions: { basics: 1, prompting: 2, tools: 1 },
+      text: "林教授要为新生准备AI科普讲座，以下哪个提问最容易得到可用提纲？",
+      options: ["给我写点讲座内容", "你是AI科普讲师，请面向大一新生设计20分钟讲座提纲，包含3个概念和例子", "随便写一点AI介绍"],
+      answer: 1,
+      explanation: "角色、受众、时长、数量和例子同时明确，AI输出才更可控。"
+    },
+    {
+      id: "q_ac_2",
+      levelId: "academy",
+      type: "multi",
+      difficulty: 2,
+      dimensions: { basics: 1, tools: 2, ethics: 2 },
+      text: "把学生姓名和成绩表交给AI分析前，合理的准备包括哪些？",
+      options: ["明确分析目标", "判断是否必须使用真实姓名", "删除或匿名化非必要敏感字段", "把全部原始数据直接粘贴给公开AI服务"],
+      answer: [0, 1, 2],
+      explanation: "任务目标、适用性判断和数据最小化都应前置，敏感信息不能直接提交。"
+    },
+    {
+      id: "q_ac_3",
+      levelId: "academy",
+      type: "fill",
+      difficulty: 3,
+      dimensions: { basics: 1, prompting: 2, evaluation: 1 },
+      text: "高质量提示词通常包含角色、目标、背景和______约束。",
+      fillAnswers: ["格式", "输出格式"],
+      explanation: "输出格式约束能让结果更适合直接使用和检查。"
+    },
+    {
+      id: "q_la_1",
+      levelId: "labyrinth",
+      type: "scene",
+      difficulty: 2,
+      dimensions: { evaluation: 2, ethics: 2, basics: 1 },
+      scenario: "社交平台出现一张“本地地震”图片，画面很震撼，但没有来源。",
+      text: "作为苏记者的助手，你应优先采取什么行动？",
+      options: ["立即转发提醒更多人", "核查官方信源、图片来源和发布时间后再判断", "画面精细，所以认定是真的"],
+      answer: 1,
+      explanation: "突发事件信息应先交叉核验官方信源与原始出处，再决定是否传播。"
+    },
+    {
+      id: "q_la_2",
+      levelId: "labyrinth",
+      type: "multi",
+      difficulty: 3,
+      dimensions: { evaluation: 2, basics: 1, prompting: 1 },
+      text: "识别AI生成图片时，哪些线索值得检查？",
+      options: ["手部、文字等局部结构", "光影和透视关系", "图片来源与元信息", "发布者是否使用感叹号"],
+      answer: [0, 1, 2],
+      explanation: "局部结构、光影和元信息可作为证据；标点情绪不能证明真伪。"
+    },
+    {
+      id: "q_la_3",
+      levelId: "labyrinth",
+      type: "sort",
+      difficulty: 3,
+      dimensions: { prompting: 1, evaluation: 2 },
+      text: "请排列完成一次可靠信息核验的步骤。",
+      options: ["明确信息用途", "提取关键词并限定时间范围", "筛选权威来源", "整理证据链与结论"],
+      answer: [0, 1, 2, 3],
+      explanation: "先明确用途，再提取关键词、筛选来源，最后整理证据链。"
+    },
+    {
+      id: "q_wo_1",
+      levelId: "workshop",
+      type: "single",
+      difficulty: 2,
+      dimensions: { prompting: 2, tools: 1, evaluation: 1 },
+      text: "AI第一次输出的宣传文案不符合要求，最有效的下一步是？",
+      options: ["直接提交", "指出差距，补充角色、语气、字数和验收标准后重试", "原样重复同一提示词"],
+      answer: 1,
+      explanation: "基于差距迭代提示词，才能形成可复用的改进方法。"
+    },
+    {
+      id: "q_wo_2",
+      levelId: "workshop",
+      type: "judge",
+      difficulty: 2,
+      dimensions: { ethics: 2, tools: 1 },
+      text: "商用宣传图使用AI生成元素时，仍需关注版权来源和平台规则。",
+      options: ["正确", "错误"],
+      answer: 0,
+      explanation: "商用场景不能因AI生成而免除版权、授权与平台合规检查。"
+    },
+    {
+      id: "q_wo_3",
+      levelId: "workshop",
+      type: "fill",
+      difficulty: 3,
+      dimensions: { prompting: 1, evaluation: 2 },
+      text: "提交AI产物前，应对照任务要求和______标准做最终检查。",
+      fillAnswers: ["验收", "质量"],
+      explanation: "验收标准能避免“看起来完成”但不可用的结果。"
+    },
+    {
+      id: "q_st_1",
+      levelId: "station",
+      type: "multi",
+      difficulty: 3,
+      dimensions: { collaboration: 2, tools: 1, ethics: 1 },
+      text: "紧急维修任务中，合理的人机分工包括哪些？",
+      options: ["AI快速汇总备选方案", "人确认安全边界", "AI承担最终责任", "人复核关键数据"],
+      answer: [0, 1, 3],
+      explanation: "AI可提升信息处理效率，但安全边界与最终责任应由人确认。"
+    },
+    {
+      id: "q_st_2",
+      levelId: "station",
+      type: "scene",
+      difficulty: 3,
+      dimensions: { prompting: 1, collaboration: 2, evaluation: 1 },
+      scenario: "星核AI建议关闭B舱，置信度85%。",
+      text: "你会如何追问星核，才能获得更可决策的信息？",
+      options: ["别说了，马上执行", "请说明依据、实时数据、风险影响和更低风险备选方案", "换个话题"],
+      answer: 1,
+      explanation: "高质量追问应补齐依据、数据、风险与备选方案，而不是只看置信度。"
+    },
+    {
+      id: "q_st_3",
+      levelId: "station",
+      type: "fill",
+      difficulty: 2,
+      dimensions: { collaboration: 1, prompting: 1 },
+      text: "让AI辅助决策时，应提供目标、约束和______数据。",
+      fillAnswers: ["实时", "关键"],
+      explanation: "关键或实时数据能减少AI依据不足带来的误判。"
+    },
+    {
+      id: "q_co_1",
+      levelId: "court",
+      type: "scene",
+      difficulty: 3,
+      dimensions: { ethics: 2, basics: 1, collaboration: 1 },
+      scenario: "同学用AI完成论文初稿后，希望你判断处理方式。",
+      text: "最符合学术诚信的做法是？",
+      options: ["不声明AI参与", "按学校规定声明AI贡献，并自行验证与改写核心内容", "把AI引用全部当作本人原创"],
+      answer: 1,
+      explanation: "AI参与需按规则披露，核心论证和原创责任仍属于作者。"
+    },
+    {
+      id: "q_co_2",
+      levelId: "court",
+      type: "multi",
+      difficulty: 4,
+      dimensions: { ethics: 2, evaluation: 2, basics: 1 },
+      text: "招聘系统使用AI筛简历时，应重点审查哪些风险？",
+      options: ["历史数据偏见", "弱势群体公平性", "结果可解释性", "供应商宣传是否响亮"],
+      answer: [0, 1, 2],
+      explanation: "偏见、公平性与可解释性直接影响求职者权益；宣传话术不是治理证据。"
+    },
+    {
+      id: "q_co_3",
+      levelId: "court",
+      type: "sort",
+      difficulty: 4,
+      dimensions: { ethics: 2, evaluation: 1, collaboration: 1 },
+      text: "请排列AI伦理风险评估的合理流程。",
+      options: ["识别使用者与场景", "梳理数据来源和敏感字段", "评估公平性、透明性与可逆性", "设置人工申诉与监测机制"],
+      answer: [0, 1, 2, 3],
+      explanation: "先识别场景和利益相关者，再审数据、评风险、设机制。"
+    }
+  ];
+  var QUESTIONS = QUESTIONS_V2;
+
   var CHAT_SCRIPT = [
     {
-      ask: "你好，我是灵犀。今天我们聊聊如何让 AI 帮你学习。你最想先提升哪项能力？",
-      replies: ["提示词工程", "数据分析", "内容创作", "学习规划"],
-      keywords: null
+      ask: "这里是协同空间站AI星核。检测到氧气循环异常，建议关闭B舱。你会先追问什么？",
+      replies: ["这个方案的依据是什么？", "有没有更低风险备选？", "影响范围有多大？"],
+      keywords: ["依据", "数据", "风险", "备选", "影响", "范围", "日志"]
     },
     {
-      ask: "很好。如果让你把这件事交给 AI，你会怎么开口？试试说清角色、目标和输出格式。",
-      replies: ["你是一名学习规划师，帮我制定一周计划", "帮我整理资料，输出成表格", "随便给我点建议"],
-      keywords: ["角色", "规划", "表格", "目标", "一周", "整理"]
+      ask: "星核：方案基于历史日志，但缺少实时传感数据。你如何补充要求？",
+      replies: ["请接入实时数据再评估", "列出关键传感器和异常阈值", "先给结论就行"],
+      keywords: ["实时", "数据", "传感器", "阈值", "评估"]
     },
     {
-      ask: "不错，需求已经清晰很多。如果 AI 的回答太笼统，你会怎么追问？",
-      replies: ["请再具体一点，给出例子", "请按步骤列出", "请用表格对比"],
-      keywords: ["具体", "例子", "步骤", "表格", "细化", "详细"]
+      ask: "星核：已给出两个方案。方案A恢复快但能耗高，方案B更稳但需要人工值守。你如何决策？",
+      replies: ["综合实时数据、安全边界和人工值守后决策", "选择恢复最快的", "选择最稳的"],
+      keywords: ["实时", "安全", "边界", "人工", "值守", "验证", "决策"]
     },
     {
-      ask: "最后一步：你愿意每天花多少时间练习 AI 技能？",
-      replies: ["15 分钟", "30 分钟", "60 分钟"],
-      keywords: null
-    },
-    {
-      ask: "收到！你的表达清晰、会追问、也愿意投入时间。本轮对话测评完成，给你 2 颗星，继续加油！",
-      replies: ["好的，完成对话"],
-      keywords: null,
-      final: true
+      ask: "星核：若后续数据继续变化，你如何避免盲从我的建议？",
+      replies: ["设置复核节点和人工确认条件", "让AI持续解释依据", "全按AI建议执行"],
+      keywords: ["复核", "人工", "确认", "解释", "依据", "监测"]
     }
   ];
 
@@ -455,36 +610,36 @@
       icon: "Compass",
       color: "#5b6cf6",
       title: "欢迎来到闯关之旅",
-      text: "六道关卡难度逐级上升，从入门一路打到巅峰，全部通关后解锁完整能力报告。",
-      points: ["六关覆盖提示词、检索、对话、创作、数据与工具", "难度从入门、基础、进阶一路提升到挑战、巅峰", "进度实时保存，随时可以回来继续闯关"]
+      text: "你将进入智核域的五个剧情区域，25-35分钟完成一次六维AI能力测评。",
+      points: ["智核学院、信息迷城、创客工坊、协同空间站、伦理殿堂", "每道题可同时影响多个能力维度", "剧情与题目反馈分离，重点看能力表现"]
     },
     {
       icon: "ListChecks",
       color: "#0ecf8e",
       title: "闯关玩法：客观题测评",
-      text: "每一关就是一次客观题测评，是闯关的核心玩法。",
-      points: ["题型覆盖单选、多选、判断、填空、情景选择与排序", "每关 3-4 道题，答完立即结算星星", "答对继续、答错下降，动态定位你的能力水平"]
+      text: "每个区域由守护者NPC提出综合挑战，题目来自真实AI应用场景。",
+      points: ["题型覆盖单选、多选、判断、填空、情景选择与排序", "每关先完成3道自适应客观题", "答对难度上升，答错难度下降"]
     },
     {
       icon: "MessageCircle",
       color: "#22d3ee",
       title: "对话式测评",
-      text: "除了闯关，你还可以在聊天窗口里与 NPC 灵犀对话，练习把需求说清楚。",
-      points: ["完成 2-4 轮自然对话", "支持快捷回复与关键词回应", "重点练习表达需求和追问技巧"]
+      text: "协同空间站会出现危机对话，你需要和星核AI协作但不盲从。",
+      points: ["完成多轮追问与决策", "支持快捷回复与自由输入", "重点考察人机协同和结果评估"]
     },
     {
       icon: "Terminal",
       color: "#ff6b7a",
       title: "实操任务",
-      text: "在 AI 生成终端中完成真实感任务：写提示词、运行生成、迭代并提交产物。",
-      points: ["输入提示词并运行 AI 生成", "记录每一次迭代修改", "提交产物后获得评分与反馈"]
+      text: "创客工坊会开放AI终端，为产品发布会准备宣传文案。",
+      points: ["写提示词并运行AI生成", "至少迭代两次并记录修改", "提交产物后获得评分与反馈"]
     },
     {
       icon: "Star",
       color: "#ffd166",
       title: "星星与能力报告",
-      text: "每关最高 3 颗星，六关共 18 颗星。完成后生成属于你的六维能力报告。",
-      points: ["六维雷达图与综合评级", "各维度得分与个性化学习建议", "报告支持导出为图片或 PDF"]
+      text: "五个区域共15颗星，通关后生成智核觉醒报告。",
+      points: ["六维雷达图与综合评级", "每题多维计分，不只看单一关卡", "报告支持导出为图片或 PDF"]
     },
     {
       icon: "TrendingUp",
@@ -496,7 +651,30 @@
   ];
 
   var NPC_ENDING =
-    "六关全部通关，掌声先给你！你已经从“提示词新手”进化成了六边形战士。休息一下，记得去学习分析看看你的专属报告，下次回来我们冲击满星。";
+    "五个区域全部通关，智核觉醒报告已经生成。你展现的不只是答题能力，还有提示词、工具使用、结果评估、人机协同与伦理判断的综合素养。";
+
+  var NPC_REACTIONS = {
+    academy: {
+      correct: ["不错，看来你对这个知识点掌握得不错。", "很好！你的理解到位了。", "看来你已经准备好了。"],
+      wrong: ["这个问题确实有难度，让我说明一下。", "别灰心，这个概念我们一起来梳理。", "需要再修炼一下这个知识点。"]
+    },
+    labyrinth: {
+      correct: ["犀利的眼光！你发现了关键。", "不错，你的判断力很强。", "就是这样！你的洞察力很棒。"],
+      wrong: ["这个细节你漏掉了，看看解析吧。", "注意这个线索，别被表面现象迷惑。", "这个地方确实容易迷惑人。"]
+    },
+    workshop: {
+      correct: ["太棒了！你这个思路很到位。", "看来你是个懂行的人。", "完美！我喜欢你的思路。"],
+      wrong: ["这个方向似乎不太对，看看解析。", "没关系，多试几次就好了。", "这个地方不少人踩过坑，别紧张。"]
+    },
+    station: {
+      correct: ["干得漂亮！就是这个方向。", "很好，你的判断是正确的。", "果断！你展现了冷静的头脑。"],
+      wrong: ["这个判断不够准确，注意看解析。", "在压力下出错很正常，看看哪里出了问题。", "记住，AI的建议需要人来验证。"]
+    },
+    court: {
+      correct: ["判断准确，你的伦理意识很强。", "你的见解很到位。", "公正的判断。"],
+      wrong: ["这个判断需要更深入的思考。", "这个问题值得反复思量，看看解析。", "伦理问题往往没有简单答案。"]
+    }
+  };
 
   var state = {
     view: "stations",
@@ -531,9 +709,15 @@
     practical: {
       runs: 0,
       submitted: false,
+      synced: false,
       lastOutput: "",
-      versions: []
-    }
+      lastProvider: "",
+      versions: [],
+      score: 0,
+      stars: 0
+    },
+    dimensionScores: {},
+    dimensionWeights: {}
   };
 
   var toastTimer = null;
@@ -564,12 +748,36 @@
   }
 
   function ratingFor(avg) {
-    return avg >= 90 ? "A" : avg >= 80 ? "A-" : avg >= 70 ? "B+" : avg >= 60 ? "B" : "C";
+    return avg >= 90 ? "S" : avg >= 80 ? "A" : avg >= 70 ? "B" : avg >= 60 ? "C" : "D";
+  }
+
+  function recordDimensionScore(dimensions, score) {
+    Object.keys(dimensions || {}).forEach(function (key) {
+      var weight = Number(dimensions[key]) || 1;
+      state.dimensionScores[key] = (Number(state.dimensionScores[key]) || 0) + score * weight;
+      state.dimensionWeights[key] = (Number(state.dimensionWeights[key]) || 0) + weight;
+    });
+    saveProgress();
+  }
+
+  function currentDimensionScores() {
+    var fallback = state.history[0] ? normalizeScores(state.history[0].scores) : [];
+    return DIMENSION_KEYS.map(function (key, i) {
+      var total = Number(state.dimensionScores[key]) || 0;
+      var weight = Number(state.dimensionWeights[key]) || 0;
+      return weight ? Math.round(total / weight) : Number(fallback[i]) || 0;
+    });
+  }
+
+  function npcReaction(levelId, correct) {
+    var group = NPC_REACTIONS[levelId] || NPC_REACTIONS.academy;
+    var list = correct ? group.correct : group.wrong;
+    return list[Math.floor(Math.random() * list.length)];
   }
 
   function loadProgress() {
     try {
-      var raw = localStorage.getItem("ai-student-progress");
+      var raw = localStorage.getItem("ai-student-progress-v2");
       if (raw) {
         var saved = JSON.parse(raw);
         STATIONS.forEach(function (s) {
@@ -578,8 +786,11 @@
             s.status = item.status || s.status;
             s.stars = Number(item.stars) || s.stars;
             s.score = Number(item.score) || s.score;
+            s.pendingTask = item.pendingTask === "practical" || item.pendingTask === "dialogue" ? item.pendingTask : null;
           }
         });
+        state.dimensionScores = saved.dimensionScores || {};
+        state.dimensionWeights = saved.dimensionWeights || {};
       }
     } catch (e) {
       /* ignore */
@@ -590,9 +801,11 @@
     try {
       var data = {};
       STATIONS.forEach(function (s) {
-        data[s.id] = { status: s.status, stars: s.stars, score: s.score };
+        data[s.id] = { status: s.status, stars: s.stars, score: s.score, pendingTask: s.pendingTask || null };
       });
-      localStorage.setItem("ai-student-progress", JSON.stringify(data));
+      data.dimensionScores = state.dimensionScores;
+      data.dimensionWeights = state.dimensionWeights;
+      localStorage.setItem("ai-student-progress-v2", JSON.stringify(data));
     } catch (e) {
       /* ignore */
     }
@@ -600,13 +813,17 @@
 
   function loadPractical() {
     try {
-      var raw = localStorage.getItem("ai-student-practical");
+      var raw = localStorage.getItem("ai-student-practical-v2");
       if (!raw) return;
       var saved = JSON.parse(raw);
       state.practical.runs = Number(saved.runs) || 0;
       state.practical.submitted = !!saved.submitted;
+      state.practical.synced = !!saved.synced;
       state.practical.lastOutput = saved.lastOutput || "";
+      state.practical.lastProvider = saved.lastProvider || "";
       state.practical.versions = Array.isArray(saved.versions) ? saved.versions : [];
+      state.practical.score = Number(saved.score) || 0;
+      state.practical.stars = Number(saved.stars) || 0;
     } catch (e) {
       /* keep the in-memory default */
     }
@@ -614,16 +831,49 @@
 
   function savePractical() {
     try {
-      localStorage.setItem("ai-student-practical", JSON.stringify(state.practical));
+      localStorage.setItem("ai-student-practical-v2", JSON.stringify(state.practical));
     } catch (e) {
       /* ignore */
     }
   }
 
+  function submitPracticalToBackend() {
+    var token = "";
+    try {
+      token = localStorage.getItem("ai-auth-token") || "";
+    } catch (e) {
+      token = "";
+    }
+    if (!token) return Promise.resolve(false);
+
+    return fetch("/api/ai/practical/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      },
+      body: JSON.stringify({
+        versions: state.practical.versions.map(function (item) {
+          return {
+            prompt: item.prompt,
+            output: item.output,
+            provider: item.provider || "unknown"
+          };
+        })
+      })
+    }).then(function (response) {
+      if (!response.ok) throw new Error("practical submit failed");
+      state.practical.synced = true;
+      savePractical();
+      appendTerminal("实操产物已同步提交，共记录 " + state.practical.runs + " 版提示词。", "terminal-log");
+      return true;
+    });
+  }
+
   function saveQuizSession() {
     if (!state.quiz.currentLevel || !state.quiz.started) return;
     try {
-      localStorage.setItem("ai-student-quiz-session", JSON.stringify({
+      localStorage.setItem("ai-student-quiz-session-v2", JSON.stringify({
         currentLevel: state.quiz.currentLevel,
         current: state.quiz.current,
         questionIds: state.quiz.questionIds,
@@ -634,6 +884,8 @@
         flags: state.quiz.flags,
         startedAt: state.quiz.startedAt,
         diff: state.quiz.diff,
+        dimensionScores: state.dimensionScores,
+        dimensionWeights: state.dimensionWeights,
         savedAt: Date.now()
       }));
     } catch (e) {
@@ -643,10 +895,12 @@
 
   function loadQuizSession() {
     try {
-      var raw = localStorage.getItem("ai-student-quiz-session");
+      var raw = localStorage.getItem("ai-student-quiz-session-v2");
       if (!raw) return null;
       var data = JSON.parse(raw);
       if (!data.currentLevel || !data.answers || !data.selected || !Array.isArray(data.questionIds)) return null;
+      state.dimensionScores = data.dimensionScores || {};
+      state.dimensionWeights = data.dimensionWeights || {};
       if (Date.now() - (Number(data.savedAt) || 0) > SESSION_TTL) {
         clearQuizSession();
         return null;
@@ -659,7 +913,7 @@
 
   function clearQuizSession() {
     try {
-      localStorage.removeItem("ai-student-quiz-session");
+      localStorage.removeItem("ai-student-quiz-session-v2");
     } catch (e) {
       /* ignore */
     }
@@ -667,7 +921,7 @@
 
   function loadHistory() {
     try {
-      var raw = localStorage.getItem("ai-student-history");
+      var raw = localStorage.getItem("ai-student-history-v2");
       if (raw) state.history = JSON.parse(raw);
     } catch (e) {
       /* ignore */
@@ -679,7 +933,7 @@
 
   function saveHistory() {
     try {
-      localStorage.setItem("ai-student-history", JSON.stringify(state.history));
+      localStorage.setItem("ai-student-history-v2", JSON.stringify(state.history));
     } catch (e) {
       /* ignore */
     }
@@ -707,7 +961,7 @@
 
   function loadSelfAssess() {
     try {
-      var raw = localStorage.getItem("ai-student-selfassess");
+      var raw = localStorage.getItem("ai-student-selfassess-v2");
       if (raw) {
         var data = JSON.parse(raw);
         state.selfAssess = { done: !!data.done, level: data.level || "" };
@@ -719,7 +973,7 @@
 
   function saveSelfAssess() {
     try {
-      localStorage.setItem("ai-student-selfassess", JSON.stringify(state.selfAssess));
+      localStorage.setItem("ai-student-selfassess-v2", JSON.stringify(state.selfAssess));
     } catch (e) {
       /* ignore */
     }
@@ -809,17 +1063,18 @@
       badge.textContent = "全部通关";
       badge.style.background = "rgba(255,209,102,.18)";
       badge.style.color = "#ffe2a8";
-      name.textContent = "六关全部通关";
+      name.textContent = "五关全部通关";
       meta.textContent = "去看看学习分析吧";
       btnLabel.textContent = "查看报告";
       bar.dataset.allDone = "1";
     } else {
-      badge.textContent = "下一关";
+      var taskLabel = next.pendingTask === "practical" ? "继续实操" : next.pendingTask === "dialogue" ? "继续对话" : "下一关";
+      badge.textContent = taskLabel;
       badge.style.background = "";
       badge.style.color = "";
       name.textContent = next.name;
-      meta.textContent = "第 " + next.level + " 关 · " + next.difficulty;
-      btnLabel.textContent = "开始闯关";
+      meta.textContent = "第 " + next.level + " 关 · " + next.difficulty + (next.pendingTask ? " · 待完成任务" : "");
+      btnLabel.textContent = next.pendingTask === "practical" ? "继续实操" : next.pendingTask === "dialogue" ? "继续对话" : "开始闯关";
       bar.dataset.allDone = "";
     }
   }
@@ -832,7 +1087,7 @@
       return;
     }
     var last = state.history[0];
-    var goal = last.rating === "A" ? "保持 A 级" : last.rating === "A-" ? "冲击 A 级" : last.rating === "B+" ? "冲击 A-" : "冲击 B+";
+    var goal = last.rating === "S" ? "保持 S 级" : last.rating === "A" ? "冲击 S 级" : last.rating === "B" ? "冲击 A 级" : last.rating === "C" ? "冲击 B 级" : "冲击 C 级";
     var weakest = last.scores.map(function (score, i) {
       return { score: score, name: REPORT_NAMES[i] || "" };
     }).sort(function (a, b) {
@@ -850,9 +1105,9 @@
     STATIONS.forEach(function (s) {
       total += s.stars;
     });
-    document.getElementById("headerStars").textContent = total + " / 18";
-    document.getElementById("sideProgressText").textContent = total + " / 18";
-    document.getElementById("sideProgressBar").style.width = Math.round((total / 18) * 100) + "%";
+    document.getElementById("headerStars").textContent = total + " / 15";
+    document.getElementById("sideProgressText").textContent = total + " / 15";
+    document.getElementById("sideProgressBar").style.width = Math.round((total / 15) * 100) + "%";
     var report = currentReport();
     document.querySelector(".overall-rating").textContent = "综合评级 " + ratingFor(reportAverage(report));
     document.getElementById("sideLevelDots").innerHTML = STATIONS.map(function (s) {
@@ -904,10 +1159,11 @@
       '<span class="station-modal-icon" style="--station:' + s.color + '">' + icon(s.icon) + "</span>" +
       "<div>" +
       "<h3>第 " + s.level + " 关 · " + s.name + "</h3>" +
-      "<p>" + s.en + " · " + statusText(s.status) + " · <span class='difficulty-badge'>" + s.difficulty + "</span></p>" +
+      "<p>" + s.guardian + " 守护 · " + s.en + " · " + statusText(s.status) + "</p>" +
       "</div>" +
       "</div>" +
       '<p class="station-modal-desc">' + s.desc + "</p>" +
+      '<p class="station-objective">' + s.ending + "</p>" +
       '<p class="station-humor">' + icon("Sparkles") + " " + s.humor + "</p>" +
       '<p class="station-objective">' + s.objective + "</p>" +
       '<div class="score-grid">' +
@@ -937,7 +1193,11 @@
       return;
     }
     state.quiz.currentLevel = id;
-    document.getElementById("npcModalAvatar").innerHTML = icon("Bot");
+    state.view = "quiz";
+    updateNavActive();
+    document.getElementById("npcModalAvatar").innerHTML = icon(s.icon);
+    var npcName = document.querySelector("#npcBubble .npc-name");
+    if (npcName) npcName.textContent = s.guardian;
     document.getElementById("npcBubbleText").textContent = s.opening;
     document.getElementById("npcModalMeta").innerHTML =
       "第 " + s.level + " 关 · " + s.name + " · 难度 " + s.difficulty + "<br>" + s.objective;
@@ -980,25 +1240,51 @@
     openModal("quizModal");
   }
 
-  function startNextLevel() {
+  function startObjectiveModule() {
     var next = STATIONS.filter(function (s) {
       return s.status !== "done";
     })[0];
     if (!next) {
-      showToast("六关已全部通关，去看看学习分析吧");
-      var ending = document.getElementById("npcEnding");
-      ending.hidden = false;
-      document.getElementById("npcEndingText").textContent = NPC_ENDING;
-      openResult("全部通关", "六关全部完成，你的能力报告已经刷新。", 3);
+      startLevel(STATIONS[0].id);
+      return;
+    }
+    if (next.pendingTask) {
+      switchView(next.pendingTask);
       return;
     }
     startLevel(next.id);
   }
 
+  function openDialogueModule() {
+    switchView("dialogue");
+  }
+
+  function openPracticalModule() {
+    switchView("practical");
+  }
+
+  function levelUnlocked(id) {
+    var index = STATIONS.findIndex(function (item) {
+      return item.id === id;
+    });
+    return index <= 0 || STATIONS[index - 1].status === "done";
+  }
+
+  function updateNavActive() {
+    var navs = document.querySelectorAll(".nav-item");
+    Array.prototype.forEach.call(navs, function (nav) {
+      var view = nav.getAttribute("data-view");
+      var active = view === state.view;
+      nav.classList.toggle("active", active);
+      if (active) nav.setAttribute("aria-current", "page");
+      else nav.removeAttribute("aria-current");
+    });
+  }
+
   function switchView(view) {
     state.view = view;
     var titles = {
-      stations: ["六关挑战 · 难度递增", "闯关"],
+      stations: ["闯关模块 · 客观题测评", "闯关模块"],
       quiz: ["客观题测评 · 关卡进行中", "闯关关卡"],
       dialogue: ["对话式测评", "对话式测评"],
       practical: ["实操任务", "实操任务"],
@@ -1009,10 +1295,7 @@
     document.getElementById("pageKicker").textContent = info[0];
     document.getElementById("pageTitle").textContent = info[1];
 
-    var navs = document.querySelectorAll(".nav-item");
-    Array.prototype.forEach.call(navs, function (nav) {
-      nav.classList.toggle("active", nav.getAttribute("data-view") === view);
-    });
+    updateNavActive();
 
     var views = document.querySelectorAll(".view");
     Array.prototype.forEach.call(views, function (v) {
@@ -1021,7 +1304,7 @@
 
     if (view === "quiz") {
       if (!state.quiz.currentLevel) {
-        startNextLevel();
+        startObjectiveModule();
         return;
       }
       openQuizModal();
@@ -1037,6 +1320,7 @@
     }
     if (view === "practical") {
       renderTerminalStart();
+      renderPracticalVersions();
     }
     if (view === "analysis") {
       renderAnalysis();
@@ -1285,6 +1569,7 @@
         '<div class="feedback-box' + (saved.correct ? "" : " wrong") + '">' +
         '<div class="fb-label">' + icon(saved.correct ? "CircleCheck" : "AlertCircle") +
         "<span>" + (saved.correct ? "回答正确" : "回答错误") + "</span></div>" +
+        '<p class="npc-feedback-line">' + esc(saved.reaction || "") + "</p>" +
         "<span>" + q.explanation + "</span>" +
         "</div>";
       if (q.type === "sort" && !saved.correct) {
@@ -1372,8 +1657,10 @@
       status: "done",
       correct: correct,
       value: q.type === "fill" ? indexes[0] : indexes,
-      selected: indexes
+      selected: indexes,
+      reaction: npcReaction(q.levelId, correct)
     };
+    recordDimensionScore(q.dimensions, correct ? 100 : 0);
     saveQuizSession();
     renderQuestion();
   }
@@ -1396,8 +1683,10 @@
         state.quiz.answers[q.id] = {
           status: "done",
           correct: correct,
-          value: value
+          value: value,
+          reaction: npcReaction(q.levelId, correct)
         };
+        recordDimensionScore(q.dimensions, correct ? 100 : 0);
         renderQuestion();
       } else if (q.type === "sort") {
         var order = (state.quiz.selected[q.id] || []).slice();
@@ -1484,8 +1773,10 @@
       return q.levelId === station.id;
     }).length), 1);
     var score = Math.round((correct / questionTotal) * 100);
-    var stars = score >= 90 ? 3 : score >= 70 ? 2 : score >= 50 ? 1 : 0;
-    station.status = score >= 60 ? "done" : "active";
+    var stars = score >= 85 ? 3 : score >= 65 ? 2 : score >= 40 ? 1 : 0;
+    var nextTask = station.id === "workshop" ? "practical" : station.id === "station" ? "dialogue" : null;
+    station.pendingTask = score >= 60 && nextTask ? nextTask : null;
+    station.status = score >= 60 ? (nextTask ? "active" : "done") : "active";
     station.score = Math.max(station.score, score);
     station.stars = Math.max(station.stars, stars);
     renderStations();
@@ -1497,12 +1788,12 @@
     var totalStars = STATIONS.reduce(function (sum, s) {
       return sum + s.stars;
     }, 0);
-    var title = allDone ? "AI 能力测评 · 完整通关" : "第 " + station.level + " 关完成";
-    var note = allDone ? "六关全部完成，本轮完整能力报告已生成。" : "本关得分 " + score + " 分，获得 " + stars + " 颗星。";
+    var title = allDone ? "智核觉醒 · 完整通关" : "第 " + station.level + " 关完成";
+    var note = nextTask
+      ? "客观题获得 " + score + " 分。接下来进入" + (nextTask === "practical" ? "创客工坊AI终端" : "协同空间站危机对话") + "。"
+      : allDone ? "五个剧情区域全部完成，本轮智核觉醒报告已生成。" : "本关得分 " + score + " 分，获得 " + stars + " 颗星。";
     if (allDone) {
-      addHistory("AI 能力测评 · 完整通关", STATIONS.map(function (s) {
-        return s.score;
-      }), totalStars, note);
+      addHistory("智核觉醒 · 完整通关", currentDimensionScores(), totalStars, note);
     }
     var elapsed = (Date.now() - (state.quiz.startedAt || Date.now())) / 1000;
     if (elapsed < 8) {
@@ -1521,13 +1812,16 @@
       state.quiz.flags.push("选项分布异常");
     }
     var resultText = "本关得分 " + score + " 分，" + station.name + " 的星星与状态已更新。";
+    if (nextTask && score >= 60) {
+      resultText += " 点击“返回关卡”进入" + (nextTask === "practical" ? "创客工坊AI终端" : "协同空间站危机对话") + "。";
+    }
     if (state.quiz.flags.length) {
       resultText += " 注意：系统检测到 " + state.quiz.flags.length + " 项异常记录，本关结果可能被标记。";
       showToast("检测到异常操作，本关结果已标记");
     }
     state.quiz.flags = [];
     state.quiz.leaveCount = 0;
-    openResult(title, resultText, stars);
+    openResult(title, resultText, stars, nextTask);
     if (allDone) {
       var ending = document.getElementById("npcEnding");
       ending.hidden = false;
@@ -1622,11 +1916,12 @@
         document.getElementById("roundBadge").textContent = "对话完成";
         var score = Math.min(94, 72 + state.chat.hits * 7);
         var stars = score >= 90 ? 3 : score >= 70 ? 2 : 1;
-        var wasNew = stationWasNew("dialogue");
-        var allDone = completeStationOutcome("dialogue", score, stars, wasNew);
+        recordDimensionScore({ collaboration: 2, prompting: 1, evaluation: 1 }, score);
+        var wasNew = stationWasNew("station");
+        var allDone = completeStationOutcome("station", score, stars, wasNew);
         openResult(
           "对话式测评完成",
-          "灵犀记录到 " + state.chat.hits + " 次有效表达，本站得分 " + score + " 分，获得 " + stars + " 颗星。" + (allDone ? "六站已完成，完整报告已刷新。" : ""),
+          "星核记录到 " + state.chat.hits + " 次有效追问，本关得分 " + score + " 分，获得 " + stars + " 颗星。" + (allDone ? "五关已完成，智核觉醒报告已刷新。" : ""),
           stars
         );
       }
@@ -1645,14 +1940,44 @@
           appendTerminal(item.output, "terminal-out");
         });
       } else {
-        appendTerminal("已连接到 AI 生成终端，请输入提示词开始实操任务。", "terminal-log");
+        appendTerminal("已连接到 AI 生成终端（/api/ai/generate），请输入提示词开始实操任务。", "terminal-log");
       }
-      document.getElementById("runCount").textContent = state.practical.runs + " 次运行";
+      document.getElementById("runCount").textContent = state.practical.runs
+        ? state.practical.runs + " 次迭代 · " + providerLabel(state.practical.lastProvider)
+        : "0 次迭代";
     }
     if (state.practical.submitted) {
       document.getElementById("practicalResult").hidden = false;
       document.getElementById("practicalResultText").textContent = state.practical.lastOutput.split("\n\n质量评估")[0];
+      var resultMeta = document.querySelector("#practicalResult .result-head strong + span");
+      if (resultMeta) resultMeta.textContent = "评分 " + state.practical.score + " · " + state.practical.stars + " 颗星";
     }
+    renderPracticalVersions();
+  }
+
+  function providerLabel(provider) {
+    if (provider === "baibaoxiao") return "百宝箱API";
+    if (provider === "local-demo" || provider === "local-fallback") return "本地演示";
+    return provider || "本地演示";
+  }
+
+  function renderPracticalVersions() {
+    var wrap = document.getElementById("promptVersions");
+    if (!wrap) return;
+    if (!state.practical.versions.length) {
+      wrap.innerHTML = '<p class="prompt-version-empty">尚无迭代记录，运行提示词后自动保存版本。</p>';
+      return;
+    }
+    wrap.innerHTML =
+      '<p class="prompt-version-title">' + icon("GitBranch") + "提示词迭代记录</p>" +
+      state.practical.versions.map(function (item) {
+        return (
+          '<div class="prompt-version-item">' +
+          "<strong>第 " + item.version + " 版 · " + providerLabel(item.provider) + "</strong>" +
+          "<p>" + esc(item.prompt) + "</p>" +
+          "</div>"
+        );
+      }).join("");
   }
 
   function appendTerminal(text, cls) {
@@ -1666,35 +1991,40 @@
   }
 
   function generateOutput(prompt) {
-    var hasRole = /角色|策划|规划师|设计师|专家|班主任/.test(prompt);
-    var hasFormat = /表格|列表|分点|步骤|格式|序号/.test(prompt);
-    var hasGoal = /分享会|班会|活动|目标/.test(prompt);
-    var base =
-      "【班级 AI 工具分享会方案】\n" +
-      "主题：让 AI 成为你的学习搭子\n" +
-      "环节 1：开场演示，10 分钟，负责人：学习委员\n" +
-      "环节 2：分组实操，25 分钟，负责人：各组组长\n" +
-      "环节 3：成果快闪，10 分钟，负责人：班主任\n" +
-      "准备：提前准备 3 个常用 AI 工具，打印操作提示卡。";
+    var hasRole = /文案|策划|产品经理|营销|创意|专家/.test(prompt);
+    var hasTone = /专业|亲切|语气/.test(prompt);
+    var hasLength = /50\s*字|字数|以内|不超过/.test(prompt);
+    var hasGoal = /创意伙伴|创意写作|宣传|发布/.test(prompt);
+    var copy =
+      "【AI创意写作工具】\n" +
+      "让AI成为你的创意伙伴：输入灵感，即刻获得选题、初稿与润色建议，创作更快也更安心。";
     var marks = [];
+    var tips = [];
     if (hasGoal) marks.push("目标明确");
+    else tips.push("写明产品与发布会场景");
     if (hasRole) marks.push("角色清晰");
-    if (hasFormat) marks.push("格式完整");
-    var markText = marks.length ? marks.join("、") : "基础方案";
-    return base + "\n\n质量评估：" + markText + "，建议补充每环节的具体产出物。";
-  }
-
-  function remoteGeneratorConfigured() {
-    return Boolean(window.BAIBAOXIAO_API_URL);
+    else tips.push("给AI指定文案或产品角色");
+    if (hasTone) marks.push("语气符合");
+    else tips.push("补充“专业且亲切”的语气");
+    if (hasLength) marks.push("字数约束");
+    else tips.push("加入50字内限制");
+    var markText = marks.length ? marks.join("、") : "基础版本";
+    var tipText = tips.length ? "下一轮建议：" + tips.join("；") + "。" : "提示词要素完整，可继续微调表达。";
+    return copy + "\n\n质量评估：" + markText + "。" + tipText;
   }
 
   async function requestGeneratedOutput(prompt) {
-    if (!remoteGeneratorConfigured()) return generateOutput(prompt);
-    var response = await fetch(window.BAIBAOXIAO_API_URL, {
+    var token = "";
+    try {
+      token = localStorage.getItem("ai-auth-token") || "";
+    } catch (e) {
+      token = "";
+    }
+    var response = await fetch("/api/ai/generate", {
       method: "POST",
       headers: Object.assign(
         { "Content-Type": "application/json" },
-        window.BAIBAOXIAO_API_TOKEN ? { Authorization: "Bearer " + window.BAIBAOXIAO_API_TOKEN } : {}
+        token ? { Authorization: "Bearer " + token } : {}
       ),
       body: JSON.stringify({ prompt: prompt })
     });
@@ -1703,6 +2033,7 @@
     var output = data.output || (data.data && data.data.output) || data.result || data.text || "";
     output = String(output || "").trim();
     if (!output || safetyCheck(output)) throw new Error("invalid generator output");
+    state.practical.lastProvider = data.provider || "ai-api";
     return output;
   }
 
@@ -1721,15 +2052,14 @@
     station.score = Math.max(station.score || 0, Math.round(score));
     station.stars = Math.min(3, Math.max(station.stars || 0, stars));
     station.status = station.score >= 60 ? "done" : "active";
+    station.pendingTask = null;
     renderStations();
     saveProgress();
     var allDone = STATIONS.every(function (s) {
       return s.status === "done";
     });
     if (allDone && allowHistory) {
-      addHistory("AI 能力测评 · 完整通关", STATIONS.map(function (s) {
-        return s.score;
-      }), STATIONS.reduce(function (sum, s) { return sum + s.stars; }, 0), "六站全部完成，完整能力报告已生成。");
+      addHistory("智核觉醒 · 完整通关", currentDimensionScores(), STATIONS.reduce(function (sum, s) { return sum + s.stars; }, 0), "五个剧情区域全部完成，智核觉醒报告已生成。");
     }
     return allDone;
   }
@@ -1750,34 +2080,41 @@
     appendTerminal("> " + prompt, "terminal-prompt");
     runBtn.disabled = true;
     var typing = appendTerminal("AI 思考中...", "terminal-log");
-    setTimeout(function () {
-      requestGeneratedOutput(prompt).then(function (output) {
-        typing.textContent = "生成完成";
-        appendTerminal(output, "terminal-out");
-        recordPracticalRun(prompt, output);
-      }).catch(function () {
-        typing.textContent = remoteGeneratorConfigured() ? "远端生成失败，已改用本地演示引擎" : "生成完成";
-        var output = generateOutput(prompt);
-        appendTerminal(output, "terminal-out");
-        recordPracticalRun(prompt, output);
-      }).then(function () {
-        runBtn.disabled = false;
-        input.select();
-      });
-    }, 950);
+    requestGeneratedOutput(prompt).then(function (output) {
+      typing.textContent = "生成完成 · " + providerLabel(state.practical.lastProvider);
+      appendTerminal(output, "terminal-out");
+      recordPracticalRun(prompt, output);
+    }).catch(function () {
+      state.practical.lastProvider = "local-fallback";
+      typing.textContent = "生成服务暂不可用，已切换本地演示引擎";
+      var output = generateOutput(prompt);
+      appendTerminal(output, "terminal-out");
+      recordPracticalRun(prompt, output);
+    }).then(function () {
+      runBtn.disabled = false;
+      input.select();
+    });
   }
 
   function recordPracticalRun(prompt, output) {
     state.practical.runs += 1;
+    if (state.practical.submitted) {
+      state.practical.submitted = false;
+      state.practical.synced = false;
+      var resultBox = document.getElementById("practicalResult");
+      if (resultBox) resultBox.hidden = true;
+    }
     state.practical.lastOutput = output;
     state.practical.versions.push({
       version: state.practical.runs,
       prompt: prompt,
       output: output,
+      provider: state.practical.lastProvider || "local-demo",
       createdAt: Date.now()
     });
     savePractical();
-    document.getElementById("runCount").textContent = state.practical.runs + " 次运行";
+    document.getElementById("runCount").textContent = state.practical.runs + " 次迭代 · " + providerLabel(state.practical.lastProvider);
+    renderPracticalVersions();
   }
 
   function submitPractical() {
@@ -1785,41 +2122,60 @@
       showToast("请先运行提示词生成内容");
       return;
     }
+    if (state.practical.runs < 2) {
+      showToast("请至少迭代两次提示词后再提交");
+      return;
+    }
     state.practical.submitted = true;
     var lastVersion = state.practical.versions[state.practical.versions.length - 1];
     var prompt = lastVersion ? lastVersion.prompt : "";
-    var quality = 62;
-    if (/角色|策划|规划师|设计师|专家|班主任/.test(prompt)) quality += 8;
-    if (/表格|列表|分点|步骤|格式|序号/.test(prompt)) quality += 8;
-    if (/分享会|班会|活动|目标/.test(prompt)) quality += 8;
+    var output = lastVersion ? lastVersion.output : "";
+    var quality = 58;
+    if (/文案|策划|产品经理|营销|创意|专家/.test(prompt)) quality += 8;
+    if (/专业|亲切|语气/.test(prompt)) quality += 8;
+    if (/50\s*字|字数|以内|不超过/.test(prompt)) quality += 8;
+    if (/创意伙伴|创意写作|宣传|发布/.test(prompt)) quality += 8;
+    if (/创意伙伴|创作|灵感/.test(output)) quality += 6;
     if (state.practical.runs > 1) quality += 8;
     var score = Math.min(96, quality);
     var stars = score >= 90 ? 3 : score >= 70 ? 2 : 1;
-    var wasNew = stationWasNew("tools");
+    state.practical.score = score;
+    state.practical.stars = stars;
+    state.practical.finalPrompt = prompt;
+    state.practical.finalOutput = output;
+    state.practical.submittedAt = Date.now();
+    recordDimensionScore({ tools: 2, prompting: 2, evaluation: 1, ethics: 1 }, score);
+    var wasNew = stationWasNew("workshop");
     savePractical();
     var box = document.getElementById("practicalResult");
     box.hidden = false;
     document.getElementById("practicalResultText").textContent = state.practical.lastOutput.split("\n\n质量评估")[0];
-    var allDone = completeStationOutcome("tools", score, stars, wasNew);
-    showToast("产物已提交，工具工坊得分 " + score + " 分");
-    openResult("实操任务完成", "你的产物已提交，本轮迭代 " + state.practical.runs + " 次，得分 " + score + " 分。" + (allDone ? "六站已完成，完整报告已刷新。" : ""), stars);
+    var allDone = completeStationOutcome("workshop", score, stars, wasNew);
+    showToast("产物已提交，创客工坊得分 " + score + " 分");
+    submitPracticalToBackend().catch(function () {
+      state.practical.synced = false;
+      savePractical();
+      appendTerminal("后端同步暂未成功，产物与迭代记录已先保存在本机。", "terminal-log");
+    });
+    openResult("实操任务完成", "你的产物已提交，本轮迭代 " + state.practical.runs + " 次，得分 " + score + " 分。" + (allDone ? "五关已完成，智核觉醒报告已刷新。" : ""), stars);
   }
 
-  function openResult(title, text, stars) {
+  function openResult(title, text, stars, nextView) {
     document.getElementById("resultTitle").textContent = title;
     document.getElementById("resultText").textContent = text;
     document.getElementById("resultIcon").innerHTML = icon("BadgeCheck");
     document.getElementById("resultStars").innerHTML = starsMarkup(stars, 3);
     document.getElementById("npcEnding").hidden = true;
+    document.getElementById("resultModal").dataset.nextView = nextView || "";
     openModal("resultModal");
   }
 
   function currentReport() {
-    return STATIONS.map(function (s, i) {
+    return currentDimensionScores().map(function (score, i) {
       return {
-        name: REPORT_NAMES[i] || s.name,
-        score: Math.max(0, Math.min(100, Number(s.score) || 0)),
-        color: REPORT_COLORS[i] || s.color
+        name: REPORT_NAMES[i],
+        score: Math.max(0, Math.min(100, Number(score) || 0)),
+        color: REPORT_COLORS[i]
       };
     });
   }
@@ -1853,12 +2209,12 @@
 
   function reportAdvice(report) {
     var tips = {
-      "提示词": "每次提问前检查角色、目标和输出格式三要素。",
-      "检索": "练习用“关键词 + 来源限定 + 时间范围”提高检索准确率。",
-      "对话": "回答后主动补充背景，并把需要的结论形式说清楚。",
-      "创作": "先用一句话确定读者和语气，再让 AI 展开结构化内容。",
-      "数据": "把问题拆成指标、对比维度和可视化建议再提问。",
-      "工具": "保留每次提示词修改记录，标注哪一版效果更好。"
+      "AI基础认知": "用“它能做什么、不能做什么、证据在哪里”三问梳理工具边界。",
+      "提示词工程": "每次提问前检查角色、目标、背景、约束和输出格式。",
+      "AI工具使用": "保留每次提示词修改记录，标注哪一版效果更好。",
+      "AI结果评估": "核对事实、来源、适用范围和任务要求后再使用结果。",
+      "人机协同": "让 AI 汇总方案，由人确认安全边界、责任和最终决策。",
+      "AI伦理合规": "提交数据前执行最小化处理，并检查版权、偏见与披露要求。"
     };
     return report.slice().sort(function (a, b) {
       return a.score - b.score;
@@ -1870,6 +2226,13 @@
   function reportInsight(report) {
     var last = state.history[0];
     var lastScores = last ? normalizeScores(last.scores) : null;
+    var isCurrentSnapshot = lastScores && report.length === lastScores.length && lastScores.every(function (score, i) {
+      return score === report[i].score;
+    });
+    if (isCurrentSnapshot && state.history[1]) {
+      last = state.history[1];
+      lastScores = normalizeScores(last.scores);
+    }
     var breakthrough = [];
     var changes = report.map(function (d, i) {
       var delta = lastScores ? d.score - lastScores[i] : 0;
@@ -2011,7 +2374,7 @@
       growthTitle.textContent = "稳住节奏，向薄弱维度发起冲击";
       growthText.textContent = state.history[0]
         ? "上次评级 " + state.history[0].rating + "，本次建议优先提升" + report.slice().sort(function (a, b) { return a.score - b.score; })[0].name + "。"
-        : "完成六站后，这里会生成你的成长对比。";
+        : "完成五个剧情区域后，这里会生成你的成长对比。";
     }
     var achievements = document.querySelectorAll(".growth-card .achievement");
     achievements[0].classList.toggle("new", insight.breakthrough.length > 0);
@@ -2129,8 +2492,8 @@
     html += '<style>text{font-family:' + font + ";} .radar-label{fill:rgba(224,220,255,.8);font-size:12px;}</style>";
     html += '<rect width="' + REPORT_W + '" height="' + REPORT_H + '" fill="#171143"/>';
 
-    html += '<text x="56" y="82" font-size="34" font-weight="800" fill="#f7f6ff">AI 能力报告</text>';
-    html += '<text x="56" y="118" font-size="15" fill="#a9a4d8">AI Capability Assessment Report · 六维能力测评</text>';
+    html += '<text x="56" y="82" font-size="34" font-weight="800" fill="#f7f6ff">智核觉醒报告</text>';
+    html += '<text x="56" y="118" font-size="15" fill="#a9a4d8">Awakening Intelligence Report · 六维能力测评</text>';
     html += '<text x="944" y="82" text-anchor="end" font-size="14" fill="#a9a4d8">昵称：' + escapeXml(state.nickname) + "</text>";
     html += '<text x="944" y="106" text-anchor="end" font-size="14" fill="#a9a4d8">日期：' + dateStr + "</text>";
     html += '<line x1="56" y1="142" x2="944" y2="142" stroke="rgba(255,255,255,.14)"/>';
@@ -2223,7 +2586,7 @@
       showToast(kind === "pdf" ? "正在生成 PDF..." : "正在导出图片...");
       var pngBlob = await reportImageBlob();
       if (kind === "png") {
-        downloadBlob(pngBlob, "AI能力报告.png");
+      downloadBlob(pngBlob, "智核觉醒报告.png");
         showToast("报告图片已导出");
         return;
       }
@@ -2244,7 +2607,7 @@
         height: h
       });
       var pdfBytes = await pdfDoc.save();
-      downloadBlob(new Blob([pdfBytes], { type: "application/pdf" }), "AI能力报告.pdf");
+      downloadBlob(new Blob([pdfBytes], { type: "application/pdf" }), "智核觉醒报告.pdf");
       showToast("报告 PDF 已导出");
     } catch (e) {
       console.error("export error", e);
@@ -2346,7 +2709,10 @@
     var navs = document.querySelectorAll(".nav-item");
     Array.prototype.forEach.call(navs, function (nav) {
       nav.addEventListener("click", function () {
-        switchView(nav.getAttribute("data-view"));
+        var view = nav.getAttribute("data-view");
+        if (view) {
+          switchView(view);
+        }
       });
     });
 
@@ -2359,19 +2725,19 @@
       btn.addEventListener("click", function () {
         var target = btn.getAttribute("data-go");
         if (target === "quiz") {
-          startNextLevel();
+          startObjectiveModule();
         } else {
           switchView(target);
         }
       });
     });
 
-    document.getElementById("startLevelBtn").addEventListener("click", startNextLevel);
+    document.getElementById("startLevelBtn").addEventListener("click", startObjectiveModule);
     document.getElementById("bottomStartLevelBtn").addEventListener("click", function () {
       if (document.getElementById("levelStartBar").dataset.allDone === "1") {
         switchView("analysis");
       } else {
-        startNextLevel();
+        startObjectiveModule();
       }
     });
     document.getElementById("npcStartBtn").addEventListener("click", beginLevelQuiz);
@@ -2470,7 +2836,8 @@
 
     document.getElementById("resultBack").addEventListener("click", function () {
       closeModal("resultModal");
-      switchView("stations");
+      var nextView = document.getElementById("resultModal").dataset.nextView;
+      switchView(nextView || "stations");
     });
     document.getElementById("resultAnalysis").addEventListener("click", function () {
       closeModal("resultModal");
