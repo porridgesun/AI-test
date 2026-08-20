@@ -1050,6 +1050,1499 @@
         "pageHiddenCount": 0,
         "flags": []
       }
+    },
+    {
+      "id": "sess_mt136kat7597093b",
+      "assessmentId": "a_demo",
+      "studentId": "s1",
+      "status": "completed",
+      "startedAt": "2026-08-20T05:35:09.125Z",
+      "expiresAt": "2026-08-22T05:35:09.125Z",
+      "savedAt": "2026-08-20T05:35:09.162Z",
+      "difficulty": 2,
+      "currentLevelIndex": 5,
+      "currentQuestionId": null,
+      "levelStates": [
+        {
+          "levelId": "academy",
+          "questionIds": [],
+          "answerIds": [
+            "q_ac_1",
+            "q_ac_2",
+            "q_ac_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 33,
+          "score": 11
+        },
+        {
+          "levelId": "labyrinth",
+          "questionIds": [],
+          "answerIds": [
+            "q_la_1",
+            "q_la_4",
+            "q_la_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 33,
+          "score": 11
+        },
+        {
+          "levelId": "workshop",
+          "questionIds": [],
+          "answerIds": [
+            "q_wo_1",
+            "q_wo_3",
+            "q_wo_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 200,
+          "score": 67
+        },
+        {
+          "levelId": "station",
+          "questionIds": [],
+          "answerIds": [
+            "q_st_1",
+            "q_st_4",
+            "q_st_3"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        },
+        {
+          "levelId": "court",
+          "questionIds": [],
+          "answerIds": [
+            "q_co_3",
+            "q_co_1",
+            "q_co_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 200,
+          "score": 67
+        }
+      ],
+      "answers": {
+        "q_ac_1": {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:35:09.128Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_ac_2": {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:35:09.131Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        "q_ac_4": {
+          "questionId": "q_ac_4",
+          "levelId": "academy",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:35:09.133Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_la_1": {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:35:09.135Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        "q_la_4": {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:35:09.137Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_la_2": {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:35:09.139Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        "q_wo_1": {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:35:09.145Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        "q_wo_3": {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:35:09.147Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        "q_wo_4": {
+          "questionId": "q_wo_4",
+          "levelId": "workshop",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:35:09.148Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "prompting": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_st_1": {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:35:09.150Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        "q_st_4": {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:35:09.152Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_st_3": {
+          "questionId": "q_st_3",
+          "levelId": "station",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:35:09.154Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 16.5,
+            "ethics": 8.25,
+            "evaluation": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        "q_co_3": {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:35:09.156Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_1": {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:35:09.158Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_co_4": {
+          "questionId": "q_co_4",
+          "levelId": "court",
+          "type": "sort",
+          "submittedAt": "2026-08-20T05:35:09.160Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "evaluation": 25,
+            "collaboration": 25
+          },
+          "dimensionWeight": 4
+        }
+      },
+      "dialogueTranscripts": {
+        "q_st_1": [
+          {
+            "round": 1,
+            "question": "星核检测到氧气循环异常，建议关闭B舱。你会如何追问风险和依据？",
+            "answer": "请说明依据和风险"
+          },
+          {
+            "round": 2,
+            "question": "星核说方案基于历史数据，但缺少实时传感数据。你会怎么补充要求？",
+            "answer": "请接入实时数据并列出备选方案"
+          },
+          {
+            "round": 3,
+            "question": "星核给出两个方案后，你如何做最终决策？",
+            "answer": "我会结合人工值守做最终决策"
+          }
+        ]
+      },
+      "practical": {
+        "prompts": [
+          "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。"
+        ],
+        "outputs": [
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：基础表达。建议补充目标读者、语气和字数限制，再迭代一次。",
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。"
+        ],
+        "iterations": 2,
+        "questionId": "q_wo_1",
+        "lastPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。",
+        "lastOutput": "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。",
+        "updatedAt": "2026-08-20T05:35:09.142Z"
+      },
+      "antiCheat": {
+        "pageHiddenCount": 0,
+        "flags": []
+      }
+    },
+    {
+      "id": "sess_mt13dw0ec0b6d6a0",
+      "assessmentId": "a_demo",
+      "studentId": "s1",
+      "status": "completed",
+      "startedAt": "2026-08-20T05:40:50.894Z",
+      "expiresAt": "2026-08-22T05:40:50.894Z",
+      "savedAt": "2026-08-20T05:40:50.925Z",
+      "difficulty": 1,
+      "currentLevelIndex": 5,
+      "currentQuestionId": null,
+      "levelStates": [
+        {
+          "levelId": "academy",
+          "questionIds": [],
+          "answerIds": [
+            "q_ac_2",
+            "q_ac_3",
+            "q_ac_1"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        },
+        {
+          "levelId": "labyrinth",
+          "questionIds": [],
+          "answerIds": [
+            "q_la_1",
+            "q_la_4",
+            "q_la_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 33,
+          "score": 11
+        },
+        {
+          "levelId": "workshop",
+          "questionIds": [],
+          "answerIds": [
+            "q_wo_1",
+            "q_wo_3",
+            "q_wo_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 200,
+          "score": 67
+        },
+        {
+          "levelId": "station",
+          "questionIds": [],
+          "answerIds": [
+            "q_st_1",
+            "q_st_2",
+            "q_st_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 100,
+          "score": 33
+        },
+        {
+          "levelId": "court",
+          "questionIds": [],
+          "answerIds": [
+            "q_co_3",
+            "q_co_2",
+            "q_co_1"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        }
+      ],
+      "answers": {
+        "q_ac_2": {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:40:50.896Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        "q_ac_3": {
+          "questionId": "q_ac_3",
+          "levelId": "academy",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.898Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 33.333333333333336,
+            "prompting": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        "q_ac_1": {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:40:50.900Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_la_1": {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:40:50.902Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        "q_la_4": {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.904Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_la_2": {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:40:50.905Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        "q_wo_1": {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:40:50.909Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        "q_wo_3": {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:40:50.911Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        "q_wo_4": {
+          "questionId": "q_wo_4",
+          "levelId": "workshop",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.912Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "prompting": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_st_1": {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:40:50.914Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        "q_st_2": {
+          "questionId": "q_st_2",
+          "levelId": "station",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:40:50.916Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_st_4": {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.918Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_3": {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:40:50.920Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_2": {
+          "questionId": "q_co_2",
+          "levelId": "court",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:40:50.922Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 13.2,
+            "evaluation": 13.2,
+            "basics": 6.6
+          },
+          "dimensionWeight": 5
+        },
+        "q_co_1": {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:40:50.924Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        }
+      },
+      "dialogueTranscripts": {
+        "q_st_1": [
+          {
+            "round": 1,
+            "question": "星核检测到氧气循环异常，建议关闭B舱。你会如何追问风险和依据？",
+            "answer": "请说明依据和风险"
+          },
+          {
+            "round": 2,
+            "question": "星核说方案基于历史数据，但缺少实时传感数据。你会怎么补充要求？",
+            "answer": "请接入实时数据并列出备选方案"
+          },
+          {
+            "round": 3,
+            "question": "星核给出两个方案后，你如何做最终决策？",
+            "answer": "我会结合人工值守做最终决策"
+          }
+        ]
+      },
+      "practical": {
+        "prompts": [
+          "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。"
+        ],
+        "outputs": [
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：基础表达。建议补充目标读者、语气和字数限制，再迭代一次。",
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。"
+        ],
+        "iterations": 2,
+        "questionId": "q_wo_1",
+        "lastPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。",
+        "lastOutput": "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。",
+        "updatedAt": "2026-08-20T05:40:50.908Z"
+      },
+      "antiCheat": {
+        "pageHiddenCount": 0,
+        "flags": []
+      }
+    },
+    {
+      "id": "sess_mt13enez9460b9d6",
+      "assessmentId": "a_demo",
+      "studentId": "s1",
+      "status": "completed",
+      "startedAt": "2026-08-20T05:41:26.411Z",
+      "expiresAt": "2026-08-22T05:41:26.411Z",
+      "savedAt": "2026-08-20T05:41:26.452Z",
+      "difficulty": 1,
+      "currentLevelIndex": 5,
+      "currentQuestionId": null,
+      "levelStates": [
+        {
+          "levelId": "academy",
+          "questionIds": [],
+          "answerIds": [
+            "q_ac_3",
+            "q_ac_1",
+            "q_ac_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        },
+        {
+          "levelId": "labyrinth",
+          "questionIds": [],
+          "answerIds": [
+            "q_la_2",
+            "q_la_1",
+            "q_la_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 33,
+          "score": 11
+        },
+        {
+          "levelId": "workshop",
+          "questionIds": [],
+          "answerIds": [
+            "q_wo_1",
+            "q_wo_3",
+            "q_wo_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 200,
+          "score": 67
+        },
+        {
+          "levelId": "station",
+          "questionIds": [],
+          "answerIds": [
+            "q_st_1",
+            "q_st_3",
+            "q_st_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        },
+        {
+          "levelId": "court",
+          "questionIds": [],
+          "answerIds": [
+            "q_co_3",
+            "q_co_1",
+            "q_co_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        }
+      ],
+      "answers": {
+        "q_ac_3": {
+          "questionId": "q_ac_3",
+          "levelId": "academy",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:41:26.414Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 33.333333333333336,
+            "prompting": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        "q_ac_1": {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:41:26.417Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_ac_2": {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.419Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        "q_la_2": {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.422Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        "q_la_1": {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:41:26.424Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        "q_la_4": {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:41:26.427Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_wo_1": {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:41:26.433Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        "q_wo_3": {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:41:26.435Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        "q_wo_2": {
+          "questionId": "q_wo_2",
+          "levelId": "workshop",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:41:26.437Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "tools": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_st_1": {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:41:26.439Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        "q_st_3": {
+          "questionId": "q_st_3",
+          "levelId": "station",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.441Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 16.5,
+            "ethics": 8.25,
+            "evaluation": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        "q_st_2": {
+          "questionId": "q_st_2",
+          "levelId": "station",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:41:26.443Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_co_3": {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:41:26.445Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_1": {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:41:26.447Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_co_2": {
+          "questionId": "q_co_2",
+          "levelId": "court",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.450Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 13.2,
+            "evaluation": 13.2,
+            "basics": 6.6
+          },
+          "dimensionWeight": 5
+        }
+      },
+      "dialogueTranscripts": {
+        "q_st_1": [
+          {
+            "round": 1,
+            "question": "星核检测到氧气循环异常，建议关闭B舱。你会如何追问风险和依据？",
+            "answer": "请说明依据和风险"
+          },
+          {
+            "round": 2,
+            "question": "星核说方案基于历史数据，但缺少实时传感数据。你会怎么补充要求？",
+            "answer": "请接入实时数据并列出备选方案"
+          },
+          {
+            "round": 3,
+            "question": "星核给出两个方案后，你如何做最终决策？",
+            "answer": "我会结合人工值守做最终决策"
+          }
+        ]
+      },
+      "practical": {
+        "prompts": [
+          "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。"
+        ],
+        "outputs": [
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：基础表达。建议补充目标读者、语气和字数限制，再迭代一次。",
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。"
+        ],
+        "iterations": 2,
+        "questionId": "q_wo_1",
+        "lastPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。",
+        "lastOutput": "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。",
+        "updatedAt": "2026-08-20T05:41:26.431Z"
+      },
+      "antiCheat": {
+        "pageHiddenCount": 0,
+        "flags": []
+      }
+    },
+    {
+      "id": "sess_mt13kbmw174226b9",
+      "assessmentId": "a_demo",
+      "studentId": "s1",
+      "status": "completed",
+      "startedAt": "2026-08-20T05:45:51.080Z",
+      "expiresAt": "2026-08-22T05:45:51.080Z",
+      "savedAt": "2026-08-20T05:57:08.667Z",
+      "difficulty": 1,
+      "currentLevelIndex": 5,
+      "currentQuestionId": null,
+      "levelStates": [
+        {
+          "levelId": "academy",
+          "questionIds": [],
+          "answerIds": [
+            "q_ac_1",
+            "q_ac_4",
+            "q_ac_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 33,
+          "score": 11
+        },
+        {
+          "levelId": "labyrinth",
+          "questionIds": [],
+          "answerIds": [
+            "q_la_1",
+            "q_la_4",
+            "q_la_3"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 100,
+          "score": 33
+        },
+        {
+          "levelId": "workshop",
+          "questionIds": [],
+          "answerIds": [
+            "q_wo_1",
+            "q_wo_4",
+            "q_wo_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 100,
+          "score": 33
+        },
+        {
+          "levelId": "station",
+          "questionIds": [],
+          "answerIds": [
+            "q_st_1",
+            "q_st_2",
+            "q_st_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 100,
+          "score": 33
+        },
+        {
+          "levelId": "court",
+          "questionIds": [],
+          "answerIds": [
+            "q_co_3",
+            "q_co_2",
+            "q_co_1"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        }
+      ],
+      "answers": {
+        "q_ac_1": {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:57:08.634Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_ac_4": {
+          "questionId": "q_ac_4",
+          "levelId": "academy",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:57:08.636Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_ac_2": {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:57:08.638Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        "q_la_1": {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:57:08.640Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        "q_la_4": {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:57:08.643Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_la_3": {
+          "questionId": "q_la_3",
+          "levelId": "labyrinth",
+          "type": "sort",
+          "submittedAt": "2026-08-20T05:57:08.645Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 33.333333333333336,
+            "evaluation": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        "q_wo_1": {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:57:08.650Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        "q_wo_4": {
+          "questionId": "q_wo_4",
+          "levelId": "workshop",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:57:08.652Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "prompting": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_wo_2": {
+          "questionId": "q_wo_2",
+          "levelId": "workshop",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:57:08.654Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "tools": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_st_1": {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:57:08.656Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        "q_st_2": {
+          "questionId": "q_st_2",
+          "levelId": "station",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:57:08.658Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_st_4": {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:57:08.660Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_3": {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:57:08.662Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_2": {
+          "questionId": "q_co_2",
+          "levelId": "court",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:57:08.663Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 13.2,
+            "evaluation": 13.2,
+            "basics": 6.6
+          },
+          "dimensionWeight": 5
+        },
+        "q_co_1": {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:57:08.665Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        }
+      },
+      "dialogueTranscripts": {
+        "q_st_1": [
+          {
+            "round": 1,
+            "question": "星核检测到氧气循环异常，建议关闭B舱。你会如何追问风险和依据？",
+            "answer": "请说明依据和风险"
+          },
+          {
+            "round": 2,
+            "question": "星核说方案基于历史数据，但缺少实时传感数据。你会怎么补充要求？",
+            "answer": "请接入实时数据并列出备选方案"
+          },
+          {
+            "round": 3,
+            "question": "星核给出两个方案后，你如何做最终决策？",
+            "answer": "我会结合人工值守做最终决策"
+          }
+        ]
+      },
+      "practical": {
+        "prompts": [
+          "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。"
+        ],
+        "outputs": [
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：基础表达。建议补充目标读者、语气和字数限制，再迭代一次。",
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。"
+        ],
+        "iterations": 2,
+        "questionId": "q_wo_1",
+        "lastPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。",
+        "lastOutput": "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。",
+        "updatedAt": "2026-08-20T05:57:08.649Z"
+      },
+      "antiCheat": {
+        "pageHiddenCount": 0,
+        "flags": []
+      }
+    },
+    {
+      "id": "sess_mt1405iwba503a52",
+      "assessmentId": "a_demo",
+      "studentId": "s1",
+      "status": "active",
+      "startedAt": "2026-08-20T05:58:09.656Z",
+      "expiresAt": "2026-08-22T05:58:09.655Z",
+      "savedAt": "2026-08-20T05:58:09.656Z",
+      "difficulty": 3,
+      "currentLevelIndex": 0,
+      "currentQuestionId": "q_ac_1",
+      "levelStates": [
+        {
+          "levelId": "academy",
+          "questionIds": [],
+          "answerIds": [],
+          "targetCount": 3,
+          "completed": false,
+          "scoreSum": 0,
+          "score": 0
+        },
+        {
+          "levelId": "labyrinth",
+          "questionIds": [],
+          "answerIds": [],
+          "targetCount": 3,
+          "completed": false,
+          "scoreSum": 0,
+          "score": 0
+        },
+        {
+          "levelId": "workshop",
+          "questionIds": [],
+          "answerIds": [],
+          "targetCount": 3,
+          "completed": false,
+          "scoreSum": 0,
+          "score": 0
+        },
+        {
+          "levelId": "station",
+          "questionIds": [],
+          "answerIds": [],
+          "targetCount": 3,
+          "completed": false,
+          "scoreSum": 0,
+          "score": 0
+        },
+        {
+          "levelId": "court",
+          "questionIds": [],
+          "answerIds": [],
+          "targetCount": 3,
+          "completed": false,
+          "scoreSum": 0,
+          "score": 0
+        }
+      ],
+      "answers": {},
+      "dialogueTranscripts": {},
+      "practical": null,
+      "antiCheat": {
+        "pageHiddenCount": 0,
+        "flags": []
+      }
     }
   ],
   "reports": [
@@ -1453,6 +2946,1136 @@
           "dimensionWeight": 4
         }
       ]
+    },
+    {
+      "id": "r_mt136kbu4a89b089",
+      "studentId": "s1",
+      "assessmentId": "a_demo",
+      "sessionId": "sess_mt136kat7597093b",
+      "completedAt": "2026-08-20T05:35:09.162Z",
+      "scores": {
+        "basics": 2,
+        "prompting": 2,
+        "tools": 4,
+        "evaluation": 2,
+        "collaboration": 4,
+        "ethics": 5
+      },
+      "overall": 3,
+      "rating": "D",
+      "stars": 7,
+      "growth": {
+        "basics": -2,
+        "prompting": -3,
+        "tools": 1,
+        "evaluation": -2,
+        "collaboration": 0,
+        "ethics": -1
+      },
+      "suggestions": [
+        {
+          "dimensionId": "basics",
+          "dimension": "AI基础认知",
+          "score": 2,
+          "action": "梳理AI基本概念、典型模型能力边界与常见术语。"
+        },
+        {
+          "dimensionId": "prompting",
+          "dimension": "提示词工程",
+          "score": 2,
+          "action": "练习角色、目标、上下文、输出格式和验收标准五要素提示词。"
+        }
+      ],
+      "breakthroughs": [
+        "tools"
+      ],
+      "answerDetails": [
+        {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:35:09.128Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:35:09.131Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_ac_4",
+          "levelId": "academy",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:35:09.133Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:35:09.135Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:35:09.137Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:35:09.139Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:35:09.145Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:35:09.147Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_wo_4",
+          "levelId": "workshop",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:35:09.148Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "prompting": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:35:09.150Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:35:09.152Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_st_3",
+          "levelId": "station",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:35:09.154Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 16.5,
+            "ethics": 8.25,
+            "evaluation": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:35:09.156Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:35:09.158Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_co_4",
+          "levelId": "court",
+          "type": "sort",
+          "submittedAt": "2026-08-20T05:35:09.160Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "evaluation": 25,
+            "collaboration": 25
+          },
+          "dimensionWeight": 4
+        }
+      ]
+    },
+    {
+      "id": "r_mt13dw19fee1ee24",
+      "studentId": "s1",
+      "assessmentId": "a_demo",
+      "sessionId": "sess_mt13dw0ec0b6d6a0",
+      "completedAt": "2026-08-20T05:40:50.925Z",
+      "scores": {
+        "basics": 3,
+        "prompting": 5,
+        "tools": 4,
+        "evaluation": 2,
+        "collaboration": 3,
+        "ethics": 5
+      },
+      "overall": 4,
+      "rating": "D",
+      "stars": 6,
+      "growth": {
+        "basics": 1,
+        "prompting": 3,
+        "tools": 0,
+        "evaluation": 0,
+        "collaboration": -1,
+        "ethics": 0
+      },
+      "suggestions": [
+        {
+          "dimensionId": "evaluation",
+          "dimension": "AI结果评估",
+          "score": 2,
+          "action": "每次生成后检查事实、逻辑、格式与偏见，并写下修正意见。"
+        },
+        {
+          "dimensionId": "basics",
+          "dimension": "AI基础认知",
+          "score": 3,
+          "action": "梳理AI基本概念、典型模型能力边界与常见术语。"
+        }
+      ],
+      "breakthroughs": [
+        "basics",
+        "prompting"
+      ],
+      "answerDetails": [
+        {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:40:50.896Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_ac_3",
+          "levelId": "academy",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.898Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 33.333333333333336,
+            "prompting": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:40:50.900Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:40:50.902Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.904Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:40:50.905Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:40:50.909Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:40:50.911Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_wo_4",
+          "levelId": "workshop",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.912Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "prompting": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:40:50.914Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_st_2",
+          "levelId": "station",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:40:50.916Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:40:50.918Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:40:50.920Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_2",
+          "levelId": "court",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:40:50.922Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 13.2,
+            "evaluation": 13.2,
+            "basics": 6.6
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:40:50.924Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        }
+      ]
+    },
+    {
+      "id": "r_mt13eng44db38e8a",
+      "studentId": "s1",
+      "assessmentId": "a_demo",
+      "sessionId": "sess_mt13enez9460b9d6",
+      "completedAt": "2026-08-20T05:41:26.452Z",
+      "scores": {
+        "basics": 3,
+        "prompting": 5,
+        "tools": 3,
+        "evaluation": 2,
+        "collaboration": 3,
+        "ethics": 4
+      },
+      "overall": 3,
+      "rating": "D",
+      "stars": 6,
+      "growth": {
+        "basics": 0,
+        "prompting": 0,
+        "tools": -1,
+        "evaluation": 0,
+        "collaboration": 0,
+        "ethics": -1
+      },
+      "suggestions": [
+        {
+          "dimensionId": "evaluation",
+          "dimension": "AI结果评估",
+          "score": 2,
+          "action": "每次生成后检查事实、逻辑、格式与偏见，并写下修正意见。"
+        },
+        {
+          "dimensionId": "basics",
+          "dimension": "AI基础认知",
+          "score": 3,
+          "action": "梳理AI基本概念、典型模型能力边界与常见术语。"
+        }
+      ],
+      "breakthroughs": [],
+      "answerDetails": [
+        {
+          "questionId": "q_ac_3",
+          "levelId": "academy",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:41:26.414Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 33.333333333333336,
+            "prompting": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:41:26.417Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.419Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.422Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:41:26.424Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:41:26.427Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:41:26.433Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:41:26.435Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_wo_2",
+          "levelId": "workshop",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:41:26.437Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "tools": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:41:26.439Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_st_3",
+          "levelId": "station",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.441Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 16.5,
+            "ethics": 8.25,
+            "evaluation": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_st_2",
+          "levelId": "station",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:41:26.443Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:41:26.445Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:41:26.447Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_co_2",
+          "levelId": "court",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:41:26.450Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 13.2,
+            "evaluation": 13.2,
+            "basics": 6.6
+          },
+          "dimensionWeight": 5
+        }
+      ]
+    },
+    {
+      "id": "r_mt13yugrfea5ac9c",
+      "studentId": "s1",
+      "assessmentId": "a_demo",
+      "sessionId": "sess_mt13kbmw174226b9",
+      "completedAt": "2026-08-20T05:57:08.667Z",
+      "scores": {
+        "basics": 2,
+        "prompting": 3,
+        "tools": 3,
+        "evaluation": 3,
+        "collaboration": 3,
+        "ethics": 3
+      },
+      "overall": 3,
+      "rating": "D",
+      "stars": 5,
+      "growth": {
+        "basics": -1,
+        "prompting": -2,
+        "tools": 0,
+        "evaluation": 1,
+        "collaboration": 0,
+        "ethics": -1
+      },
+      "suggestions": [
+        {
+          "dimensionId": "basics",
+          "dimension": "AI基础认知",
+          "score": 2,
+          "action": "梳理AI基本概念、典型模型能力边界与常见术语。"
+        },
+        {
+          "dimensionId": "prompting",
+          "dimension": "提示词工程",
+          "score": 3,
+          "action": "练习角色、目标、上下文、输出格式和验收标准五要素提示词。"
+        }
+      ],
+      "breakthroughs": [
+        "evaluation"
+      ],
+      "answerDetails": [
+        {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:57:08.634Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_ac_4",
+          "levelId": "academy",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:57:08.636Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:57:08.638Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_la_1",
+          "levelId": "labyrinth",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:57:08.640Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0,
+            "basics": 0
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:57:08.643Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_la_3",
+          "levelId": "labyrinth",
+          "type": "sort",
+          "submittedAt": "2026-08-20T05:57:08.645Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 33.333333333333336,
+            "evaluation": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T05:57:08.650Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        {
+          "questionId": "q_wo_4",
+          "levelId": "workshop",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:57:08.652Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "prompting": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_wo_2",
+          "levelId": "workshop",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:57:08.654Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "tools": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T05:57:08.656Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_st_2",
+          "levelId": "station",
+          "type": "single",
+          "submittedAt": "2026-08-20T05:57:08.658Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T05:57:08.660Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T05:57:08.662Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_2",
+          "levelId": "court",
+          "type": "multi",
+          "submittedAt": "2026-08-20T05:57:08.663Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 13.2,
+            "evaluation": 13.2,
+            "basics": 6.6
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T05:57:08.665Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        }
+      ]
     }
   ],
   "selfAssessments": [],
@@ -1480,6 +4103,96 @@
       "userId": "u_student",
       "createdAt": "2026-08-20T04:07:53.754Z",
       "expiresAt": "2026-08-22T04:07:53.754Z"
+    },
+    {
+      "token": "ad479e9b-a61c-4abf-a576-9aa0f525252b.pGtAhdOkOmd60SALvhZSt9QF",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:35:09.109Z",
+      "expiresAt": "2026-08-22T05:35:09.110Z"
+    },
+    {
+      "token": "d5e95751-49d1-45f6-8808-d398a1a08fdb.EbaMXLCYdK30AllNoTD6UcIi",
+      "userId": "u_teacher",
+      "createdAt": "2026-08-20T05:36:52.075Z",
+      "expiresAt": "2026-08-22T05:36:52.075Z"
+    },
+    {
+      "token": "8ef4cd2e-049a-47b0-ad40-d4ce2886f3bf.P-Qh8Re5Ymfvty-_ZaJbA2Rj",
+      "userId": "u_teacher",
+      "createdAt": "2026-08-20T05:38:06.859Z",
+      "expiresAt": "2026-08-22T05:38:06.859Z"
+    },
+    {
+      "token": "917a1ff8-609b-422b-b735-cff93b19eb5f.q8bX5aiHl8ghylCzlVisxzk7",
+      "userId": "u_admin",
+      "createdAt": "2026-08-20T05:39:14.561Z",
+      "expiresAt": "2026-08-22T05:39:14.561Z"
+    },
+    {
+      "token": "687a3282-b732-4d3e-aaed-e23823f4a461.nwuF5dU2zY03ZJuHBMu3Vw0L",
+      "userId": "u_admin",
+      "createdAt": "2026-08-20T05:39:58.867Z",
+      "expiresAt": "2026-08-22T05:39:58.867Z"
+    },
+    {
+      "token": "425325a8-66f1-4aab-99be-5c9502f0a247.asooo0P7Sw9IOhPUvCIW-G-b",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:40:50.882Z",
+      "expiresAt": "2026-08-22T05:40:50.882Z"
+    },
+    {
+      "token": "11170954-c6f8-4afb-8f08-d2e06555db01.gtme-xIR2UfAk9wq0se-zsq9",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:41:26.397Z",
+      "expiresAt": "2026-08-22T05:41:26.397Z"
+    },
+    {
+      "token": "36367b4b-aae0-49f8-8af0-a7a8c7b9b27d.TvVVJ38rpP0fzdXrQBlbljZw",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:42:45.549Z",
+      "expiresAt": "2026-08-22T05:42:45.549Z"
+    },
+    {
+      "token": "c9b349b4-b1b0-4f10-a207-4cafe3b56ae7.Ta4XPL4AaFKmawfEk13_ttbO",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:43:19.905Z",
+      "expiresAt": "2026-08-22T05:43:19.905Z"
+    },
+    {
+      "token": "b1bf7118-f84d-4cda-80b3-78628e0dc15e.Ynb-9I48n28bR5dDI6ogTRFF",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:45:05.177Z",
+      "expiresAt": "2026-08-22T05:45:05.177Z"
+    },
+    {
+      "token": "65034d95-da96-4f5b-a171-f00e80a97076.pOUnkDKygCA13SNHvmtTW58R",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:45:48.259Z",
+      "expiresAt": "2026-08-22T05:45:48.259Z"
+    },
+    {
+      "token": "117a78b7-1ac7-4c45-b4f5-b5622dac0bef.EkFXhY6XOCGve6ty7hmU-GIP",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:51:40.499Z",
+      "expiresAt": "2026-08-22T05:51:40.499Z"
+    },
+    {
+      "token": "d58614a6-6bcf-454f-a08e-264b48ee5a10.2OHw7_0SvjEKll1O79uwewbA",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:57:08.618Z",
+      "expiresAt": "2026-08-22T05:57:08.618Z"
+    },
+    {
+      "token": "8382e65c-1cae-437a-bc12-6bede133b62a.p89d1WwB5mfG_YwcbhPgMhUq",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T05:57:59.280Z",
+      "expiresAt": "2026-08-22T05:57:59.280Z"
+    },
+    {
+      "token": "2046fc88-3184-4137-8c29-7192727fcbf9.7LT67tv56h7lqfE8JUJ2ive-",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T06:00:50.302Z",
+      "expiresAt": "2026-08-22T06:00:50.302Z"
     }
   ],
   "practicalSubmissions": [
@@ -1546,6 +4259,110 @@
       "score": 96,
       "stars": 3,
       "submittedAt": "2026-08-20T04:05:14.716Z"
+    },
+    {
+      "id": "prac_mt136kaqdcd62819",
+      "studentId": "s1",
+      "source": "standalone",
+      "versions": [
+        {
+          "version": 1,
+          "prompt": "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "output": "让AI成为你的创意伙伴。",
+          "provider": "local-demo"
+        },
+        {
+          "version": 2,
+          "prompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+          "output": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+          "provider": "local-demo"
+        }
+      ],
+      "finalPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+      "finalOutput": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+      "provider": "local-demo",
+      "iterations": 2,
+      "score": 96,
+      "stars": 3,
+      "submittedAt": "2026-08-20T05:35:09.122Z"
+    },
+    {
+      "id": "prac_mt13dw0b9d58a9c4",
+      "studentId": "s1",
+      "source": "standalone",
+      "versions": [
+        {
+          "version": 1,
+          "prompt": "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "output": "让AI成为你的创意伙伴。",
+          "provider": "local-demo"
+        },
+        {
+          "version": 2,
+          "prompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+          "output": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+          "provider": "local-demo"
+        }
+      ],
+      "finalPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+      "finalOutput": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+      "provider": "local-demo",
+      "iterations": 2,
+      "score": 96,
+      "stars": 3,
+      "submittedAt": "2026-08-20T05:40:50.891Z"
+    },
+    {
+      "id": "prac_mt13enevc397049b",
+      "studentId": "s1",
+      "source": "standalone",
+      "versions": [
+        {
+          "version": 1,
+          "prompt": "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "output": "让AI成为你的创意伙伴。",
+          "provider": "local-demo"
+        },
+        {
+          "version": 2,
+          "prompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+          "output": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+          "provider": "local-demo"
+        }
+      ],
+      "finalPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+      "finalOutput": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+      "provider": "local-demo",
+      "iterations": 2,
+      "score": 96,
+      "stars": 3,
+      "submittedAt": "2026-08-20T05:41:26.407Z"
+    },
+    {
+      "id": "prac_mt13yufpc5baf5d7",
+      "studentId": "s1",
+      "source": "standalone",
+      "versions": [
+        {
+          "version": 1,
+          "prompt": "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "output": "让AI成为你的创意伙伴。",
+          "provider": "local-demo"
+        },
+        {
+          "version": 2,
+          "prompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+          "output": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+          "provider": "local-demo"
+        }
+      ],
+      "finalPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+      "finalOutput": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+      "provider": "local-demo",
+      "iterations": 2,
+      "score": 96,
+      "stars": 3,
+      "submittedAt": "2026-08-20T05:57:08.629Z"
     }
   ]
 }

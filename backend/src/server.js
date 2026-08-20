@@ -18,7 +18,7 @@ loadDotEnv(join(projectRoot, "backend", ".env"));
 
 const port = Number(process.env.PORT || 8787);
 const host = process.env.HOST || "127.0.0.1";
-const staticRoot = resolve(projectRoot, process.env.STATIC_ROOT || ".");
+const staticRoot = resolve(projectRoot, process.env.STATIC_ROOT || "src");
 const store = new Store(process.env.RESET_DB === "1");
 const router = new Router();
 const contextBase = { store };

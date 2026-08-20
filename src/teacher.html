@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="智核觉醒教师端，提供五关进度监控、六维报告、班级管理与题库管理。">
+  <title>智核觉醒 · 教师端</title>
+  <link rel="stylesheet" href="css/teacher.css">
+</head>
+<body class="teacher-app">
+  <div class="t-shell">
+    <aside class="t-sidebar">
+      <div class="t-brand">
+        <span class="t-brand-mark" data-icon="Brain"></span>
+        <span class="t-brand-copy">
+          <strong>智核觉醒</strong>
+          <span>教师端</span>
+        </span>
+      </div>
+
+      <nav class="t-nav" aria-label="教师端导航">
+        <p class="t-nav-label">教学管理</p>
+        <button class="t-nav-item active" type="button" data-view="overview">
+          <span data-icon="Gauge"></span>
+          <span>数据总览</span>
+        </button>
+        <button class="t-nav-item" type="button" data-view="classes">
+          <span data-icon="Users"></span>
+          <span>班级管理</span>
+        </button>
+        <button class="t-nav-item" type="button" data-view="assessments">
+          <span data-icon="ClipboardList"></span>
+          <span>测评管理</span>
+        </button>
+        <p class="t-nav-label">学生分析</p>
+        <button class="t-nav-item" type="button" data-view="profile">
+          <span data-icon="CircleUserRound"></span>
+          <span>学生画像</span>
+        </button>
+        <button class="t-nav-item" type="button" data-view="analysis">
+          <span data-icon="ChartColumn"></span>
+          <span>数据分析</span>
+        </button>
+        <p class="t-nav-label">资源中心</p>
+        <button class="t-nav-item" type="button" data-view="bank">
+          <span data-icon="Database"></span>
+          <span>题库管理</span>
+        </button>
+      </nav>
+
+      <div class="t-side-user">
+        <button class="t-user-card" type="button" id="teacherProfileBtn">
+          <span class="t-avatar" data-icon="Presentation"></span>
+          <span class="t-user-copy">
+            <strong>张老师</strong>
+            <span>教务处 · 工号 20260008</span>
+          </span>
+          <span class="t-user-gear" data-icon="Settings"></span>
+        </button>
+        <button class="t-logout" type="button" id="teacherLogout">
+          <span data-icon="LogOut"></span>
+          <span>退出登录</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="t-main">
+      <header class="t-topbar">
+        <div>
+          <p class="t-kicker" id="tKicker">教学数据中心</p>
+          <h1 id="tTitle">数据总览</h1>
+        </div>
+        <div class="t-top-actions">
+          <button class="t-btn ghost" type="button" id="exportReportBtn">
+            <span data-icon="FileSpreadsheet"></span>
+            <span>导出班级报告</span>
+          </button>
+          <button class="t-btn ghost icon-only" type="button" data-icon="Bell" aria-label="通知"></button>
+          <button class="t-btn ghost icon-only" type="button" data-icon="CircleHelp" aria-label="帮助"></button>
+        </div>
+      </header>
+
+      <main class="t-content">
+        <section class="t-view active" id="view-overview">
+          <div class="t-kpi-row" id="overviewKpis"></div>
+          <div class="t-grid two">
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>六维能力雷达</h3>
+                <span class="t-chip">均值 + 中位数</span>
+              </div>
+              <div class="t-chart chart-radar" id="overviewRadar"></div>
+            </div>
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>参与率</h3>
+                <span class="t-chip">当前测评</span>
+              </div>
+              <div class="t-ring-wrap">
+                <div class="t-chart chart-ring" id="overviewRing"></div>
+                <div class="ring-center">
+                  <strong>92%</strong>
+                  <span>班级参与率</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="t-grid two">
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>评级分布</h3>
+                <span class="t-chip">6 个班级</span>
+              </div>
+              <div class="t-chart chart-bar" id="overviewRatingBar"></div>
+            </div>
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>短板识别</h3>
+                <span class="t-chip warn">需关注</span>
+              </div>
+              <div class="t-weak-list" id="weakList"></div>
+            </div>
+          </div>
+          <div class="t-card">
+            <div class="t-card-head">
+              <h3>数据安全与权限</h3>
+              <span class="t-chip">已启用</span>
+            </div>
+            <div class="t-security-grid">
+              <div class="t-security-item">
+                <span data-icon="ShieldCheck"></span>
+                <div>
+                  <strong>加密传输</strong>
+                  <p>全站 HTTPS，API 接口 TLS 1.3</p>
+                </div>
+              </div>
+              <div class="t-security-item">
+                <span data-icon="LockKeyhole"></span>
+                <div>
+                  <strong>AES-256 加密存储</strong>
+                  <p>敏感字段加密，数据按需脱敏</p>
+                </div>
+              </div>
+              <div class="t-security-item">
+                <span data-icon="KeyRound"></span>
+                <div>
+                  <strong>权限分离</strong>
+                  <p>学生端与教师端数据隔离，题库仅管理员可改</p>
+                </div>
+              </div>
+              <div class="t-security-item">
+                <span data-icon="FileText"></span>
+                <div>
+                  <strong>导出与删除</strong>
+                  <p>支持脱敏 CSV / PDF 导出与数据删除</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="t-view" id="view-classes">
+          <div class="t-toolbar">
+            <div>
+              <h2>班级列表</h2>
+              <p>创建班级、批量导入学生名单，并导出班级报告。</p>
+            </div>
+            <div class="t-toolbar-actions">
+              <button class="t-btn primary" type="button" id="addClassBtn">
+                <span data-icon="Plus"></span>
+                <span>新建班级</span>
+              </button>
+              <label class="t-select-wrap compact">
+                <span>导入到</span>
+                <select id="importClassSelect"></select>
+              </label>
+              <button class="t-btn ghost" type="button" id="studentTemplateBtn">
+                <span data-icon="Download"></span>
+                <span>名单模板</span>
+              </button>
+              <button class="t-btn ghost" type="button" id="importStudentsBtn">
+                <span data-icon="FileSpreadsheet"></span>
+                <span>导入 Excel 名单</span>
+              </button>
+            </div>
+          </div>
+          <div class="t-card t-table-card">
+            <table class="t-table" id="classTable"></table>
+          </div>
+        </section>
+
+        <section class="t-view" id="view-assessments">
+          <div class="t-toolbar">
+            <div>
+              <h2>测评管理</h2>
+              <p>发起测评、设置开放时间与规则，并实时监控进度。</p>
+            </div>
+            <div class="t-toolbar-actions">
+              <button class="t-btn primary" type="button" id="createAssessmentBtn">
+                <span data-icon="Rocket"></span>
+                <span>发起测评</span>
+              </button>
+              <button class="t-btn soft" type="button" id="publishTaskBtn">
+                <span data-icon="Send"></span>
+                <span>发布测试任务</span>
+              </button>
+            </div>
+          </div>
+          <div class="t-card t-table-card">
+            <table class="t-table" id="assessmentTable"></table>
+          </div>
+          <div class="t-card t-table-card">
+            <div class="t-card-head">
+              <h3>测试任务</h3>
+              <span class="t-chip" id="taskCount">0 个任务</span>
+            </div>
+            <table class="t-table" id="taskTable"></table>
+          </div>
+          <div class="t-card t-table-card">
+            <div class="t-card-head">
+              <h3>实时进度监控</h3>
+              <span class="t-chip">高一 (3) 班 · 正在测评</span>
+            </div>
+            <table class="t-table" id="monitorTable"></table>
+          </div>
+          <div class="t-card t-table-card">
+            <div class="t-card-head">
+              <h3>结果总览</h3>
+              <div class="t-result-controls">
+                <input class="t-input result-search" id="resultSearch" type="search" placeholder="搜索姓名 / 学号">
+                <select class="t-input result-filter" id="resultRatingFilter">
+                  <option value="">全部评级</option>
+                  <option>S</option>
+                  <option>A</option>
+                  <option>B</option>
+                  <option>C</option>
+                  <option>D</option>
+                </select>
+                <select class="t-input result-filter" id="resultSort">
+                  <option value="score">按得分</option>
+                  <option value="stars">按星数</option>
+                  <option value="no">按学号</option>
+                </select>
+              </div>
+            </div>
+            <table class="t-table" id="resultTable"></table>
+          </div>
+        </section>
+
+        <section class="t-view" id="view-profile">
+          <div class="t-toolbar">
+            <div>
+              <h2>学生画像</h2>
+              <p>查看单学生雷达图、答题明细、对话记录与实操产物。</p>
+            </div>
+            <div class="t-toolbar-actions">
+              <button class="t-btn ghost" type="button" id="exportStudentBtn">
+                <span data-icon="FileText"></span>
+                <span>导出学生报告</span>
+              </button>
+              <label class="t-select-wrap">
+                <span>学生</span>
+                <select id="studentSelect"></select>
+              </label>
+            </div>
+          </div>
+          <div class="t-grid two">
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>六维能力画像</h3>
+                <span class="t-chip" id="profileMetaChip">评级 -</span>
+              </div>
+              <div class="t-chart chart-radar" id="profileRadar"></div>
+            </div>
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>维度得分</h3>
+                <span class="t-chip">与班级均值对比</span>
+              </div>
+              <div id="profileScores"></div>
+            </div>
+          </div>
+          <div class="t-tabs" role="tablist">
+            <button class="t-tab active" type="button" data-profile-tab="answers">答题明细</button>
+            <button class="t-tab" type="button" data-profile-tab="dialogue">对话记录</button>
+            <button class="t-tab" type="button" data-profile-tab="practical">实操产物</button>
+            <button class="t-tab" type="button" data-profile-tab="prompts">提示词迭代</button>
+          </div>
+          <div class="t-card t-table-card" id="profileDetail"></div>
+        </section>
+
+        <section class="t-view" id="view-analysis">
+          <div class="t-toolbar">
+            <div>
+              <h2>数据分析</h2>
+              <p>成长趋势、班级对比与历史同期分析。</p>
+            </div>
+            <div class="t-toolbar-actions">
+              <button class="t-btn ghost" type="button" id="exportRawBtn">
+                <span data-icon="Database"></span>
+                <span>导出原始数据</span>
+              </button>
+            </div>
+          </div>
+          <div class="t-grid two">
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>成长趋势</h3>
+                <span class="t-chip">近 3 次测评</span>
+              </div>
+              <div class="t-chart chart-line" id="growthLine"></div>
+            </div>
+            <div class="t-card">
+              <div class="t-card-head">
+                <h3>对比分析</h3>
+                <div class="t-seg" id="compareSeg" role="tablist" aria-label="对比维度">
+                  <button class="t-seg-btn active" type="button" data-compare="classes">班级间</button>
+                  <button class="t-seg-btn" type="button" data-compare="school">全校均值</button>
+                  <button class="t-seg-btn" type="button" data-compare="history">历史同期</button>
+                </div>
+              </div>
+              <div class="t-chart chart-bar" id="compareBar"></div>
+              <p class="t-compare-note" id="compareNote">横向对比 6 个班级六维均分，用于识别班级差异。</p>
+            </div>
+          </div>
+          <div class="t-card">
+            <div class="t-card-head">
+              <h3>教学建议</h3>
+              <span class="t-chip">自动生成</span>
+            </div>
+            <div class="t-advice-list" id="analysisAdvice"></div>
+          </div>
+        </section>
+
+        <section class="t-view" id="view-bank">
+          <div class="t-toolbar">
+            <div>
+              <h2>题库管理</h2>
+              <p>增删改查题目、审核题目并批量导入。</p>
+            </div>
+            <div class="t-toolbar-actions">
+              <button class="t-btn primary" type="button" id="addQuestionBtn">
+                <span data-icon="Plus"></span>
+                <span>新增题目</span>
+              </button>
+              <button class="t-btn ghost" type="button" id="questionTemplateBtn">
+                <span data-icon="Download"></span>
+                <span>题目模板</span>
+              </button>
+              <button class="t-btn ghost" type="button" id="importQuestionsBtn">
+                <span data-icon="FileSpreadsheet"></span>
+                <span>批量导入</span>
+              </button>
+            </div>
+          </div>
+          <div class="t-filter-bar">
+            <input class="t-input" id="questionSearch" type="search" placeholder="搜索题目、知识点">
+            <select class="t-input" id="questionTypeFilter">
+              <option value="">全部题型</option>
+              <option>单选</option>
+              <option>多选</option>
+              <option>判断</option>
+              <option>填空</option>
+              <option>情景</option>
+              <option>排序</option>
+              <option>对话</option>
+              <option>实操</option>
+            </select>
+            <select class="t-input" id="questionStatusFilter">
+              <option value="">全部状态</option>
+              <option>已通过</option>
+              <option>待审核</option>
+            </select>
+          </div>
+          <div class="t-card t-table-card">
+            <table class="t-table" id="questionTable"></table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="t-modal" id="classModal" role="dialog" aria-modal="true" aria-labelledby="classModalTitle" hidden>
+    <div class="t-modal-card">
+      <div class="t-modal-head">
+        <h2 id="classModalTitle">新建班级</h2>
+        <button class="t-modal-close" type="button" data-close="classModal" aria-label="关闭">
+          <span data-icon="X"></span>
+        </button>
+      </div>
+      <div class="t-form">
+        <label>班级名称<input class="t-input" id="classNameInput" type="text" placeholder="例如：高一 (3) 班"></label>
+        <label>年级<select class="t-input" id="classGradeInput"><option>高一</option><option>高二</option><option>高三</option></select></label>
+        <label>班主任<input class="t-input" id="classTeacherInput" type="text" placeholder="班主任姓名"></label>
+      </div>
+      <div class="t-modal-actions">
+        <button class="t-btn ghost" type="button" data-close="classModal">取消</button>
+        <button class="t-btn primary" type="button" id="saveClassBtn">保存班级</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="t-modal" id="assessmentModal" role="dialog" aria-modal="true" aria-labelledby="assessmentModalTitle" hidden>
+    <div class="t-modal-card wide">
+      <div class="t-modal-head">
+        <h2 id="assessmentModalTitle">发起测评</h2>
+        <button class="t-modal-close" type="button" data-close="assessmentModal" aria-label="关闭">
+          <span data-icon="X"></span>
+        </button>
+      </div>
+      <div class="t-form two-col">
+        <label>测评名称<input class="t-input" id="assessmentNameInput" type="text" value="智核觉醒 · 第一轮"></label>
+        <label>目标班级<select class="t-input" id="assessmentClassInput"></select></label>
+        <label>开放时间<input class="t-input" id="assessmentTimeInput" type="datetime-local" value="2026-08-18T09:00"></label>
+        <label>答题时长（分钟）<input class="t-input" id="assessmentDurationInput" type="number" value="30" min="5" max="120"></label>
+      </div>
+      <div class="t-option-row">
+        <label class="t-check"><input type="checkbox" id="assessmentLimitInput" checked><span>启用限时</span></label>
+        <label class="t-check"><input type="checkbox" id="assessmentRetestInput"><span>允许重测</span></label>
+      </div>
+      <div class="t-form">
+        <label>选择题目（客观题 + 对话/实操，自动融入 NPC 提问）<input class="t-input" id="assessmentQuestionsInput" type="text" value="从题库自动挑选：单选 8 · 多选 6 · 判断 4 · 填空 4 · 对话 2 · 实操 2"></label>
+      </div>
+      <div class="t-modal-actions">
+        <button class="t-btn ghost" type="button" data-close="assessmentModal">取消</button>
+        <button class="t-btn primary" type="button" id="saveAssessmentBtn">发布测评</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="t-modal" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle" hidden>
+    <div class="t-modal-card wide">
+      <div class="t-modal-head">
+        <h2 id="taskModalTitle">发布测试任务</h2>
+        <button class="t-modal-close" type="button" data-close="taskModal" aria-label="关闭">
+          <span data-icon="X"></span>
+        </button>
+      </div>
+      <div class="t-form two-col">
+        <label>任务名称<input class="t-input" id="taskNameInput" type="text" placeholder="例如：提示词工程巩固练习"></label>
+        <label>任务类型<select class="t-input" id="taskTypeInput">
+          <option>客观题练习</option>
+          <option>对话式练习</option>
+          <option>实操任务</option>
+          <option>综合测试</option>
+        </select></label>
+        <label>目标班级<select class="t-input" id="taskClassInput"></select></label>
+        <label>截止时间<input class="t-input" id="taskDeadlineInput" type="datetime-local" value="2026-08-25T18:00"></label>
+      </div>
+      <div class="t-form">
+        <label>题目要求<textarea class="t-input" id="taskDescInput" rows="3" placeholder="描述任务目标、题目数量或评分规则"></textarea></label>
+      </div>
+      <div class="t-option-row">
+        <label class="t-check"><input type="checkbox" id="taskAutoGradeInput" checked><span>自动批改并生成报告</span></label>
+        <label class="t-check"><input type="checkbox" id="taskNotifyInput" checked><span>发布后通知学生</span></label>
+      </div>
+      <div class="t-modal-actions">
+        <button class="t-btn ghost" type="button" data-close="taskModal">取消</button>
+        <button class="t-btn primary" type="button" id="saveTaskBtn">立即发布</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="t-modal" id="questionModal" role="dialog" aria-modal="true" aria-labelledby="questionModalTitle" hidden>
+    <div class="t-modal-card wide">
+      <div class="t-modal-head">
+        <h2 id="questionModalTitle">新增题目</h2>
+        <button class="t-modal-close" type="button" data-close="questionModal" aria-label="关闭">
+          <span data-icon="X"></span>
+        </button>
+      </div>
+      <div class="t-form two-col">
+        <label>所属关卡<select class="t-input" id="questionLevelInput"><option value="academy">智核学院</option><option value="labyrinth">信息迷城</option><option value="workshop">创客工坊</option><option value="station">协同空间站</option><option value="court">伦理殿堂</option></select></label>
+        <label>题型<select class="t-input" id="questionTypeInput"><option>单选</option><option>多选</option><option>判断</option><option>填空</option><option>情景</option><option>排序</option><option>对话</option><option>实操</option></select></label>
+        <label>能力维度<select class="t-input" id="questionDimInput"><option>AI基础认知</option><option>提示词工程</option><option>AI工具使用</option><option>AI结果评估</option><option>人机协同</option><option>AI伦理合规</option></select></label>
+        <label>难度<select class="t-input" id="questionDifficultyInput"><option>入门</option><option>基础</option><option>进阶</option><option>熟练</option><option>挑战</option><option>巅峰</option></select></label>
+        <label>预计用时（分钟）<input class="t-input" id="questionTimeInput" type="number" value="2" min="1"></label>
+      </div>
+      <div class="t-form">
+        <label>题干<textarea class="t-input" id="questionTextInput" rows="3" placeholder="请输入题目内容"></textarea></label>
+        <label>选项（每行一个；填空/对话/实操可留空）<textarea class="t-input" id="questionOptionsInput" rows="3" placeholder="每行一个选项"></textarea></label>
+        <label>答案（单选/判断/情景填序号；多选/排序填逗号分隔序号，如 1,2；填空/对话/实操填参考答案）<input class="t-input" id="questionAnswerInput" type="text" placeholder="如：1 或 1,2 或参考答案"></label>
+        <label>解析<textarea class="t-input" id="questionExplanationInput" rows="2" placeholder="答案解析"></textarea></label>
+        <label>知识点<textarea class="t-input" id="questionKnowledgeInput" rows="2" placeholder="如：角色设定、格式约束、追问技巧"></textarea></label>
+      </div>
+      <div class="t-modal-actions">
+        <button class="t-btn ghost" type="button" data-close="questionModal">取消</button>
+        <button class="t-btn primary" type="button" id="saveQuestionBtn">保存题目</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="t-toast" id="teacherToast" role="status"></div>
+  <input type="file" id="importStudentsFile" accept=".csv" hidden>
+  <input type="file" id="importQuestionsFile" accept=".csv" hidden>
+
+  <script src="js/icons.js"></script>
+  <script src="js/vendor/pdf-lib.min.js"></script>
+  <script src="js/teacher.js"></script>
+</body>
+</html>
