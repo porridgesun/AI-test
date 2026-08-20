@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI能力测评智能体学生端，六关闯关、测评与学习分析。">
+  <title>AI能力测评 · 学生端</title>
+  <link rel="stylesheet" href="css/student.css">
+</head>
+<body class="student-app">
+  <div class="app-bg" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <span class="brand-mark" data-icon="Brain"></span>
+        <span class="brand-copy">
+          <strong>AI能力测评</strong>
+          <span>学生端</span>
+        </span>
+      </div>
+
+      <nav class="side-nav" aria-label="学生端导航">
+        <p class="nav-label">闯关挑战</p>
+        <button class="nav-item active" type="button" data-view="stations" style="--nav:#0ecf8e">
+          <span class="nav-icon" data-icon="LayoutDashboard"></span>
+          <span class="nav-text">
+            <strong>闯关</strong>
+            <small>六关客观题</small>
+          </span>
+          <span class="nav-arrow" data-icon="ChevronRight"></span>
+        </button>
+        <button class="nav-item" type="button" data-view="dialogue" style="--nav:#22d3ee">
+          <span class="nav-icon" data-icon="MessageCircle"></span>
+          <span class="nav-text">
+            <strong>对话式测评</strong>
+            <small>NPC 灵犀</small>
+          </span>
+          <span class="nav-arrow" data-icon="ChevronRight"></span>
+        </button>
+        <button class="nav-item" type="button" data-view="practical" style="--nav:#ff6b7a">
+          <span class="nav-icon" data-icon="Terminal"></span>
+          <span class="nav-text">
+            <strong>实操任务</strong>
+            <small>AI 生成终端</small>
+          </span>
+          <span class="nav-arrow" data-icon="ChevronRight"></span>
+        </button>
+
+        <p class="nav-label growth-label">成长中心</p>
+        <button class="nav-item" type="button" data-view="history" style="--nav:#5b6cf6">
+          <span class="nav-icon" data-icon="History"></span>
+          <span class="nav-text">
+            <strong>测评历史</strong>
+            <small>历次结果与详情</small>
+          </span>
+          <span class="nav-arrow" data-icon="ChevronRight"></span>
+        </button>
+        <button class="nav-item" type="button" data-view="analysis" style="--nav:#9b6cff">
+          <span class="nav-icon" data-icon="BarChart3"></span>
+          <span class="nav-text">
+            <strong>学习分析</strong>
+            <small>报告与建议</small>
+          </span>
+          <span class="nav-arrow" data-icon="ChevronRight"></span>
+        </button>
+      </nav>
+
+      <div class="side-progress">
+        <div class="side-progress-head">
+          <span>闯关进度</span>
+          <strong id="sideProgressText">12 / 18</strong>
+        </div>
+        <div class="side-progress-bar" aria-hidden="true"><span id="sideProgressBar"></span></div>
+        <div class="side-level-dots" id="sideLevelDots"></div>
+      </div>
+
+      <div class="side-user">
+        <button class="user-card" id="userCard" type="button" aria-label="编辑个人资料">
+          <span class="avatar" id="headerAvatar"></span>
+          <span class="user-copy">
+            <strong id="headerNickname">探险者</strong>
+            <span>学号 20260001</span>
+          </span>
+          <span class="user-gear" data-icon="Settings"></span>
+        </button>
+        <button class="logout-btn" id="logoutBtn" type="button">
+          <span data-icon="LogOut"></span>
+          <span>退出登录</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main-col">
+      <header class="topbar">
+        <div class="page-heading">
+          <p class="page-kicker" id="pageKicker">六大能力站点</p>
+          <h1 id="pageTitle">闯关</h1>
+        </div>
+        <div class="topbar-meta">
+          <span class="star-total">
+            <span data-icon="Star"></span>
+            <span id="headerStars">12 / 18</span>
+          </span>
+          <span class="overall-rating">综合评级 A-</span>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="view active" id="view-stations">
+          <div class="resume-banner" id="resumeBanner" hidden>
+            <span class="resume-icon" data-icon="RotateCcw"></span>
+            <div class="resume-copy">
+              <strong>发现未完成的测评</strong>
+              <p id="resumeText">上次进行到第 1 关，可继续作答，进度保留 48 小时。</p>
+            </div>
+            <div class="resume-actions">
+              <button class="btn ghost small" type="button" id="resumeDiscard">放弃</button>
+              <button class="btn primary small" type="button" id="resumeContinue">继续测评</button>
+            </div>
+          </div>
+          <div class="retest-goal" id="retestGoal" hidden>
+            <span class="retest-goal-icon" data-icon="Target"></span>
+            <div class="retest-goal-copy">
+              <strong id="retestGoalTitle">上次测评：B+ · 14 星</strong>
+              <p id="retestGoalText">本次目标：冲击 A-，重点突破数据分析与工具工坊。</p>
+            </div>
+            <button class="btn ghost small" type="button" id="retestGoalBtn">
+              <span data-icon="TrendingUp"></span>
+              <span>查看成长对比</span>
+            </button>
+          </div>
+          <div class="section-toolbar">
+            <div>
+              <h2>选择站点，开始探索</h2>
+              <p>六站线性推进，每站完成可获得 1-3 颗星。</p>
+            </div>
+            <div class="toolbar-actions">
+              <button class="quick-btn primary" type="button" id="startLevelBtn">
+                <span data-icon="Rocket"></span>
+                <span>开始闯关</span>
+              </button>
+              <button class="guide-btn" type="button" id="reopenGuide">
+                <span data-icon="CircleHelp"></span>
+                <span>查看引导</span>
+              </button>
+            </div>
+          </div>
+          <div class="station-grid" id="stationGrid"></div>
+          <div class="level-start-bar" id="levelStartBar">
+            <div class="level-start-info">
+              <span class="next-level-badge" id="nextLevelBadge">下一关</span>
+              <div>
+                <strong id="nextLevelName">提示词工坊</strong>
+                <span id="nextLevelMeta">第 1 关 · 入门</span>
+              </div>
+            </div>
+            <button class="btn primary start-level-btn" type="button" id="bottomStartLevelBtn">
+              <span data-icon="Rocket"></span>
+              <span>开始闯关</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="view" id="view-dialogue">
+          <div class="dialogue-layout">
+            <aside class="npc-panel">
+              <div class="npc-avatar" id="npcAvatar"></div>
+              <div>
+                <p class="card-eyebrow">对话式测评</p>
+                <h2>灵犀</h2>
+                <p class="npc-desc">AI 能力引导官，正在站点“对话演练”等你。</p>
+              </div>
+              <div class="npc-script">
+                <p><strong>本轮目标</strong></p>
+                <ul>
+                  <li>完成 2-4 轮自然对话</li>
+                  <li>练习清晰表达需求</li>
+                  <li>根据关键词获得即时回应</li>
+                </ul>
+              </div>
+              <button class="btn ghost full" type="button" id="chatReset">
+                <span data-icon="RotateCcw"></span>
+                <span>重新开始对话</span>
+              </button>
+            </aside>
+            <div class="chat-panel">
+              <div class="chat-head">
+                <div class="chat-npc">
+                  <span class="mini-avatar" data-icon="Bot"></span>
+                  <div>
+                    <strong>灵犀</strong>
+                    <span class="online-dot">在线</span>
+                  </div>
+                </div>
+                <span class="round-badge" id="roundBadge">第 1 轮</span>
+              </div>
+              <div class="chat-body" id="chatBody"></div>
+              <div class="chat-input-row">
+                <input id="chatInput" type="text" maxlength="120" placeholder="输入你的回答，按 Enter 发送">
+                <button class="icon-send" type="button" id="chatSend" aria-label="发送">
+                  <span data-icon="Send"></span>
+                </button>
+              </div>
+              <div class="quick-replies" id="quickReplies"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-practical">
+          <div class="practical-layout">
+            <aside class="task-panel">
+              <p class="card-eyebrow">实操任务 · 工具工坊</p>
+              <h2>设计一场 AI 工具分享会</h2>
+              <p class="task-desc">为班级设计一场 45 分钟的 AI 工具分享会。请使用提示词让 AI 生成：活动主题、3 个环节，以及每个环节的时长与负责人建议。</p>
+              <div class="criteria">
+                <p><strong>评分要点</strong></p>
+                <ul>
+                  <li>角色与目标明确</li>
+                  <li>输出格式清晰</li>
+                  <li>包含迭代优化过程</li>
+                </ul>
+              </div>
+              <div class="result-box" id="practicalResult" hidden>
+                <div class="result-head">
+                  <span data-icon="BadgeCheck"></span>
+                  <div>
+                    <strong>提交成功</strong>
+                    <span>评分 86 · 2 颗星</span>
+                  </div>
+                </div>
+                <p id="practicalResultText"></p>
+              </div>
+            </aside>
+            <div class="terminal-panel">
+              <div class="terminal-head">
+                <span class="terminal-dots"><i></i><i></i><i></i></span>
+                <span>AI 生成终端</span>
+                <span class="run-count" id="runCount">0 次运行</span>
+              </div>
+              <div class="terminal-body" id="terminalBody"></div>
+              <div class="terminal-input">
+                <textarea id="promptInput" rows="3" maxlength="300" placeholder="输入你的提示词，例如：你是一名活动策划师，请帮我……"></textarea>
+                <div class="terminal-actions">
+                  <button class="btn ghost" type="button" id="promptRun">
+                    <span data-icon="Sparkles"></span>
+                    <span>运行提示词</span>
+                  </button>
+                  <button class="btn solid" type="button" id="promptSubmit">
+                    <span data-icon="Check"></span>
+                    <span>提交产物</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-analysis">
+          <div class="analysis-toolbar">
+            <div>
+              <h2>学习分析</h2>
+              <p>能力报告、成长对比与个性化练习建议。</p>
+            </div>
+            <div class="export-actions">
+              <button class="btn ghost" type="button" id="exportPng">
+                <span data-icon="Image"></span>
+                <span>导出图片</span>
+              </button>
+              <button class="btn ghost" type="button" id="exportPdf">
+                <span data-icon="FileText"></span>
+                <span>导出 PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="reportArea">
+            <div class="report-grid">
+              <div class="report-card radar-card">
+                <div class="card-title">
+                  <span data-icon="ChartPie"></span>
+                  六维能力雷达
+                </div>
+                <div id="radarChart"></div>
+              </div>
+              <div class="report-card rating-card">
+                <div class="rating-badge" id="ratingBadge">A-</div>
+                <p class="rating-caption">综合评级</p>
+                <div class="dimension-scores" id="dimensionScores"></div>
+              </div>
+            </div>
+
+            <div class="report-grid">
+              <div class="report-card advice-card">
+                <div class="card-title">
+                  <span data-icon="Lightbulb"></span>
+                  个性化学习建议
+                </div>
+                <ul id="adviceList"></ul>
+                <div class="practice-box">
+                  <div class="card-title small">
+                    <span data-icon="PenTool"></span>
+                    推荐练习
+                  </div>
+                  <button class="practice-item" type="button" data-go="quiz">
+                    <span>提示词改写训练</span>
+                    <span class="practice-meta">5 题 · 8 分钟</span>
+                    <span data-icon="ChevronRight"></span>
+                  </button>
+                  <button class="practice-item" type="button" data-go="dialogue">
+                    <span>需求表达对话</span>
+                    <span class="practice-meta">2 轮 · 5 分钟</span>
+                    <span data-icon="ChevronRight"></span>
+                  </button>
+                </div>
+              </div>
+              <div class="report-card growth-card">
+                <div class="card-title">
+                  <span data-icon="TrendingUp"></span>
+                  成长对比
+                </div>
+                <div class="growth-hero">
+                  <span class="growth-icon" data-icon="Trophy"></span>
+                  <div>
+                    <strong id="growthTitle">提示词工程突破历史最高！</strong>
+                    <p id="growthText">上次 B+ 级，本次冲击 A- 级成功，六维总分 +44。</p>
+                  </div>
+                </div>
+                <div id="growthChart"></div>
+                <div class="achievements">
+                  <span class="achievement new">
+                    <span data-icon="Medal"></span>
+                    突破王
+                  </span>
+                  <span class="achievement">
+                    <span data-icon="Star"></span>
+                    累计 12 星
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-history">
+          <div class="section-toolbar">
+            <div>
+              <h2>测评历史</h2>
+              <p>历次测评结果列表，点击可查看六维雷达、评级与学习建议。</p>
+            </div>
+            <button class="guide-btn" type="button" id="clearHistoryBtn">
+              <span data-icon="RotateCcw"></span>
+              <span>清空历史</span>
+            </button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="tutorialModal" role="dialog" aria-modal="true" aria-labelledby="tutTitle">
+    <div class="modal-card tutorial-card">
+      <button class="modal-close" type="button" id="tutClose" aria-label="关闭引导">
+        <span data-icon="X"></span>
+      </button>
+      <div class="tutorial-slides" id="tutorialSlides"></div>
+      <div class="tutorial-controls">
+        <button class="btn ghost" type="button" id="tutPrev">
+          <span data-icon="ChevronLeft"></span>
+          <span>上一步</span>
+        </button>
+        <div class="tut-dots" id="tutDots"></div>
+        <button class="btn primary" type="button" id="tutNext">
+          <span>下一步</span>
+          <span data-icon="ChevronRight"></span>
+        </button>
+      </div>
+      <button class="skip-btn" type="button" id="tutSkip">跳过引导</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="stationModal" role="dialog" aria-modal="true" aria-labelledby="stationModalTitle">
+    <div class="modal-card station-modal-card">
+      <button class="modal-close" type="button" id="stationModalClose" aria-label="关闭">
+        <span data-icon="X"></span>
+      </button>
+      <div id="stationModalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="selfAssessModal" role="dialog" aria-modal="true" aria-labelledby="selfAssessTitle">
+    <div class="modal-card self-modal-card">
+      <div class="modal-head">
+        <div>
+          <p class="card-eyebrow">测评前自评</p>
+          <h2 id="selfAssessTitle">3 道题定位初始难度</h2>
+        </div>
+        <button class="modal-close" type="button" id="selfAssessClose" aria-label="关闭">
+          <span data-icon="X"></span>
+        </button>
+      </div>
+      <p class="self-assess-desc">根据自评结果定位初始难度，系统会从更贴合你的难度开始测评。</p>
+      <div class="self-assess-body" id="selfAssessBody"></div>
+      <div class="self-assess-actions">
+        <button class="btn ghost" type="button" id="selfAssessSkip">跳过自评</button>
+        <button class="btn solid" type="button" id="selfAssessNext">
+          <span>完成自评，开始测评</span>
+          <span data-icon="ChevronRight"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="historyModal" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
+    <div class="modal-card history-modal-card">
+      <button class="modal-close" type="button" id="historyModalClose" aria-label="关闭">
+        <span data-icon="X"></span>
+      </button>
+      <div id="historyModalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle">
+    <div class="modal-card quiz-modal-card">
+      <button class="modal-close" type="button" id="quizModalClose" aria-label="关闭测评">
+        <span data-icon="X"></span>
+      </button>
+      <div class="quiz-modal-head">
+        <p class="card-eyebrow">闯关关卡 · 客观题测评</p>
+        <h2 id="quizModalTitle">第 1 关 · 提示词工坊</h2>
+      </div>
+      <div class="quiz-intro" id="quizIntro">
+        <div class="npc-talk">
+          <div class="npc-avatar-lg" id="npcModalAvatar"></div>
+          <div class="npc-bubble" id="npcBubble">
+            <span class="npc-name">灵犀</span>
+            <p id="npcBubbleText"></p>
+          </div>
+        </div>
+        <div class="npc-meta" id="npcModalMeta"></div>
+        <button class="btn primary full" type="button" id="npcStartBtn">
+          <span data-icon="Rocket"></span>
+          <span>开始答题</span>
+        </button>
+      </div>
+      <div class="quiz-content" id="quizContent" hidden>
+      <div class="quiz-layout">
+        <aside class="quiz-side">
+          <div class="quiz-progress-card">
+            <p class="card-eyebrow">本关进度</p>
+            <strong id="quizProgressText">第 1 / 2 题</strong>
+            <div class="mini-progress" aria-hidden="true"><span id="quizProgressBar"></span></div>
+            <span class="quiz-timer" id="quizTimer">
+              <span data-icon="Timer"></span>
+              <span id="quizTimerValue">02:00</span>
+            </span>
+            <span class="quiz-diff" id="quizDiff">
+              <span data-icon="Gauge"></span>
+              <span id="quizDiffValue">难度 Lv.2</span>
+            </span>
+          </div>
+          <div class="type-legend">
+            <span class="type-chip single">单选</span>
+            <span class="type-chip multi">多选</span>
+            <span class="type-chip judge">判断</span>
+            <span class="type-chip fill">填空</span>
+            <span class="type-chip scene">情景</span>
+            <span class="type-chip sort">排序</span>
+          </div>
+          <div class="quiz-tip">
+            <span data-icon="Lightbulb"></span>
+            <p>答对继续、答错下降，全部题目结束后结算本关星星。</p>
+          </div>
+        </aside>
+        <div class="quiz-main">
+          <div class="quiz-card" id="quizCard"></div>
+          <div class="quiz-actions">
+            <button class="btn ghost" type="button" id="quizPrev">
+              <span data-icon="ChevronLeft"></span>
+              <span>上一题</span>
+            </button>
+            <div class="quiz-actions-right">
+              <button class="btn primary" type="button" id="quizNext">
+                <span>下一题</span>
+                <span data-icon="ChevronRight"></span>
+              </button>
+              <button class="btn solid" type="button" id="quizSubmit">
+                <span>交卷</span>
+                <span data-icon="Check"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+    <div class="modal-card profile-card">
+      <div class="modal-head">
+        <div>
+          <p class="card-eyebrow">个人资料</p>
+          <h2 id="profileTitle">设置昵称与头像</h2>
+        </div>
+        <button class="modal-close" type="button" id="profileClose" aria-label="关闭">
+          <span data-icon="X"></span>
+        </button>
+      </div>
+      <label class="field-label" for="nicknameInput">昵称</label>
+      <input class="text-input" id="nicknameInput" type="text" maxlength="12" placeholder="输入你的昵称">
+      <p class="field-label avatar-label">选择头像</p>
+      <div class="avatar-grid" id="avatarGrid"></div>
+      <button class="btn solid full" type="button" id="profileSave">
+        <span data-icon="Check"></span>
+        <span>保存资料</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+    <div class="modal-card result-card">
+      <div class="result-burst" aria-hidden="true">
+        <span class="burst-star" style="--x:-86px;--y:-64px;--rot:120deg;--delay:0ms;--color:#ff6b7a"></span>
+        <span class="burst-star" style="--x:84px;--y:-58px;--rot:-80deg;--delay:70ms;--color:#ffd166"></span>
+        <span class="burst-star" style="--x:-64px;--y:70px;--rot:200deg;--delay:120ms;--color:#0ecf8e"></span>
+        <span class="burst-star" style="--x:72px;--y:78px;--rot:-220deg;--delay:160ms;--color:#22d3ee"></span>
+        <span class="burst-star" style="--x:10px;--y:-104px;--rot:40deg;--delay:50ms;--color:#9b6cff"></span>
+      </div>
+      <div class="result-icon" id="resultIcon" data-icon="BadgeCheck"></div>
+      <h2 id="resultTitle">测评完成</h2>
+      <p id="resultText"></p>
+      <div class="result-stars" id="resultStars"></div>
+      <div class="npc-ending" id="npcEnding" hidden>
+        <div class="npc-avatar-sm" data-icon="Bot"></div>
+        <div>
+          <strong>灵犀</strong>
+          <p id="npcEndingText"></p>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button class="btn ghost" type="button" id="resultBack">
+          <span data-icon="LayoutDashboard"></span>
+          <span>返回站点</span>
+        </button>
+        <button class="btn solid" type="button" id="resultAnalysis">
+          <span data-icon="BarChart3"></span>
+          <span>查看学习分析</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/vendor/pdf-lib.min.js"></script>
+  <script src="js/student.js"></script>
+</body>
+</html>
