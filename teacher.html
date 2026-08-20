@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AI能力测评智能体教师端，班级管理、测评监控、数据看板与题库管理。">
-  <title>AI能力测评 · 教师端</title>
+  <meta name="description" content="智核觉醒教师端，提供五关进度监控、六维报告、班级管理与题库管理。">
+  <title>智核觉醒 · 教师端</title>
   <link rel="stylesheet" href="css/teacher.css">
 </head>
 <body class="teacher-app">
@@ -13,7 +13,7 @@
       <div class="t-brand">
         <span class="t-brand-mark" data-icon="Brain"></span>
         <span class="t-brand-copy">
-          <strong>AI能力测评</strong>
+          <strong>智核觉醒</strong>
           <span>教师端</span>
         </span>
       </div>
@@ -230,11 +230,11 @@
                 <input class="t-input result-search" id="resultSearch" type="search" placeholder="搜索姓名 / 学号">
                 <select class="t-input result-filter" id="resultRatingFilter">
                   <option value="">全部评级</option>
+                  <option>S</option>
                   <option>A</option>
-                  <option>A-</option>
-                  <option>B+</option>
                   <option>B</option>
                   <option>C</option>
+                  <option>D</option>
                 </select>
                 <select class="t-input result-filter" id="resultSort">
                   <option value="score">按得分</option>
@@ -268,7 +268,7 @@
             <div class="t-card">
               <div class="t-card-head">
                 <h3>六维能力画像</h3>
-                <span class="t-chip">评级 A-</span>
+                <span class="t-chip" id="profileMetaChip">评级 -</span>
               </div>
               <div class="t-chart chart-radar" id="profileRadar"></div>
             </div>
@@ -407,7 +407,7 @@
         </button>
       </div>
       <div class="t-form two-col">
-        <label>测评名称<input class="t-input" id="assessmentNameInput" type="text" value="AI 能力测评 · 第一轮"></label>
+        <label>测评名称<input class="t-input" id="assessmentNameInput" type="text" value="智核觉醒 · 第一轮"></label>
         <label>目标班级<select class="t-input" id="assessmentClassInput"></select></label>
         <label>开放时间<input class="t-input" id="assessmentTimeInput" type="datetime-local" value="2026-08-18T09:00"></label>
         <label>答题时长（分钟）<input class="t-input" id="assessmentDurationInput" type="number" value="30" min="5" max="120"></label>
@@ -435,7 +435,7 @@
         </button>
       </div>
       <div class="t-form two-col">
-        <label>任务名称<input class="t-input" id="taskNameInput" type="text" placeholder="例如：提示词巩固练习"></label>
+        <label>任务名称<input class="t-input" id="taskNameInput" type="text" placeholder="例如：提示词工程巩固练习"></label>
         <label>任务类型<select class="t-input" id="taskTypeInput">
           <option>客观题练习</option>
           <option>对话式练习</option>
@@ -469,7 +469,7 @@
       </div>
       <div class="t-form two-col">
         <label>题型<select class="t-input" id="questionTypeInput"><option>单选</option><option>多选</option><option>判断</option><option>填空</option><option>对话</option><option>实操</option></select></label>
-        <label>能力维度<select class="t-input" id="questionDimInput"><option>提示词</option><option>智能检索</option><option>对话</option><option>内容创作</option><option>数据分析</option><option>工具工坊</option></select></label>
+        <label>能力维度<select class="t-input" id="questionDimInput"><option>AI基础认知</option><option>提示词工程</option><option>AI工具使用</option><option>AI结果评估</option><option>人机协同</option><option>AI伦理合规</option></select></label>
         <label>难度<select class="t-input" id="questionDifficultyInput"><option>入门</option><option>基础</option><option>进阶</option><option>熟练</option><option>挑战</option><option>巅峰</option></select></label>
         <label>预计用时（分钟）<input class="t-input" id="questionTimeInput" type="number" value="2" min="1"></label>
       </div>

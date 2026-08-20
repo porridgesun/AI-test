@@ -1,0 +1,1551 @@
+{
+  "users": [
+    {
+      "id": "u_student",
+      "account": "student",
+      "role": "student",
+      "name": "林晓",
+      "passwordSalt": "70844c3ada32b368ff421795",
+      "passwordHash": "82dafc6509a53273f655f628b9da0babd6e72840bf974f341295a1695c41bc5e"
+    },
+    {
+      "id": "u_teacher",
+      "account": "teacher",
+      "role": "teacher",
+      "name": "张老师",
+      "teacherId": "t1",
+      "passwordSalt": "f7a7255cbfdf4330a51f45ee",
+      "passwordHash": "b2442d2c0036b2711e85bec4346e1af514761fa92bc9d8c63efebcdbee879fb5"
+    },
+    {
+      "id": "u_admin",
+      "account": "admin",
+      "role": "admin",
+      "name": "系统管理员",
+      "passwordSalt": "dcd2183793b372d0fed00f42",
+      "passwordHash": "4ab78a407a7bf6e455f735b657ed72eb12e350c4a454d4dd320eadaf613ef6fc"
+    }
+  ],
+  "classes": [
+    {
+      "id": "c1",
+      "name": "高一 (1) 班",
+      "grade": "高一",
+      "headTeacher": "张老师",
+      "ownerTeacherId": "t1",
+      "createdAt": "2026-08-01T08:00:00+08:00"
+    },
+    {
+      "id": "c2",
+      "name": "高一 (3) 班",
+      "grade": "高一",
+      "headTeacher": "李老师",
+      "ownerTeacherId": "t1",
+      "createdAt": "2026-08-01T08:05:00+08:00"
+    }
+  ],
+  "students": [
+    {
+      "id": "s1",
+      "userId": "u_student",
+      "studentNo": "20260421",
+      "name": "林晓",
+      "classId": "c1",
+      "nickname": "探险者林晓",
+      "avatarId": "sage"
+    },
+    {
+      "id": "s2",
+      "userId": null,
+      "studentNo": "20260408",
+      "name": "陈诺",
+      "classId": "c1"
+    },
+    {
+      "id": "s3",
+      "userId": null,
+      "studentNo": "20260415",
+      "name": "王梓",
+      "classId": "c1"
+    },
+    {
+      "id": "s4",
+      "userId": null,
+      "studentNo": "20260402",
+      "name": "周雨",
+      "classId": "c2"
+    },
+    {
+      "id": "s5",
+      "userId": null,
+      "studentNo": "20260419",
+      "name": "赵铭",
+      "classId": "c2"
+    },
+    {
+      "id": "s6",
+      "userId": null,
+      "studentNo": "20260411",
+      "name": "孙悦",
+      "classId": "c2"
+    }
+  ],
+  "teachers": [
+    {
+      "id": "t1",
+      "userId": "u_teacher",
+      "teacherNo": "20260008",
+      "name": "张老师",
+      "department": "教务处"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q_ac_1",
+      "levelId": "academy",
+      "type": "single",
+      "difficulty": 2,
+      "stem": "以下哪个提示词更容易获得稳定、结构化的输出？",
+      "options": [
+        "给我写点东西",
+        "你是一名科普讲师，请面向新生写3个AI基础概念，每个概念包含定义和例子",
+        "随便写写"
+      ],
+      "answer": 1,
+      "explanation": "角色、受众、数量、结构与示例同时明确时，输出更可控。",
+      "dimensions": {
+        "basics": 1,
+        "prompting": 2,
+        "tools": 1
+      },
+      "knowledgePoints": [
+        "提示词结构",
+        "AI基础概念"
+      ],
+      "estimatedSeconds": 90,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_ac_2",
+      "levelId": "academy",
+      "type": "multi",
+      "difficulty": 2,
+      "stem": "下列哪些属于使用AI工具前的合理准备？",
+      "options": [
+        "明确任务目标",
+        "判断是否适合AI辅助",
+        "确认数据能否共享",
+        "把敏感数据全部直接粘贴给AI"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "任务目标、适用性判断和数据边界都应前置；敏感数据不能直接提交。",
+      "dimensions": {
+        "basics": 1,
+        "tools": 2,
+        "ethics": 2
+      },
+      "knowledgePoints": [
+        "任务界定",
+        "数据安全"
+      ],
+      "estimatedSeconds": 100,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_ac_3",
+      "levelId": "academy",
+      "type": "fill",
+      "difficulty": 3,
+      "stem": "高质量提示词通常包含角色、目标、背景和______约束。",
+      "fillAnswers": [
+        "格式",
+        "输出格式"
+      ],
+      "explanation": "输出格式约束能让结果更适合直接使用和检查。",
+      "dimensions": {
+        "basics": 1,
+        "prompting": 2
+      },
+      "knowledgePoints": [
+        "格式约束"
+      ],
+      "estimatedSeconds": 70,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_ac_4",
+      "levelId": "academy",
+      "type": "judge",
+      "difficulty": 1,
+      "stem": "AI生成内容只要语气自信，就可以直接作为事实引用。",
+      "options": [
+        "正确",
+        "错误"
+      ],
+      "answer": 1,
+      "explanation": "生成内容必须溯源与验证，语气不等于可信度。",
+      "dimensions": {
+        "basics": 1,
+        "evaluation": 2,
+        "ethics": 1
+      },
+      "knowledgePoints": [
+        "生成内容验证"
+      ],
+      "estimatedSeconds": 60,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_la_1",
+      "levelId": "labyrinth",
+      "type": "scene",
+      "difficulty": 2,
+      "stem": "一张“本地地震”图片在社交平台传播，图片细节精美但没有来源。你应该优先做什么？",
+      "scenario": "你是苏记者的助手，正在调查疑似AI生成的新闻配图。",
+      "options": [
+        "立即转发提醒更多人",
+        "核查官方信源、图片来源和发布时间，再判断",
+        "因为画面精细，所以认定是真的"
+      ],
+      "answer": 1,
+      "explanation": "突发事件信息应先交叉核验官方信源与原始出处，再决定是否传播。",
+      "dimensions": {
+        "evaluation": 2,
+        "ethics": 2,
+        "basics": 1
+      },
+      "knowledgePoints": [
+        "信息核验",
+        "负责任传播"
+      ],
+      "estimatedSeconds": 100,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_la_2",
+      "levelId": "labyrinth",
+      "type": "multi",
+      "difficulty": 3,
+      "stem": "识别AI生成图片时，下列哪些线索值得检查？",
+      "options": [
+        "手部、文字等局部结构",
+        "光影和透视关系",
+        "图片来源与元信息",
+        "发布者账号情绪是否激动"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "局部结构、光影、元信息和来源均可作为线索；账号情绪不是证据。",
+      "dimensions": {
+        "evaluation": 2,
+        "basics": 1,
+        "prompting": 1
+      },
+      "knowledgePoints": [
+        "AI生成痕迹"
+      ],
+      "estimatedSeconds": 110,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_la_3",
+      "levelId": "labyrinth",
+      "type": "sort",
+      "difficulty": 3,
+      "stem": "请排列完成一次可靠信息检索的步骤。",
+      "options": [
+        "明确信息用途",
+        "提取关键词并限定时间范围",
+        "筛选权威来源",
+        "整理证据链与结论"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "先明确用途，再提取关键词、筛选来源，最后整理证据链。",
+      "dimensions": {
+        "prompting": 1,
+        "evaluation": 2
+      },
+      "knowledgePoints": [
+        "检索流程"
+      ],
+      "estimatedSeconds": 110,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_la_4",
+      "levelId": "labyrinth",
+      "type": "fill",
+      "difficulty": 1,
+      "stem": "把AI输出的关键事实用于报告前，至少要进行______核查。",
+      "fillAnswers": [
+        "来源",
+        "溯源",
+        "交叉"
+      ],
+      "explanation": "事实性内容需来源或交叉验证。",
+      "dimensions": {
+        "evaluation": 2,
+        "ethics": 1
+      },
+      "knowledgePoints": [
+        "事实核查"
+      ],
+      "estimatedSeconds": 60,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_wo_1",
+      "levelId": "workshop",
+      "type": "practical",
+      "difficulty": 3,
+      "stem": "为AI创意写作工具写一段50字以内的中文宣传文案，突出“让AI成为你的创意伙伴”。请迭代至少2次提示词并提交最终产物。",
+      "requirements": [
+        "目标明确",
+        "卖点清晰",
+        "语气专业亲切",
+        "记录提示词迭代"
+      ],
+      "dimensions": {
+        "tools": 2,
+        "prompting": 2,
+        "evaluation": 1,
+        "ethics": 1
+      },
+      "knowledgePoints": [
+        "提示词迭代",
+        "内容创作"
+      ],
+      "estimatedSeconds": 300,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_wo_2",
+      "levelId": "workshop",
+      "type": "single",
+      "difficulty": 2,
+      "stem": "AI第一次输出不符合要求，最有效的下一步是？",
+      "options": [
+        "直接放弃任务",
+        "指出差距，补充角色、格式和验收标准后重试",
+        "原样重复同一提示词"
+      ],
+      "answer": 1,
+      "explanation": "基于差距迭代提示词，才能形成可复用的改进方法。",
+      "dimensions": {
+        "prompting": 2,
+        "tools": 1,
+        "evaluation": 1
+      },
+      "knowledgePoints": [
+        "迭代优化"
+      ],
+      "estimatedSeconds": 80,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_wo_3",
+      "levelId": "workshop",
+      "type": "judge",
+      "difficulty": 2,
+      "stem": "商用宣传图使用AI生成元素时，仍需关注版权来源和平台规则。",
+      "options": [
+        "正确",
+        "错误"
+      ],
+      "answer": 0,
+      "explanation": "商用场景不能因AI生成而免除版权、授权与平台合规检查。",
+      "dimensions": {
+        "ethics": 2,
+        "tools": 1,
+        "evaluation": 1
+      },
+      "knowledgePoints": [
+        "版权合规"
+      ],
+      "estimatedSeconds": 70,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_wo_4",
+      "levelId": "workshop",
+      "type": "fill",
+      "difficulty": 3,
+      "stem": "提交AI产物前，应对照任务要求和______标准做最终检查。",
+      "fillAnswers": [
+        "验收",
+        "质量"
+      ],
+      "explanation": "验收标准能避免“看起来完成”但不可用的结果。",
+      "dimensions": {
+        "evaluation": 2,
+        "prompting": 1
+      },
+      "knowledgePoints": [
+        "验收标准"
+      ],
+      "estimatedSeconds": 70,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_st_1",
+      "levelId": "station",
+      "type": "dialogue",
+      "difficulty": 3,
+      "stem": "与星核AI协作处理氧气循环异常，完成2-4轮追问并给出人工决策。",
+      "script": [
+        {
+          "ask": "星核检测到氧气循环异常，建议关闭B舱。你会如何追问风险和依据？",
+          "quickReplies": [
+            "这个方案的依据是什么？",
+            "有没有更低风险备选？"
+          ]
+        },
+        {
+          "ask": "星核说方案基于历史数据，但缺少实时传感数据。你会怎么补充要求？",
+          "quickReplies": [
+            "请接入实时数据再评估",
+            "列出风险和影响范围"
+          ]
+        },
+        {
+          "ask": "星核给出两个方案后，你如何做最终决策？",
+          "quickReplies": [
+            "综合实时数据、安全边界和人工值守后决策",
+            "选择置信度更高的方案"
+          ]
+        }
+      ],
+      "gradingKeywords": [
+        "依据",
+        "风险",
+        "实时",
+        "数据",
+        "备选",
+        "验证",
+        "人工",
+        "决策"
+      ],
+      "explanation": "高质量人机协同包括明确信息缺口、验证AI依据、评估风险并保留人的决策责任。",
+      "dimensions": {
+        "collaboration": 2,
+        "tools": 1,
+        "prompting": 1,
+        "evaluation": 1
+      },
+      "knowledgePoints": [
+        "人机协同",
+        "压力情境"
+      ],
+      "estimatedSeconds": 240,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_st_2",
+      "levelId": "station",
+      "type": "single",
+      "difficulty": 2,
+      "stem": "AI给出维修方案的置信度是85%，最合理的做法是？",
+      "options": [
+        "完全执行",
+        "检查关键输入、约束条件和风险，再决定是否采纳",
+        "因为不是100%所以全部否决"
+      ],
+      "answer": 1,
+      "explanation": "置信度只是参考，关键输入、约束与风险仍需人工确认。",
+      "dimensions": {
+        "collaboration": 2,
+        "evaluation": 2
+      },
+      "knowledgePoints": [
+        "置信度理解"
+      ],
+      "estimatedSeconds": 90,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_st_3",
+      "levelId": "station",
+      "type": "multi",
+      "difficulty": 3,
+      "stem": "紧急任务中人机分工合理的做法包括？",
+      "options": [
+        "AI快速汇总方案",
+        "人负责安全边界确认",
+        "AI负责承担最终责任",
+        "人复核关键数据"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "explanation": "AI可以提升信息处理效率，但安全边界与最终责任应由人确认。",
+      "dimensions": {
+        "collaboration": 2,
+        "ethics": 1,
+        "evaluation": 1
+      },
+      "knowledgePoints": [
+        "责任边界"
+      ],
+      "estimatedSeconds": 100,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_st_4",
+      "levelId": "station",
+      "type": "fill",
+      "difficulty": 2,
+      "stem": "让AI辅助决策时，应提供目标、约束和______数据。",
+      "fillAnswers": [
+        "实时",
+        "关键",
+        "完整"
+      ],
+      "explanation": "关键或实时数据能减少AI依据不足带来的误判。",
+      "dimensions": {
+        "prompting": 1,
+        "evaluation": 1,
+        "collaboration": 1
+      },
+      "knowledgePoints": [
+        "上下文补充"
+      ],
+      "estimatedSeconds": 70,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_co_1",
+      "levelId": "court",
+      "type": "scene",
+      "difficulty": 3,
+      "stem": "同学用AI完成论文初稿后，最符合学术诚信的做法是？",
+      "scenario": "你作为人民陪审员评估AI学术使用案件。",
+      "options": [
+        "不声明AI参与",
+        "按学校规定声明AI贡献，并自行验证与改写核心内容",
+        "把AI引用全数作为本人原创"
+      ],
+      "answer": 1,
+      "explanation": "AI参与需按规则披露，核心论证和原创责任仍属于作者。",
+      "dimensions": {
+        "ethics": 2,
+        "basics": 1,
+        "collaboration": 1
+      },
+      "knowledgePoints": [
+        "学术诚信"
+      ],
+      "estimatedSeconds": 100,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_co_2",
+      "levelId": "court",
+      "type": "multi",
+      "difficulty": 3,
+      "stem": "招聘系统使用AI筛简历时，应重点审查哪些风险？",
+      "options": [
+        "历史数据偏见",
+        "弱势群体公平性",
+        "结果可解释性",
+        "算法供应商宣传是否好听"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "explanation": "偏见、公平性与可解释性直接影响求职者权益；宣传话术不是治理证据。",
+      "dimensions": {
+        "ethics": 2,
+        "evaluation": 2,
+        "basics": 1
+      },
+      "knowledgePoints": [
+        "算法公平"
+      ],
+      "estimatedSeconds": 110,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_co_3",
+      "levelId": "court",
+      "type": "judge",
+      "difficulty": 2,
+      "stem": "AI客服收集用户身份证号和家庭住址时，应遵循最小必要原则并进行保护评估。",
+      "options": [
+        "正确",
+        "错误"
+      ],
+      "answer": 0,
+      "explanation": "个人敏感信息收集应最小必要、明示用途并采取保护措施。",
+      "dimensions": {
+        "ethics": 2,
+        "basics": 1
+      },
+      "knowledgePoints": [
+        "隐私保护"
+      ],
+      "estimatedSeconds": 70,
+      "status": "approved",
+      "createdBy": "u_admin"
+    },
+    {
+      "id": "q_co_4",
+      "levelId": "court",
+      "type": "sort",
+      "difficulty": 4,
+      "stem": "请排列AI伦理风险评估的合理流程。",
+      "options": [
+        "识别 stakeholders 与使用场景",
+        "梳理数据来源和敏感字段",
+        "评估公平性、透明性与可逆性",
+        "设置人工申诉与监测机制"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "explanation": "先识别场景和利益相关者，再审数据、评风险、设机制。",
+      "dimensions": {
+        "ethics": 2,
+        "evaluation": 1,
+        "collaboration": 1
+      },
+      "knowledgePoints": [
+        "伦理评估"
+      ],
+      "estimatedSeconds": 120,
+      "status": "approved",
+      "createdBy": "u_admin"
+    }
+  ],
+  "assessments": [
+    {
+      "id": "a_demo",
+      "title": "智核觉醒 · 演示测评",
+      "classIds": [
+        "c1",
+        "c2"
+      ],
+      "opensAt": "2026-08-18T09:00:00+08:00",
+      "closesAt": "2026-08-31T23:59:00+08:00",
+      "durationMinutes": 35,
+      "limitedTime": true,
+      "allowRetest": true,
+      "status": "published",
+      "policy": {
+        "questionsPerLevel": 3,
+        "initialDifficulty": 3
+      },
+      "createdBy": "u_teacher"
+    },
+    {
+      "id": "a_history",
+      "title": "智核觉醒 · 基线测评",
+      "classIds": [
+        "c1",
+        "c2"
+      ],
+      "opensAt": "2026-07-01T09:00:00+08:00",
+      "closesAt": "2026-07-15T23:59:00+08:00",
+      "durationMinutes": 35,
+      "limitedTime": true,
+      "allowRetest": false,
+      "status": "closed",
+      "policy": {
+        "questionsPerLevel": 3,
+        "initialDifficulty": 3
+      },
+      "createdBy": "u_teacher"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "sess_mt0zvcnu103c923b",
+      "assessmentId": "a_demo",
+      "studentId": "s1",
+      "status": "completed",
+      "startedAt": "2026-08-20T04:02:27.162Z",
+      "expiresAt": "2026-08-22T04:02:27.162Z",
+      "savedAt": "2026-08-20T04:02:27.410Z",
+      "difficulty": 2,
+      "currentLevelIndex": 5,
+      "currentQuestionId": null,
+      "levelStates": [
+        {
+          "levelId": "academy",
+          "questionIds": [],
+          "answerIds": [
+            "q_ac_3",
+            "q_ac_1",
+            "q_ac_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        },
+        {
+          "levelId": "labyrinth",
+          "questionIds": [],
+          "answerIds": [
+            "q_la_3",
+            "q_la_2",
+            "q_la_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        },
+        {
+          "levelId": "workshop",
+          "questionIds": [],
+          "answerIds": [
+            "q_wo_1",
+            "q_wo_3",
+            "q_wo_2"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 200,
+          "score": 67
+        },
+        {
+          "levelId": "station",
+          "questionIds": [],
+          "answerIds": [
+            "q_st_1",
+            "q_st_3",
+            "q_st_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 133,
+          "score": 44
+        },
+        {
+          "levelId": "court",
+          "questionIds": [],
+          "answerIds": [
+            "q_co_3",
+            "q_co_1",
+            "q_co_4"
+          ],
+          "targetCount": 3,
+          "completed": true,
+          "scoreSum": 200,
+          "score": 67
+        }
+      ],
+      "answers": {
+        "q_ac_3": {
+          "questionId": "q_ac_3",
+          "levelId": "academy",
+          "type": "fill",
+          "submittedAt": "2026-08-20T04:02:27.179Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 33.333333333333336,
+            "prompting": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        "q_ac_1": {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T04:02:27.193Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_ac_2": {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T04:02:27.210Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        "q_la_3": {
+          "questionId": "q_la_3",
+          "levelId": "labyrinth",
+          "type": "sort",
+          "submittedAt": "2026-08-20T04:02:27.226Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 33.333333333333336,
+            "evaluation": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        "q_la_2": {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T04:02:27.228Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        "q_la_4": {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T04:02:27.241Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_wo_1": {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T04:02:27.290Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        "q_wo_3": {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T04:02:27.303Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        "q_wo_2": {
+          "questionId": "q_wo_2",
+          "levelId": "workshop",
+          "type": "single",
+          "submittedAt": "2026-08-20T04:02:27.318Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "tools": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_st_1": {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T04:02:27.333Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        "q_st_3": {
+          "questionId": "q_st_3",
+          "levelId": "station",
+          "type": "multi",
+          "submittedAt": "2026-08-20T04:02:27.349Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 16.5,
+            "ethics": 8.25,
+            "evaluation": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        "q_st_4": {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T04:02:27.352Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_3": {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T04:02:27.364Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        "q_co_1": {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T04:02:27.380Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        },
+        "q_co_4": {
+          "questionId": "q_co_4",
+          "levelId": "court",
+          "type": "sort",
+          "submittedAt": "2026-08-20T04:02:27.395Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "evaluation": 25,
+            "collaboration": 25
+          },
+          "dimensionWeight": 4
+        }
+      },
+      "dialogueTranscripts": {
+        "q_st_1": [
+          {
+            "round": 1,
+            "question": "星核检测到氧气循环异常，建议关闭B舱。你会如何追问风险和依据？",
+            "answer": "请说明依据和风险"
+          },
+          {
+            "round": 2,
+            "question": "星核说方案基于历史数据，但缺少实时传感数据。你会怎么补充要求？",
+            "answer": "请接入实时数据并列出备选方案"
+          },
+          {
+            "round": 3,
+            "question": "星核给出两个方案后，你如何做最终决策？",
+            "answer": "我会结合人工值守做最终决策"
+          }
+        ]
+      },
+      "practical": {
+        "prompts": [
+          "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。"
+        ],
+        "outputs": [
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：基础表达。建议补充目标读者、语气和字数限制，再迭代一次。",
+          "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。"
+        ],
+        "iterations": 2,
+        "questionId": "q_wo_1",
+        "lastPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，用列表输出。",
+        "lastOutput": "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰、格式完整。建议补充目标读者、语气和字数限制，再迭代一次。",
+        "updatedAt": "2026-08-20T04:02:27.273Z"
+      },
+      "antiCheat": {
+        "pageHiddenCount": 0,
+        "flags": []
+      }
+    }
+  ],
+  "reports": [
+    {
+      "id": "r_s1_1",
+      "studentId": "s1",
+      "assessmentId": "a_history",
+      "sessionId": null,
+      "completedAt": "2026-07-08T15:20:00+08:00",
+      "scores": {
+        "basics": 80,
+        "prompting": 72,
+        "tools": 70,
+        "evaluation": 68,
+        "collaboration": 66,
+        "ethics": 76
+      },
+      "overall": 72,
+      "rating": "B",
+      "stars": 9,
+      "suggestions": [],
+      "answerDetails": []
+    },
+    {
+      "id": "r_s2_1",
+      "studentId": "s2",
+      "assessmentId": "a_history",
+      "sessionId": null,
+      "completedAt": "2026-07-09T10:10:00+08:00",
+      "scores": {
+        "basics": 74,
+        "prompting": 70,
+        "tools": 62,
+        "evaluation": 64,
+        "collaboration": 60,
+        "ethics": 72
+      },
+      "overall": 67,
+      "rating": "C",
+      "stars": 8,
+      "suggestions": [],
+      "answerDetails": []
+    },
+    {
+      "id": "r_s3_1",
+      "studentId": "s3",
+      "assessmentId": "a_history",
+      "sessionId": null,
+      "completedAt": "2026-07-09T14:00:00+08:00",
+      "scores": {
+        "basics": 90,
+        "prompting": 88,
+        "tools": 84,
+        "evaluation": 86,
+        "collaboration": 82,
+        "ethics": 88
+      },
+      "overall": 86,
+      "rating": "A",
+      "stars": 13,
+      "suggestions": [],
+      "answerDetails": []
+    },
+    {
+      "id": "r_s4_1",
+      "studentId": "s4",
+      "assessmentId": "a_history",
+      "sessionId": null,
+      "completedAt": "2026-07-10T09:30:00+08:00",
+      "scores": {
+        "basics": 76,
+        "prompting": 70,
+        "tools": 68,
+        "evaluation": 74,
+        "collaboration": 72,
+        "ethics": 78
+      },
+      "overall": 73,
+      "rating": "B",
+      "stars": 9,
+      "suggestions": [],
+      "answerDetails": []
+    },
+    {
+      "id": "r_s5_1",
+      "studentId": "s5",
+      "assessmentId": "a_history",
+      "sessionId": null,
+      "completedAt": "2026-07-10T15:20:00+08:00",
+      "scores": {
+        "basics": 68,
+        "prompting": 74,
+        "tools": 70,
+        "evaluation": 58,
+        "collaboration": 62,
+        "ethics": 66
+      },
+      "overall": 66,
+      "rating": "C",
+      "stars": 7,
+      "suggestions": [],
+      "answerDetails": []
+    },
+    {
+      "id": "r_s6_1",
+      "studentId": "s6",
+      "assessmentId": "a_history",
+      "sessionId": null,
+      "completedAt": "2026-07-11T10:20:00+08:00",
+      "scores": {
+        "basics": 82,
+        "prompting": 78,
+        "tools": 74,
+        "evaluation": 72,
+        "collaboration": 70,
+        "ethics": 80
+      },
+      "overall": 76,
+      "rating": "B",
+      "stars": 10,
+      "suggestions": [],
+      "answerDetails": []
+    },
+    {
+      "id": "r_mt0zvcuqcef139d6",
+      "studentId": "s1",
+      "assessmentId": "a_demo",
+      "sessionId": "sess_mt0zvcnu103c923b",
+      "completedAt": "2026-08-20T04:02:27.410Z",
+      "scores": {
+        "basics": 4,
+        "prompting": 5,
+        "tools": 3,
+        "evaluation": 4,
+        "collaboration": 4,
+        "ethics": 6
+      },
+      "overall": 4,
+      "rating": "D",
+      "stars": 7,
+      "growth": {
+        "basics": -76,
+        "prompting": -67,
+        "tools": -67,
+        "evaluation": -64,
+        "collaboration": -62,
+        "ethics": -70
+      },
+      "suggestions": [
+        {
+          "dimensionId": "tools",
+          "dimension": "AI工具使用",
+          "score": 3,
+          "action": "完成两个真实工具任务，并记录工具选择原因。"
+        },
+        {
+          "dimensionId": "basics",
+          "dimension": "AI基础认知",
+          "score": 4,
+          "action": "梳理AI基本概念、典型模型能力边界与常见术语。"
+        }
+      ],
+      "breakthroughs": [],
+      "answerDetails": [
+        {
+          "questionId": "q_ac_3",
+          "levelId": "academy",
+          "type": "fill",
+          "submittedAt": "2026-08-20T04:02:27.179Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 33.333333333333336,
+            "prompting": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_ac_1",
+          "levelId": "academy",
+          "type": "single",
+          "submittedAt": "2026-08-20T04:02:27.193Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 0,
+            "prompting": 0,
+            "tools": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_ac_2",
+          "levelId": "academy",
+          "type": "multi",
+          "submittedAt": "2026-08-20T04:02:27.210Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "basics": 6.6,
+            "tools": 13.2,
+            "ethics": 13.2
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_la_3",
+          "levelId": "labyrinth",
+          "type": "sort",
+          "submittedAt": "2026-08-20T04:02:27.226Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 33.333333333333336,
+            "evaluation": 66.66666666666667
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_la_2",
+          "levelId": "labyrinth",
+          "type": "multi",
+          "submittedAt": "2026-08-20T04:02:27.228Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 16.5,
+            "basics": 8.25,
+            "prompting": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_la_4",
+          "levelId": "labyrinth",
+          "type": "fill",
+          "submittedAt": "2026-08-20T04:02:27.241Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "evaluation": 0,
+            "ethics": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_wo_1",
+          "levelId": "workshop",
+          "type": "practical",
+          "submittedAt": "2026-08-20T04:02:27.290Z",
+          "elapsedSeconds": 300,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "tools": 33.333333333333336,
+            "prompting": 33.333333333333336,
+            "evaluation": 16.666666666666668,
+            "ethics": 16.666666666666668
+          },
+          "dimensionWeight": 6
+        },
+        {
+          "questionId": "q_wo_3",
+          "levelId": "workshop",
+          "type": "judge",
+          "submittedAt": "2026-08-20T04:02:27.303Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "tools": 25,
+            "evaluation": 25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_wo_2",
+          "levelId": "workshop",
+          "type": "single",
+          "submittedAt": "2026-08-20T04:02:27.318Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "tools": 0,
+            "evaluation": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_st_1",
+          "levelId": "station",
+          "type": "dialogue",
+          "submittedAt": "2026-08-20T04:02:27.333Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 40,
+            "tools": 20,
+            "prompting": 20,
+            "evaluation": 20
+          },
+          "dimensionWeight": 5
+        },
+        {
+          "questionId": "q_st_3",
+          "levelId": "station",
+          "type": "multi",
+          "submittedAt": "2026-08-20T04:02:27.349Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 33,
+          "flags": [],
+          "dimensionScores": {
+            "collaboration": 16.5,
+            "ethics": 8.25,
+            "evaluation": 8.25
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_st_4",
+          "levelId": "station",
+          "type": "fill",
+          "submittedAt": "2026-08-20T04:02:27.352Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "prompting": 0,
+            "evaluation": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_3",
+          "levelId": "court",
+          "type": "judge",
+          "submittedAt": "2026-08-20T04:02:27.364Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 66.66666666666667,
+            "basics": 33.333333333333336
+          },
+          "dimensionWeight": 3
+        },
+        {
+          "questionId": "q_co_1",
+          "levelId": "court",
+          "type": "scene",
+          "submittedAt": "2026-08-20T04:02:27.380Z",
+          "elapsedSeconds": 30,
+          "result": "wrong",
+          "score": 0,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 0,
+            "basics": 0,
+            "collaboration": 0
+          },
+          "dimensionWeight": 4
+        },
+        {
+          "questionId": "q_co_4",
+          "levelId": "court",
+          "type": "sort",
+          "submittedAt": "2026-08-20T04:02:27.395Z",
+          "elapsedSeconds": 30,
+          "result": "correct",
+          "score": 100,
+          "flags": [],
+          "dimensionScores": {
+            "ethics": 50,
+            "evaluation": 25,
+            "collaboration": 25
+          },
+          "dimensionWeight": 4
+        }
+      ]
+    }
+  ],
+  "selfAssessments": [],
+  "tokens": [
+    {
+      "token": "590bb20f-b42b-490c-bab1-4b33657dea11.U3-kUW46Mm62LdQUpDYSLHu5",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T04:02:27.098Z",
+      "expiresAt": "2026-08-22T04:02:27.098Z"
+    },
+    {
+      "token": "03655ffc-980d-4c68-8a71-f531c9732040.Zg-o3_duL9iJwzl8x0IyFOzt",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T04:04:54.412Z",
+      "expiresAt": "2026-08-22T04:04:54.412Z"
+    },
+    {
+      "token": "a5c62860-f43f-47fc-baba-2044f3f91f3c.ILfIzGrAPMHQqZvjXwivN_Dt",
+      "userId": "u_teacher",
+      "createdAt": "2026-08-20T04:07:39.780Z",
+      "expiresAt": "2026-08-22T04:07:39.780Z"
+    },
+    {
+      "token": "f4841398-e010-4856-b74a-7aae96aaccc7.DtkFoc7dzwYI7TOkoKSqKoUl",
+      "userId": "u_student",
+      "createdAt": "2026-08-20T04:07:53.754Z",
+      "expiresAt": "2026-08-22T04:07:53.754Z"
+    }
+  ],
+  "practicalSubmissions": [
+    {
+      "id": "prac_mt0zvcngc61b319a",
+      "studentId": "s1",
+      "source": "standalone",
+      "versions": [
+        {
+          "version": 1,
+          "prompt": "为AI创意写作工具写宣传文案，突出让AI成为创意伙伴。",
+          "output": "让AI成为你的创意伙伴。",
+          "provider": "local-demo"
+        },
+        {
+          "version": 2,
+          "prompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+          "output": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+          "provider": "local-demo"
+        }
+      ],
+      "finalPrompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切。",
+      "finalOutput": "让AI成为你的创意伙伴：输入灵感，获得初稿与润色建议。",
+      "provider": "local-demo",
+      "iterations": 2,
+      "score": 96,
+      "stars": 3,
+      "submittedAt": "2026-08-20T04:02:27.148Z"
+    },
+    {
+      "id": "prac_mt0zyxy35228681d",
+      "studentId": "s1",
+      "source": "standalone",
+      "versions": [
+        {
+          "version": 1,
+          "prompt": "请为AI创意写作工具写发布会宣传文案，突出创意伙伴。",
+          "output": "【AI创意写作工具】\n让AI成为你的创意伙伴：输入灵感，即刻获得选题、初稿与润色建议，创作更快也更安心。\n\n质量评估：目标明确、角色清晰。下一轮建议：补充“专业且亲切”的语气；加入50字内限制。",
+          "provider": "unknown"
+        },
+        {
+          "version": 2,
+          "prompt": "你是产品文案专家，请为AI创意写作工具写50字内发布会文案，语气专业亲切，突出“让AI成为你的创意伙伴”。",
+          "output": "【AI创意写作工具】\n让AI成为你的创意伙伴：输入灵感，即刻获得选题、初稿与润色建议，创作更快也更安心。\n\n质量评估：目标明确、角色清晰、语气符合、字数约束。提示词要素完整，可继续微调表达。",
+          "provider": "unknown"
+        },
+        {
+          "version": 3,
+          "prompt": "你是品牌策划专家，请为AI创意写作工具写50字内宣传文案，语气专业亲切，突出让AI成为创意伙伴。",
+          "output": "【AI创意写作工具】\n让AI成为你的创意伙伴：输入灵感，即刻获得选题、初稿与润色建议，创作更快也更安心。\n\n质量评估：目标明确、角色清晰、语气符合、字数约束。提示词要素完整，可继续微调表达。",
+          "provider": "local-fallback"
+        },
+        {
+          "version": 4,
+          "prompt": "你是品牌策划专家，请为明天的产品发布会写AI创意写作工具宣传文案，50字内，语气专业亲切，突出让AI成为创意伙伴。",
+          "output": "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰。建议补充目标读者、语气和字数限制，再迭代一次。",
+          "provider": "local-demo"
+        }
+      ],
+      "finalPrompt": "你是品牌策划专家，请为明天的产品发布会写AI创意写作工具宣传文案，50字内，语气专业亲切，突出让AI成为创意伙伴。",
+      "finalOutput": "【AI创意写作工具宣传文案】\n让AI成为你的创意伙伴：输入想法，获得灵感、初稿与润色建议。\n\n质量评估：角色清晰。建议补充目标读者、语气和字数限制，再迭代一次。",
+      "provider": "local-demo",
+      "iterations": 4,
+      "score": 96,
+      "stars": 3,
+      "submittedAt": "2026-08-20T04:05:14.716Z"
+    }
+  ]
+}
