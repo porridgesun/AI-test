@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "scale": 1.01,
+  "brightness": 0.9,
+  "offsetX": 1,
+  "offsetY": 0,
+  "playbackRate": 1.5,
+  "trimStart": 0,
+  "trimEnd": null,
+  "cuts": [
+    {
+      "start": 0,
+      "end": 0.233333
+    }
+  ]
+}

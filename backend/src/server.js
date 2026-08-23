@@ -19,6 +19,7 @@ loadDotEnv(join(projectRoot, "backend", ".env"));
 const port = Number(process.env.PORT || 8787);
 const host = process.env.HOST || "127.0.0.1";
 const staticRoot = resolve(projectRoot, process.env.STATIC_ROOT || "src");
+const frontendAssetsRoot = resolve(projectRoot, "frontend", "public", "assets");
 const store = new Store(process.env.RESET_DB === "1");
 const router = new Router();
 const contextBase = { store };
@@ -159,6 +160,12 @@ function serveStatic(req, res, pathname) {
   const safePath = normalize(pathname).replace(/^(\.\.[/\\])+/, "");
   let filePath = join(staticRoot, safePath);
   if (!filePath.startsWith(staticRoot)) throw httpError(403, "禁止访问该路径");
+  if ((!existsSync(filePath) || statSync(filePath).isDirectory()) && safePath.startsWith("/assets/")) {
+    const publicAssetPath = join(frontendAssetsRoot, safePath.slice("/assets/".length));
+    if (publicAssetPath.startsWith(frontendAssetsRoot) && existsSync(publicAssetPath) && !statSync(publicAssetPath).isDirectory()) {
+      filePath = publicAssetPath;
+    }
+  }
   if (!existsSync(filePath) || statSync(filePath).isDirectory()) {
     filePath = join(staticRoot, "index.html");
   }
@@ -171,7 +178,10 @@ function serveStatic(req, res, pathname) {
     ".png": "image/png",
     ".jpg": "image/jpeg",
     ".svg": "image/svg+xml",
-    ".mp4": "video/mp4"
+    ".mp4": "video/mp4",
+    ".webm": "video/webm",
+    ".mov": "video/quicktime",
+    ".woff2": "font/woff2"
   };
   res.writeHead(200, {
     "Content-Type": types[extname(filePath).toLowerCase()] || "application/octet-stream",
