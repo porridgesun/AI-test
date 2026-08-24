@@ -84,7 +84,7 @@ export function AdaptiveCarousel() {
   useEffect(() => {
     const shell = shellRef.current;
     if (!shell) return undefined;
-    const resize = () => setScale(Math.min(
+    const resize = () => setScale(Math.max(
       shell.clientWidth / STAGE_WIDTH,
       shell.clientHeight / STAGE_HEIGHT,
     ));
