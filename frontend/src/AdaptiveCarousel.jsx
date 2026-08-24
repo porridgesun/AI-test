@@ -4,7 +4,7 @@ import { ScreenReflection } from "./ScreenReflection.jsx";
 import { WarpedMediaCanvas } from "./WarpedMediaCanvas.jsx";
 
 const STAGE_WIDTH = 1672;
-const STAGE_HEIGHT = 941;
+const STAGE_HEIGHT = STAGE_WIDTH * 9 / 16;
 const SPEED = 42;
 
 const PRESET_SCREEN_CURVES = {
@@ -84,7 +84,7 @@ export function AdaptiveCarousel() {
   useEffect(() => {
     const shell = shellRef.current;
     if (!shell) return undefined;
-    const resize = () => setScale(Math.min(
+    const resize = () => setScale(Math.max(
       shell.clientWidth / STAGE_WIDTH,
       shell.clientHeight / STAGE_HEIGHT,
     ));

@@ -15,6 +15,8 @@ const LOGIN_VIDEO = [
 const BLACKOUT_SETTLE_MS = 560;
 const FRAME_SECONDS = 1 / 30;
 const ROLE_REVEAL_LEAD_SECONDS = 0.8;
+const STAGE_WIDTH = 1672;
+const STAGE_HEIGHT = STAGE_WIDTH * 9 / 16;
 
 function resolveFixedBounds(duration) {
   const safeDuration = Number.isFinite(duration) && duration > 0 ? duration : 0;
@@ -37,6 +39,7 @@ function skipDeletedFrames(time, end) {
 }
 
 export function LoginTransition() {
+  const hostRef = useRef(null);
   const videoRef = useRef(null);
   const requestedAtRef = useRef(0);
   const source = useFullyBufferedVideo(LOGIN_VIDEO);
@@ -46,6 +49,22 @@ export function LoginTransition() {
   const [showRoleSelection, setShowRoleSelection] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
   const [roleFlowPhase, setRoleFlowPhase] = useState("roles");
+  const [stageScale, setStageScale] = useState(1);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return undefined;
+
+    const resize = () => setStageScale(Math.max(
+      host.clientWidth / STAGE_WIDTH,
+      host.clientHeight / STAGE_HEIGHT,
+    ));
+
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(host);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const requestPlayback = () => {
@@ -126,12 +145,16 @@ export function LoginTransition() {
 
   return (
     <section
+      ref={hostRef}
       className={`login-transition ${visible ? "login-transition--visible" : ""}`}
       data-transition-phase={phase}
       data-has-role-selection={showRoleSelection ? "true" : "false"}
       aria-hidden={!showRoleSelection}
     >
-      <div className="login-transition__stage">
+      <div
+        className="login-transition__stage"
+        style={{ transform: `translate(-50%, -50%) scale(${stageScale})` }}
+      >
         {source && (
           <video
             ref={videoRef}

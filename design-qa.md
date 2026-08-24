@@ -1,43 +1,61 @@
 # Design QA
 
-- Source visual truth: `/var/folders/xd/w7bm0l8j6dlf_y7pgh5s1qsr0000gn/T/codex-clipboard-8161a384-88cf-4b61-a43d-45c8abf9bfcd.png`
-- Implementation screenshot: `/Users/lunaecho/Documents/openclaw/AI-test/design-implementation-login.png`
-- Combined comparison: `/Users/lunaecho/Documents/openclaw/AI-test/design-qa-comparison.jpg`
+- Source visual truth: `/Users/lunaecho/.codex/generated_images/01a01e4e-b098-7b21-8f65-dfd6edc92648/exec-8b0c2ad4-38dd-488b-827b-4090ef58cd23.png`
+- Login-panel visual direction: `/Users/lunaecho/.codex/generated_images/01a01e4e-b098-7b21-8f65-dfd6edc92648/exec-018a436f-46a6-43e1-8096-4a95dfb3f311.png`
+- Desktop implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-16x9-role-1920x1080.png`
+- Studio implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-16x9-home-1920x1080.png`
+- 2K implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-16x9-role-2560x1440.png`
+- Fixed panel at HD: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-fixed-1280x720.png`
+- Fixed panel at Full HD: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-fixed-1920x1080.png`
+- Panel/fox spacing check: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-left-gap-1280x720.png`
+- Laptop form implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-responsive-laptop-form.png`
+- Portrait cover implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-responsive-portrait-role-v2.png`
 - Browser: Codex in-app browser
-- Requested CSS viewport: `1672 × 941`; browser-rendered capture: `1649 × 941`, device scale factor `1`
-- Source pixels: `1671 × 941`; source normalized to `1649 × 941` for the combined comparison
-- State: student login panel shown after intro, studio blackout, transition, and role selection
+- Source pixels: `1672 × 941`, normalized to `1920 × 1080` for the latest comparison; implementation pixels and CSS viewport: `1920 × 1080`; device scale factor: `1`
+- Additional CSS viewports: `2560 × 1440`, `1366 × 768` and `390 × 844`
+- State: role selection and role-login form after the intro and login transition
 
 ## Full-view comparison evidence
 
-The side-by-side comparison covers the complete stage and login panel. The panel placement, cream illustrated surface, blue student accent, fox composition, control hierarchy, corner radii, shadows, and lower alternative-login row follow the selected visual. The removed orange side tab is an intentional change required by the user. The slightly smaller and left-shifted panel follows the user's final saved JSON layout preset.
+The source was normalized and opened with the implementation at the same `1920 × 1080` size. The stage composition, speech bubble, student/admin assets, fox, platform, background and relative component sizes remain aligned. The implementation's 90% scene brightness and slightly lowered role assets are intentional saved requirements.
+
+The exact 16:9 rule was checked at `1920 × 1080` and `2560 × 1440`. The intro, newsroom stage and login-transition stage all measured from `(0, 0)` to the full viewport with ratio `1.7777777777777777`, no top/bottom crop, no letterboxing and no body overflow. At non-16:9 sizes, the stage remains centered and uses controlled cover cropping instead of stretching.
 
 ## Focused-region evidence
 
-A separate crop was not needed because the login panel remains fully readable at the native 941-pixel capture height in the combined comparison. Input icons, labels, button edges, divider, and alternative-login icons were checked directly in that view.
+The login panel was checked at `1280 × 720`, `1366 × 768` and `1920 × 1080`. Its heading, badge, two fields, primary action, switch, divider and alternative-login controls all scale from the same fixed `1672 × 940.5` design canvas. The form remains readable and preserves the selected illustrated proportions.
+
+After the fixed-canvas update, the panel's normalized left margin is approximately `10.05%` at both HD and Full HD, while the bottom margin is approximately `17.68%`. The small sub-pixel difference between captures is raster rounding only. No viewport-relative panel resizing remains.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: Chinese display and UI weights preserve the selected rounded, bold hierarchy using platform CJK fallbacks. Text remains readable without wrapping or clipping.
-- Spacing and layout rhythm: panel, title, fields, primary action, registration switch, divider, and alternative actions retain the reference order and rhythm; final JSON offsets and scale are applied.
-- Colors and visual tokens: cream panel, cyan student accent, orange registration accent, neutral illustrated controls, and dark-blue scene balance match the selected direction.
-- Image quality and asset fidelity: the original fox, transition frame, role buttons, bubble, newsroom, lighting, and carousel media assets are reused; no placeholder illustration replaces them.
-- Copy and content: visual labels remain consistent, with `账号或邮箱` replacing the mock's phone-only wording to match the repository's actual authentication model. `教师端` replaces the generic management label inside the form while the role-selection artwork stays unchanged.
+- Fonts and typography: all login text now scales in container-relative units, so type remains proportional to the fixed artwork stage instead of changing independently with viewport width or height.
+- Spacing and layout rhythm: panel and role assets retain design-canvas positions; the login stage is uniformly scaled once before viewport cropping. The removed negative panel offset restores deliberate left and bottom safe space.
+- Colors and visual tokens: existing cream, cyan, fox-orange and dark-blue tokens are unchanged.
+- Image quality and asset fidelity: supplied bubble, role buttons, newsroom, lighting and fox assets are unchanged and never stretched non-uniformly.
+- Copy and content: all existing Chinese labels and role-specific login copy are preserved.
 
 ## Interaction verification
 
-- Brand intro waits for its local video before playback and clears to the studio.
-- Studio login button triggers blackout and the second transition.
-- Student role opens the login panel; return, registration switch, password reveal, and alternative-login controls are present.
-- Invalid login produces the backend error message in the panel.
-- Browser console errors/warnings checked: none from the application.
+- Intro clears to the studio and the studio login control remains operable.
+- Login triggers blackout and the second transition.
+- Student and administrator role controls remain clickable.
+- Student and teacher login forms open correctly; return control works.
+- Browser console errors/warnings checked: none.
 
 ## Findings
 
-No actionable P0, P1, or P2 mismatch remains. Intentional product differences are the removed side tab, repository-compatible account copy, real API wiring, and the user's final layout preset.
+No actionable P0, P1 or P2 issue remains.
 
 ## Comparison history
 
-Initial comparison passed without P0/P1/P2 findings; no visual repair iteration was required.
+1. Initial responsive pass found a P2 portrait issue: an oversized cover stage was cropped from the left edge because grid overflow alignment fell back to start alignment.
+2. The intro video, login-transition stage and newsroom stage frame were explicitly centered with `50%` positioning and `translate(-50%, -50%)`.
+3. Post-fix portrait evidence shows a centered `1499.64 × 844` stage inside a `390 × 844` viewport, with no scroll overflow. Bubble and role-button aspect ratios remain unchanged.
+4. A later P2 precision check found that the inherited `1672:941` ratio was about `0.05%` narrower than 16:9, causing sub-pixel vertical cover cropping on exact 16:9 displays.
+5. All three stages were moved to the exact `16/9` and `9/16` formulas. Post-fix measurements at both Full HD and 2K show exact viewport bounds and zero vertical crop.
+6. A P2 login-panel issue remained because the saved panel preset used `x: -4.02%` and the stage itself still used responsive dimensions, making the form feel like an independently positioned overlay.
+7. The login transition now uses a fixed `1672 × 940.5` canvas with one parent scale. The panel preset initially moved to `x: 0`, `y: -1.5`, `scale: 0.94`; post-fix HD and Full HD captures preserve the same normalized margins and component proportions.
+8. To avoid visual crowding against the fox, the fixed panel coordinate was adjusted slightly to `x: -1.2`. At `1280 × 720`, the panel retains an `8.85%` left margin and `17.68%` bottom margin while creating a visible gap to the fox. No console errors or warnings were introduced.
 
 final result: passed
