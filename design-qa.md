@@ -7,6 +7,7 @@
 - 2K implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-16x9-role-2560x1440.png`
 - Fixed panel at HD: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-fixed-1280x720.png`
 - Fixed panel at Full HD: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-fixed-1920x1080.png`
+- Panel/fox spacing check: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-left-gap-1280x720.png`
 - Laptop form implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-responsive-laptop-form.png`
 - Portrait cover implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-responsive-portrait-role-v2.png`
 - Browser: Codex in-app browser
@@ -54,6 +55,7 @@ No actionable P0, P1 or P2 issue remains.
 4. A later P2 precision check found that the inherited `1672:941` ratio was about `0.05%` narrower than 16:9, causing sub-pixel vertical cover cropping on exact 16:9 displays.
 5. All three stages were moved to the exact `16/9` and `9/16` formulas. Post-fix measurements at both Full HD and 2K show exact viewport bounds and zero vertical crop.
 6. A P2 login-panel issue remained because the saved panel preset used `x: -4.02%` and the stage itself still used responsive dimensions, making the form feel like an independently positioned overlay.
-7. The login transition now uses a fixed `1672 × 940.5` canvas with one parent scale. The panel preset is `x: 0`, `y: -1.5`, `scale: 0.94`; post-fix HD and Full HD captures preserve the same normalized margins and component proportions.
+7. The login transition now uses a fixed `1672 × 940.5` canvas with one parent scale. The panel preset initially moved to `x: 0`, `y: -1.5`, `scale: 0.94`; post-fix HD and Full HD captures preserve the same normalized margins and component proportions.
+8. To avoid visual crowding against the fox, the fixed panel coordinate was adjusted slightly to `x: -1.2`. At `1280 × 720`, the panel retains an `8.85%` left margin and `17.68%` bottom margin while creating a visible gap to the fox. No console errors or warnings were introduced.
 
 final result: passed
