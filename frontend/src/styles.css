@@ -98,13 +98,14 @@ input {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: max(100dvw, calc(100dvh * 1.7777777778));
-  height: max(100dvh, calc(100dvw * .5625));
+  width: 1672px;
+  height: 940.5px;
   overflow: hidden;
   background: #000;
   isolation: isolate;
   container-type: size;
-  transform: translate(-50%, -50%);
+  transform-origin: center;
+  will-change: transform;
 }
 
 .role-selection-scene {

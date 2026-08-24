@@ -1,9 +1,12 @@
 # Design QA
 
 - Source visual truth: `/Users/lunaecho/.codex/generated_images/01a01e4e-b098-7b21-8f65-dfd6edc92648/exec-8b0c2ad4-38dd-488b-827b-4090ef58cd23.png`
+- Login-panel visual direction: `/Users/lunaecho/.codex/generated_images/01a01e4e-b098-7b21-8f65-dfd6edc92648/exec-018a436f-46a6-43e1-8096-4a95dfb3f311.png`
 - Desktop implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-16x9-role-1920x1080.png`
 - Studio implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-16x9-home-1920x1080.png`
 - 2K implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-16x9-role-2560x1440.png`
+- Fixed panel at HD: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-fixed-1280x720.png`
+- Fixed panel at Full HD: `/Users/lunaecho/Documents/openclaw/AI-test/qa-panel-fixed-1920x1080.png`
 - Laptop form implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-responsive-laptop-form.png`
 - Portrait cover implementation: `/Users/lunaecho/Documents/openclaw/AI-test/qa-responsive-portrait-role-v2.png`
 - Browser: Codex in-app browser
@@ -19,12 +22,14 @@ The exact 16:9 rule was checked at `1920 × 1080` and `2560 × 1440`. The intro,
 
 ## Focused-region evidence
 
-The login panel was checked at `1366 × 768`. Its heading, badge, two fields, primary action, switch, divider and alternative-login controls all scale from the same stage container. The form remains readable and preserves the selected illustrated proportions.
+The login panel was checked at `1280 × 720`, `1366 × 768` and `1920 × 1080`. Its heading, badge, two fields, primary action, switch, divider and alternative-login controls all scale from the same fixed `1672 × 940.5` design canvas. The form remains readable and preserves the selected illustrated proportions.
+
+After the fixed-canvas update, the panel's normalized left margin is approximately `10.05%` at both HD and Full HD, while the bottom margin is approximately `17.68%`. The small sub-pixel difference between captures is raster rounding only. No viewport-relative panel resizing remains.
 
 ## Required fidelity surfaces
 
 - Fonts and typography: all login text now scales in container-relative units, so type remains proportional to the fixed artwork stage instead of changing independently with viewport width or height.
-- Spacing and layout rhythm: panel and role assets retain percentage positions; the entire scene is uniformly scaled before viewport cropping.
+- Spacing and layout rhythm: panel and role assets retain design-canvas positions; the login stage is uniformly scaled once before viewport cropping. The removed negative panel offset restores deliberate left and bottom safe space.
 - Colors and visual tokens: existing cream, cyan, fox-orange and dark-blue tokens are unchanged.
 - Image quality and asset fidelity: supplied bubble, role buttons, newsroom, lighting and fox assets are unchanged and never stretched non-uniformly.
 - Copy and content: all existing Chinese labels and role-specific login copy are preserved.
@@ -48,5 +53,7 @@ No actionable P0, P1 or P2 issue remains.
 3. Post-fix portrait evidence shows a centered `1499.64 × 844` stage inside a `390 × 844` viewport, with no scroll overflow. Bubble and role-button aspect ratios remain unchanged.
 4. A later P2 precision check found that the inherited `1672:941` ratio was about `0.05%` narrower than 16:9, causing sub-pixel vertical cover cropping on exact 16:9 displays.
 5. All three stages were moved to the exact `16/9` and `9/16` formulas. Post-fix measurements at both Full HD and 2K show exact viewport bounds and zero vertical crop.
+6. A P2 login-panel issue remained because the saved panel preset used `x: -4.02%` and the stage itself still used responsive dimensions, making the form feel like an independently positioned overlay.
+7. The login transition now uses a fixed `1672 × 940.5` canvas with one parent scale. The panel preset is `x: 0`, `y: -1.5`, `scale: 0.94`; post-fix HD and Full HD captures preserve the same normalized margins and component proportions.
 
 final result: passed
