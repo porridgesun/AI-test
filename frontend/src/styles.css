@@ -55,8 +55,8 @@ input {
   top: 50%;
   left: 50%;
   display: block;
-  width: max(100dvw, calc(100dvh * 1.7768331562));
-  height: max(100dvh, calc(100dvw * .5627990431));
+  width: max(100dvw, calc(100dvh * 1.7777777778));
+  height: max(100dvh, calc(100dvw * .5625));
   object-fit: cover;
   object-position: center;
   background: transparent;
@@ -98,8 +98,8 @@ input {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: max(100dvw, calc(100dvh * 1.7768331562));
-  height: max(100dvh, calc(100dvw * .5627990431));
+  width: max(100dvw, calc(100dvh * 1.7777777778));
+  height: max(100dvh, calc(100dvw * .5625));
   overflow: hidden;
   background: #000;
   isolation: isolate;
@@ -455,7 +455,7 @@ input {
   position: absolute;
   inset: 0 auto auto 0;
   width: 1672px;
-  height: 941px;
+  height: 940.5px;
   overflow: hidden;
   transform-origin: 0 0;
   background: url("/assets/studio/fox-newsroom-background.png") center / 100% 100% no-repeat;
@@ -469,8 +469,8 @@ input {
   z-index: 1;
   top: 0;
   left: 0;
-  width: 1672px;
-  height: 941px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #1762ba;
   filter: drop-shadow(0 0 18px rgb(78 216 255 / 44%));
@@ -496,8 +496,8 @@ input {
   z-index: 1;
   inset: 0;
   display: block;
-  width: 1672px;
-  height: 941px;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
@@ -515,8 +515,8 @@ input {
   z-index: 2;
   inset: 0;
   display: block;
-  width: 1672px;
-  height: 941px;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   mix-blend-mode: screen;
   opacity: 1;
@@ -528,8 +528,8 @@ input {
   z-index: 3;
   inset: 0;
   display: block;
-  width: 1672px;
-  height: 941px;
+  width: 100%;
+  height: 100%;
   object-fit: fill;
   opacity: .26;
   filter: saturate(1.08);
