@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智核域考验</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <script src="cursor.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+    }
+
+    .exit-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .exit-actions .level-button-wrap {
+      width: auto;
+    }
+
+    .exit-actions .level-button {
+      width: auto;
+      min-width: 0;
+      padding: 12px 24px;
+      white-space: nowrap;
+    }
+
+    .level-button-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .level-button-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #000;
+      border-radius: 999px;
+      transform: translate(6px, 6px);
+    }
+
+    .level-button {
+      position: relative;
+      z-index: 1;
+      min-width: 176px;
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 12px 27px;
+      border: none;
+      border-radius: 999px;
+      background: rgb(254, 92, 67);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .level-button.white {
+      background: #fff;
+      color: #111;
+    }
+
+    .level-button:hover {
+      transform: translateY(-2px);
+      background: rgb(232, 78, 55);
+      color: #fff;
+    }
+
+    .level-button.white:hover {
+      background: #fff;
+      color: #111;
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.45);
+    }
+
+    .level-button svg {
+      width: 18px;
+      height: 18px;
+      flex: none;
+    }
+
+    .exit-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(4, 18, 36, 0.72);
+      backdrop-filter: blur(5px);
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .exit-modal.open {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .exit-panel {
+      width: min(430px, 100%);
+      padding: clamp(26px, 4vw, 36px);
+      border-radius: 8px;
+      background: #fff;
+      color: #172033;
+      box-shadow: 0 24px 68px rgba(0, 0, 0, 0.36);
+      transform: translateY(10px) scale(.985);
+      transition: transform .22s cubic-bezier(.22,1,.36,1);
+    }
+
+    .exit-modal.open .exit-panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .exit-panel h2 {
+      margin-bottom: 12px;
+      color: #111827;
+      font-size: 22px;
+    }
+
+    .exit-panel p {
+      color: #425066;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 640px) {
+      .exit-panel {
+        padding: 22px;
+      }
+
+      .level-button-wrap,
+      .level-button {
+        width: 100%;
+      }
+
+      .exit-actions {
+        justify-content: flex-end;
+      }
+
+      .exit-actions .level-button-wrap,
+      .exit-actions .level-button {
+        width: auto;
+      }
+
+      .exit-actions .level-button {
+        padding: 11px 18px;
+      }
+    }
+  </style>
+
+  <!-- ════════ 以下为复刻自 test.html 的 聊天框 + 答题 样式（新增，不改原有内容） ════════ -->
+  <style>
+    .stage {
+      position: absolute;
+      top: calc(var(--site-nav-h) + var(--site-nav-offset) + 8px);
+      left: 0; right: 0;
+      bottom: calc(var(--site-footer-h) + 6px);
+      display: flex;
+      flex-direction: column;
+      padding: 10px clamp(16px, 2.6vw, 40px) 8px;
+      z-index: 1;
+    }
+
+    /* 顶部导航进度条（简化） */
+    .nav-progress {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .np-track {
+      width: clamp(150px, 30vw, 280px); height: 12px;
+      border: 2px solid #000; background: #fff;
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.32);
+    }
+    .np-fill {
+      height: 100%; width: 20%;
+      background: rgb(254, 92, 67);
+      transition: width .35s ease;
+    }
+    .np-label {
+      font-size: 12px; font-weight: 800; letter-spacing: .06em;
+      color: #fff; white-space: nowrap;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+    }
+    @media (max-width: 640px) {
+      .np-track { width: 120px; }
+      .np-label { display: none; }
+    }
+
+    /* 分屏：上 1/4 对话 / 下 3/4 题目 */
+    .dlg-pane {
+      flex: 0 0 25%;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 10px 4px 12px;
+      border-bottom: 4px solid #000;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,.4) transparent;
+    }
+    .dlg-pane::-webkit-scrollbar { width: 7px; }
+    .dlg-pane::-webkit-scrollbar-thumb { background: rgba(0,0,0,.4); }
+    .dlg-pane::-webkit-scrollbar-track { background: transparent; }
+
+    /* 对话气泡 */
+    .msg { display: flex; gap: 10px; align-items: flex-end; margin: 11px 0; animation: pop .32s ease both; }
+    @keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .msg.right { flex-direction: row-reverse; }
+    .ava { flex: none; width: 46px; }
+    .mini-core {
+      width: 46px; height: 46px;
+      border: 2px solid #000;
+      border-radius: 46% 54% 48% 52% / 54% 46% 54% 46%;
+      display: grid; place-items: center;
+      background:
+        radial-gradient(circle at 34% 28%, rgba(255,255,255,0.98), transparent 32%),
+        radial-gradient(circle at 50% 65%, rgba(130,220,255,0.95), rgba(27,90,160,0.9) 70%);
+      box-shadow: 4px 4px 0 #000;
+      animation: coreFloat 4.8s ease-in-out infinite;
+    }
+    .mini-core svg { width: 52%; height: auto; color: #fff; }
+    @keyframes coreFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    .sq {
+      width: 46px; height: 46px;
+      border: 2px solid #000;
+      display: grid; place-items: center;
+      color: #fff; font-weight: 800; font-size: 19px;
+      box-shadow: 4px 4px 0 #000;
+    }
+    .sq.player { background: #1bb3c4; }
+    .bubble {
+      max-width: min(74%, 620px);
+      background: rgb(27, 161, 189);
+      color: #fff;
+      border: 2px solid #000;
+      padding: 10px 14px 11px;
+      box-shadow: 4px 4px 0 #000;
+    }
+    .msg.right .bubble { background: rgb(254, 92, 67); color: #fff; }
+    .msg.player .bubble { background: #fff; color: #0d1b2e; }
+    .who { font-size: 11.5px; font-weight: 800; letter-spacing: .05em; opacity: .85; margin-bottom: 4px; }
+    .txt { font-size: 17px; line-height: 1.75; white-space: pre-wrap; text-align: justify; text-justify: inter-ideograph; }
+    /* 对话框中守护者反馈的打字机光标 */
+    .txt.typing::after { content: "▋"; color: #c23a22; opacity: .6; animation: caretBlink .8s step-end infinite; }
+    .txt.typing.done::after { content: ""; }
+
+    /* 点击继续提示 */
+    .dlg-hint {
+      display: block; width: fit-content; margin: 8px auto 2px;
+      font-size: 12.5px; font-weight: 800; letter-spacing: .08em;
+      color: #fff; background: transparent; border: none;
+      padding: 4px 12px; cursor: none;
+      animation: hintPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes hintPulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+
+    /* 题目区（白色卡片，无圆角，黑色图形） */
+    .quiz-pane {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 14px 4px 18px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,.4) transparent;
+    }
+    .quiz-pane::-webkit-scrollbar { width: 7px; }
+    .quiz-pane::-webkit-scrollbar-thumb { background: rgba(0,0,0,.4); }
+    .quiz-pane::-webkit-scrollbar-track { background: transparent; }
+
+    .quiz-head {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 800; letter-spacing: .12em;
+      color: #fff; background: #000; padding: 3px 10px;
+      margin-bottom: 12px;
+    }
+    .qcard {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff; color: #111;
+      border: 3px solid #000;
+      padding: 18px 18px 20px;
+      box-shadow: 8px 8px 0 #000;
+      animation: slideUp .55s cubic-bezier(.22,.61,.36,1) both;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: none; }
+    }
+    /* 答题视觉反馈 */
+    .qcard.fx-correct { animation: goodFlash .6s ease; }
+    .qcard.fx-wrong { animation: badShake .45s ease, redGlow .45s ease; }
+    @keyframes goodFlash {
+      0%,100% { box-shadow: 8px 8px 0 #000; }
+      40% { box-shadow: 0 0 0 5px #2fb673, 8px 8px 0 #2fb673; border-color: #2fb673; }
+    }
+    @keyframes redGlow {
+      0%,100% { box-shadow: 8px 8px 0 #000; }
+      40% { box-shadow: 0 0 0 5px #e23b2e, 8px 8px 0 #e23b2e; border-color: #e23b2e; }
+    }
+    @keyframes badShake {
+      0%,100% { transform: translateX(0); }
+      15% { transform: translateX(-9px); }
+      30% { transform: translateX(9px); }
+      45% { transform: translateX(-7px); }
+      60% { transform: translateX(7px); }
+      80% { transform: translateX(-4px); }
+    }
+    .star-pop {
+      margin-left: auto;
+      font-size: 36px; line-height: 1; color: #2fb673;
+      text-shadow: 0 0 10px #2fb673, 2px 2px 0 #000;
+      animation: starPop .6s cubic-bezier(.22,.61,.36,1) both, starGlow 1.15s ease-in-out .6s infinite;
+      pointer-events: none;
+    }
+    @keyframes starPop {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      60% { transform: scale(1.45) rotate(12deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+    @keyframes starGlow {
+      0%,100% { filter: drop-shadow(0 0 5px #2fb673) drop-shadow(0 0 10px #2fb673); }
+      50% { filter: drop-shadow(0 0 13px #2fb673) drop-shadow(0 0 24px #2fb673); transform: scale(1.12); }
+    }
+    .qhead {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12.5px; font-weight: 800; letter-spacing: .06em;
+      color: #111; margin-bottom: 10px;
+    }
+    .qhead .qtype { background: #000; color: #fff; padding: 2px 9px; font-size: 11.5px; letter-spacing: .04em; }
+    .qstem { font-size: 16px; font-weight: 700; line-height: 1.7; color: #111; margin-bottom: 14px; text-align: justify; }
+
+    .opts { display: flex; flex-direction: column; gap: 12px; }
+    .opt {
+      position: relative;
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      border: 3px solid #000;
+      border-radius: 0;
+      background: #fff; color: #111;
+      font-size: 15px; line-height: 1.6; text-align: left;
+      box-shadow: 5px 5px 0 #000;
+      cursor: none;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .opt:hover:not(.locked) { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 #000; }
+    .opt:active:not(.locked) { transform: translate(3px,3px); box-shadow: 2px 2px 0 #000; }
+    .opt .key {
+      flex: none; width: 28px; height: 28px;
+      display: grid; place-items: center;
+      border: 2px solid #000; background: rgb(254, 92, 67); color: #fff;
+      font-weight: 800; font-size: 13px;
+    }
+    .opt.correct { background: #2fb673; color: #fff; }
+    .opt.correct .key { background: #0c3d24; }
+    .opt.wrong { background: rgb(254, 92, 67); color: #fff; }
+    .opt.wrong .key { background: #7a1f12; }
+    .opt.locked { cursor: default; }
+    .opt.sel { background: #ffe3da; box-shadow: 5px 5px 0 rgb(254, 92, 67); }
+    .opt.sel .key { background: #000; }
+
+    /* Options are content controls, so they stay white instead of taking
+       the global cyan login-button surface. Feedback colors remain distinct. */
+    .opt,
+    .opt.sel {
+      appearance: none !important;
+      background: #fff !important;
+      color: #111 !important;
+      border: 3px solid #000 !important;
+      border-radius: 0 !important;
+      font-weight: 600 !important;
+      box-shadow: 5px 5px 0 #000 !important;
+    }
+
+    .opt.sel {
+      box-shadow: 5px 5px 0 rgb(254, 92, 67) !important;
+    }
+
+    .btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: 5px 5px 0 #000; transform: none; }
+
+    .awakening-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0, 0, 0, .62);
+      overflow: auto;
+      animation: reportFade .2s ease both;
+    }
+    @keyframes reportFade { from { opacity: 0; } to { opacity: 1; } }
+    .awakening-card {
+      position: relative;
+      width: min(740px, 100%);
+      max-height: min(88vh, 780px);
+      overflow: auto;
+      background: #fff;
+      color: #111;
+      border: 3px solid #000;
+      box-shadow: 8px 8px 0 #000;
+      padding: 24px 24px 28px;
+      animation: reportPop .28s cubic-bezier(.22,.61,.36,1) both;
+    }
+    @keyframes reportPop {
+      from { opacity: 0; transform: translateY(24px) scale(.97); }
+      to { opacity: 1; transform: none; }
+    }
+    .awakening-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 3px solid #000;
+      background: #fff;
+      color: #111;
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+      cursor: none;
+      box-shadow: 3px 3px 0 #000;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .awakening-close:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #000; }
+    .awakening-title {
+      margin: 0 46px 4px 0;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      color: rgb(254,92,67);
+    }
+    .awakening-name {
+      margin: 0 0 14px;
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: .03em;
+    }
+    .awakening-summary {
+      display: grid;
+      grid-template-columns: 86px repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .awakening-rating {
+      display: grid;
+      place-items: center;
+      min-height: 86px;
+      border: 3px solid #000;
+      background: rgb(254,92,67);
+      color: #fff;
+      font-size: 38px;
+      font-weight: 900;
+      box-shadow: 4px 4px 0 #000;
+    }
+    .awakening-stat {
+      display: grid;
+      align-content: center;
+      gap: 4px;
+      min-height: 86px;
+      padding: 10px;
+      border: 2px solid #000;
+      background: #fff;
+      box-shadow: 4px 4px 0 #000;
+      text-align: center;
+    }
+    .awakening-stat b { font-size: 23px; line-height: 1; }
+    .awakening-stat span { font-size: 11.5px; font-weight: 800; color: #5c5c5c; }
+    .awakening-words {
+      margin: 0 0 18px;
+      padding: 12px 14px;
+      border-left: 6px solid rgb(254,92,67);
+      background: #fff7f4;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.8;
+    }
+    .awakening-bars { display: grid; gap: 10px; margin-bottom: 18px; }
+    .awakening-bar { display: grid; grid-template-columns: 102px 1fr 36px; gap: 10px; align-items: center; }
+    .awakening-bar label { font-size: 12.5px; font-weight: 800; }
+    .awakening-track { height: 14px; border: 2px solid #000; background: #fff; overflow: hidden; }
+    .awakening-fill { height: 100%; background: #000; transition: width .8s cubic-bezier(.22,.61,.36,1); }
+    .awakening-score { font-size: 14px; font-weight: 900; text-align: right; }
+    .awakening-note { margin: 0; font-size: 12.5px; font-weight: 700; color: #5c5c5c; }
+    .login-gate .awakening-card { text-align: left; }
+    .login-gate-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+    .login-gate-actions .btn { min-width: 128px; }
+
+    .feedback {
+      margin-top: 14px;
+      border: 3px solid #000;
+      padding: 12px 14px;
+      background: #f3f6fb;
+      display: none;
+      animation: pop .3s ease both;
+    }
+    .feedback.show { display: block; }
+    @keyframes caretBlink { 0%,100% { opacity: .6; } 50% { opacity: 0; } }
+    .feedback .fb-analysis { margin-top: 9px; padding-top: 9px; font-size: 13.5px; line-height: 1.75; color: #2a3548; }
+    .feedback .fb-analysis b { color: #c23a22; }
+    .feedback .fb-answer { margin-top: 8px; font-size: 13.5px; font-weight: 700; color: #1f6b43; line-height: 1.7; }
+    .feedback .fb-dims { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; color: #44506a; }
+    .feedback .fb-dims .dim { border: 2px solid #000; background: #fff; padding: 1px 7px; font-weight: 700; }
+
+
+    .qnext { margin-top: 14px; display: flex; justify-content: flex-end; gap: 14px; }
+
+    /* 黑色图形按钮（新粗野风） */
+    .btn {
+      position: relative;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      border: 3px solid #000;
+      border-radius: 0;
+      background: rgb(254, 92, 67); color: #fff;
+      font-size: 15px; font-weight: 800; letter-spacing: .04em;
+      box-shadow: 5px 5px 0 #000;
+      cursor: none;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 #000; }
+    .btn:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 #000; }
+    .btn.white { background: #fff; color: #111; }
+    .btn svg { width: 17px; height: 17px; }
+
+    .qstart-wrap { display: grid; place-items: center; min-height: 220px; }
+
+    @media (max-width: 720px) {
+      .bubble { max-width: 86%; }
+      .msg.right .bubble { max-width: 86%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <div class="nav-progress" id="navProgress">
+      <div class="np-track"><div class="np-fill" id="npFill"></div></div>
+      <div class="np-label" id="npLabel">第 1 / 5 关</div>
+    </div>
+    <span class="site-action-wrap">
+      <a class="site-action" id="backButton" href="#" role="button">返回
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+  </div>
+
+  <footer class="site-footer"></footer>
+
+  <div class="exit-modal" id="exitModal" aria-hidden="true">
+    <section class="exit-panel" role="dialog" aria-modal="true" aria-labelledby="exitTitle">
+      <h2 id="exitTitle">退出考验</h2>
+      <p>是否真的要退出守护者的考验？本次结果将无效。</p>
+      <div class="exit-actions">
+        <span class="level-button-wrap">
+          <a class="level-button" id="confirmExit" href="fight.html">确定</a>
+        </span>
+        <span class="level-button-wrap">
+          <button class="level-button white" id="cancelExit" type="button">取消</button>
+        </span>
+      </div>
+    </section>
+  </div>
+
+  <main class="stage">
+    <section class="dlg-pane" id="dlgPane">
+      <div id="dialogue"></div>
+      <div class="dlg-hint" id="dlgHint" style="display:none;">点击继续 ▾</div>
+    </section>
+
+    <section class="quiz-pane" id="quizPane">
+      <div id="quizInner"></div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const exitModal = document.getElementById("exitModal");
+      const backButton = document.getElementById("backButton");
+      const cancelButton = document.getElementById("cancelExit");
+
+      function openExitModal() {
+        exitModal.classList.add("open");
+        exitModal.setAttribute("aria-hidden", "false");
+        cancelButton.focus();
+      }
+
+      function closeExitModal() {
+        exitModal.classList.remove("open");
+        exitModal.setAttribute("aria-hidden", "true");
+        backButton.focus();
+      }
+
+      backButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        openExitModal();
+      });
+      cancelButton.addEventListener("click", closeExitModal);
+      exitModal.addEventListener("click", (event) => {
+        if (event.target === exitModal) closeExitModal();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && exitModal.classList.contains("open")) closeExitModal();
+      });
+    })();
+  </script>
+
+  <!-- ════════ 复刻自 test.html 的 聊天框 + 答题 引擎（新增，不改原有内容） ════════ -->
+  <script>
+  (function () {
+    "use strict";
+
+    // ════════ 关卡数据（与 test.html 一致） ════════
+    const LEVELS = [
+      {
+        id: 1, short: "智核学院", name: "启程·智核学院", guardian: "林教授",
+        color: "#3B82F6", estSec: 330, estLabel: "5-6 分钟",
+        sub: "玩家进入智核域，来到一所虚拟大学校园。教学楼前，林教授正在整理资料，准备一场面向新生的AI科普讲座。校园中漂浮着数据流和像素书本。",
+        dims: "AI基础认知 + 提示词工程 + AI工具使用 + AI伦理合规",
+        opening: [
+          { who: "xiao", text: "欢迎来到智核域！我是你的AI导师小源。从现在起，你将在5个区域接受考验。记住，这里的每一道题目都可能同时考察你多方面的AI能力，不要只从一个角度思考哦。准备好了吗？我们出发！" },
+          { who: "guardian", text: "你好，欢迎来到智核学院！我是林教授。今天我要举办一场面向新生的AI科普讲座，但一个人实在忙不过来。你能帮我吗？正好，我准备了一些问题需要你来协助解答——放心，这些问题也能帮我了解你对AI的掌握程度。" },
+          { who: "player", text: "没问题，我来帮忙！" },
+          { who: "guardian", text: "太好了！那我们开始吧。讲座的内容涉及AI基本概念、提示词设计、AI工具使用和伦理规范——我会从这些方面各出一些问题，你来试试看。准备好了就点击开始吧！" }
+        ],
+        ending: [
+          { who: "guardian", text: "谢谢你的帮助！今天这些问题，其实每一个都不只考察一个能力——从AI基础认知到提示词设计，从工具使用到结果评估，甚至涉及了AI伦理。你在这些方面的表现我都看在眼里了。讲座明天就能顺利举办了，多谢你！" },
+          { who: "xiao", text: "做得不错！第一关完成。林教授给你评了[X]颗星。每个区域的考验都像这样，综合考察你的多种AI能力。接下来，我们去信息迷城——那里有更刺激的挑战等着你！" }
+        ]
+      },
+      {
+        id: 2, short: "信息迷城", name: "迷雾·信息迷城", guardian: "苏记者",
+        color: "#F37C31", estSec: 330, estLabel: "5-6 分钟",
+        sub: "玩家被传送到一座充满霓虹灯和全息广告的像素城市。街道上充斥着各种信息流，真假难辨。苏记者正在街头调查一起AI生成假新闻配图事件。",
+        dims: "AI结果评估 + AI伦理合规 + AI基础认知 + 提示词工程",
+        opening: [
+          { who: "xiao", text: "欢迎来到信息迷城！这座城市里每天都有海量信息产生，其中不少是AI生成的。问题是——有些是真的，有些是假的，有些是AI生成的但被当作真的传播，有些是真的但被指控为AI造假……你能分辨吗？" },
+          { who: "guardian", text: "你是新来的试炼者？好。我正在调查一宗案件：有人用AI生成了一张“某地发生地震”的假新闻配图，在网上疯传，引起恐慌。我需要你的帮助来分析这个案件。准备好了吗？这个案件里藏着很多门道——AI生成内容的特征、信息传播的伦理、对AI工具的使用……看你能不能抽丝剥茧。" },
+          { who: "player", text: "我准备好了" },
+          { who: "guardian", text: "好。先从最基本的开始。我会从各个角度出题——有的问你怎么识别AI生成的图像，有的问你怎么负责任地处理信息，还有的要你设计提示词让AI帮我分析。准备好就开始吧！" }
+        ],
+        ending: [
+          { who: "guardian", text: "今天你帮了大忙。这个案件让我明白，在AI时代，辨别信息真伪、负责任地传播内容，已经成为每个人必备的素养。你在这些方面的表现，我都记录下来了。这个案件的调查报告里会提到你的贡献。谢谢你！" },
+          { who: "xiao", text: "第二关完成！苏记者给了你[X]颗星。你已经展现出不错的AI结果评估能力和伦理意识。下一站，我们去创客工坊——那里的挑战更加动手实操！" }
+        ]
+      },
+      {
+        id: 3, short: "创客工坊", name: "锻造·创客工坊", guardian: "陈创客",
+        color: "#9C45F2", estSec: 420, estLabel: "6-8 分钟",
+        sub: "玩家来到一间充满科技设备的像素工坊。3D打印机、AI终端、全息投影仪一应俱全。陈创客正在工坊中忙碌，准备发布一款AI辅助的创意产品。",
+        dims: "AI工具使用 + 提示词工程 + AI结果评估 + AI伦理合规 + 人机协同",
+        opening: [
+          { who: "xiao", text: "欢迎来到创客工坊！这里是最贴近真实AI应用场景的地方——你将亲手使用AI工具完成任务。记住，这里不仅看你最终产出的结果，更看你使用AI的过程——你怎么写提示词、怎么迭代优化、怎么评估AI输出。这一关里有实操任务，你要真打实弹地用AI终端完成任务哦！" },
+          { who: "guardian", text: "嘿！你一定是小源带来的试炼者。太好了，我正需要人手！我开发了一款AI辅助创意写作工具，明天就要发布，但产品的宣传文案和配图还没准备好。你能用我工坊里的AI终端帮我写一段吗？要求是：为我们的AI创意写作工具写一段50字以内的中文宣传文案，突出核心卖点——“让AI成为你的创意伙伴”，语气专业但亲切。当然，过程中我也会考考你对版权和伦理的了解。用那边的AI终端开始吧！" },
+          { who: "player", text: "让我试试" },
+          { who: "guardian", text: "完美！别忘了，不是写完一版就结束了——你要评估AI的输出，然后调整提示词重新生成，至少迭代2次。这个过程才是我最看重的！准备好就开始吧。" }
+        ],
+        ending: [
+          { who: "guardian", text: "谢了兄弟！这文案写得不错。你在整个过程中表现出来的——会写提示词、会评估AI输出、知道不断迭代优化、还注意版权伦理——这些就是真正好用AI的关键。明天发布会一定成功！多谢你！" },
+          { who: "xiao", text: "第三关完成！陈创客给了你[X]颗星。这一关，你展示了真正的AI工具使用能力和人机协作素养。接下来，我们要去一个更需要综合能力的地方——协同空间站！" }
+        ]
+      },
+      {
+        id: 4, short: "协同空间站", name: "危机·协同空间站", guardian: "周队长",
+        color: "#1FC4C9", estSec: 330, estLabel: "5-6 分钟",
+        sub: "玩家通过传送门来到一座漂浮在太空中的像素空间站。警报声此起彼伏，舱内灯光闪烁。周队长正在指挥台前紧张操作。",
+        dims: "人机协同 + AI工具使用 + 提示词工程 + AI结果评估 + AI伦理合规",
+        opening: [
+          { who: "xiao", text: "注意！欢迎来到协同空间站。这里正在经历一场模拟紧急情况——空间站的AI系统检测到氧气循环系统出现异常。队长周需要你和AI系统协作来解决这个问题。记住，这里的考验是综合性的——你需要在压力下合理运用AI，但不能盲信，也不能全盘否定。" },
+          { who: "guardian", text: "试炼者，情况紧急。空间站的AI系统“星核”已经检测到氧气循环系统异常，但它给出的修复方案我不太确定是否安全。我需要你和星核AI协作，分析问题、评估方案、最终给出决策。明白了吗？这不是让你盲从AI的建议——而是让你学会在AI的分析基础上做出人的判断。" },
+          { who: "player", text: "明白，开始行动" },
+          { who: "guardian", text: "好。先让星核给你介绍一下情况，然后我会从各个方面考察你——你该怎么看待AI的建议？你会怎么调整提示词来获取更好的方案？就看你的了。出发吧！" }
+        ],
+        ending: [
+          { who: "guardian", text: "危机解除。你刚才的表现让我印象深刻——在压力下还能冷静地与AI协作，不盲信AI，知道如何调整提示词获取更好的方案。这种人机协作能力，才是AI时代真正需要的。你通过了最难的一关，值得表扬！" },
+          { who: "xiao", text: "第四关完成！队长给了你[X]颗星。这一关综合考察了你的人机协同、工具使用、提示词工程和结果评估能力。最后一关了——伦理殿堂在等着你！" }
+        ]
+      },
+      {
+        id: 5, short: "伦理殿堂", name: "审判·伦理殿堂", guardian: "方法官",
+        color: "#F34B4B", estSec: 330, estLabel: "5-6 分钟",
+        sub: "玩家来到一座庄严的像素殿堂。高大的石柱撑起穹顶，中央悬挂着一架巨大的天平。方法官站在审判席上，面前摆着几份案卷。",
+        dims: "AI伦理合规 + 人机协同 + AI结果评估 + AI基础认知",
+        opening: [
+          { who: "xiao", text: "欢迎来到最后一站——伦理殿堂。在这里，你将面对AI时代最核心的考验：伦理与责任。这里的每个案件都没有简单的标准答案，但我相信你在前几关积累的能力能帮到你。记住，伦理不是最后才考虑的事，而是从一开始就该融入AI使用的每个环节。" },
+          { who: "guardian", text: "试炼者，欢迎来到AI伦理法庭。我是方法官。今天有三起AI相关案件需要你作为“人民陪审员”给出判断。这些案件涉及AI应用中的伦理困境，需要你综合运用在前几关学到的能力来分析——伦理判断、对AI结果的评估、以及人机协作中的责任边界。每起案件都值得深思，准备好了吗？" },
+          { who: "player", text: "我准备好了" },
+          { who: "guardian", text: "好。第一案。我会依次向你呈现三起案件，每起都有多个维度需要你思考。别急着下结论——先把问题看清楚，再做判断。开始吧。" }
+        ],
+        ending: [
+          { who: "guardian", text: "三案审完。你在这些案件中的判断——对学术严谨的坚持、对AI偏见的警觉、对隐私保护的重视——都展现了你作为AI时代公民应有的素养。伦理不是最后才考虑的事，而是从一开始就该融入AI使用的每个环节。你通过了最后的考验，明天的法庭开庭我会提到你的表现。公正的天平，永远倾向于有准备的人。" },
+          { who: "xiao", text: "最后一关完成！方法官给了你[X]颗星。五关全部通关！恭喜你完成了智核域的全部考验。现在，让我为你生成“智核觉醒报告”——它将展示你在六大AI能力维度上的真实水平。" }
+        ]
+      }
+    ];
+
+    // ════════ 题目由 Node 后端发放，答案只在服务端保存和判定 ════════
+    const QUESTIONS_PER_LEVEL = 5;
+    const TYPE_LABEL = { single: "单选题", multi: "多选题", judge: "判断题" };
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
+
+    let activeSession = null;
+    async function apiJson(pathname, options = {}) {
+      let token = "";
+      try { token = localStorage.getItem("ai-auth-token") || ""; } catch (_) {}
+      const response = await fetch(pathname, {
+        headers: Object.assign(
+          options.body ? { "Content-Type": "application/json" } : {},
+          token ? { Authorization: "Bearer " + token } : {}
+        ),
+        ...options
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "服务请求失败");
+      return data;
+    }
+
+    async function createQuizSession() {
+      activeSession = await apiJson("/api/quiz/sessions", { method: "POST", body: "{}" });
+    }
+
+    async function loadNextQuestion(lv, qi) {
+      quizInner.innerHTML =
+        `<div class="qcard"><div class="qhead"><span>题目 ${qi + 1} / ${QUESTIONS_PER_LEVEL}</span></div>` +
+        `<div class="qstem">正在从智核域调取题目……</div></div>`;
+      try {
+        const data = await apiJson(`/api/quiz/sessions/${encodeURIComponent(activeSession.id)}/levels/${lv.id}/next-question`, { method: "POST", body: "{}" });
+        lv._questions[qi] = data.question;
+        showQuestion(lv, qi, data.total);
+      } catch (error) {
+        quizInner.innerHTML =
+          `<div class="qcard"><div class="qstem">${esc(error.message)}</div>` +
+          `<div class="qnext"><button class="btn" id="retryBtn">重新加载</button></div></div>`;
+        document.getElementById("retryBtn").addEventListener("click", () => loadNextQuestion(lv, qi));
+      }
+    }
+
+    // ════════ DOM ════════
+    const dlgPane = document.getElementById("dlgPane");
+    const dialogueEl = document.getElementById("dialogue");
+    const dlgHint = document.getElementById("dlgHint");
+    const quizPane = document.getElementById("quizPane");
+    const quizInner = document.getElementById("quizInner");
+    const npFill = document.getElementById("npFill");
+    const npLabel = document.getElementById("npLabel");
+
+    const CN_NUM = ["一", "二", "三", "四", "五"];
+    const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const XIAO_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="12" r="3.1" fill="currentColor"/></svg>';
+
+    // ══════ NPC 通用反应语库（随机抽取，与具体题目无关） ════════
+    const NPC_REACTIONS = {
+      "林教授": {
+        correct: [
+          "不错，看来你对这个知识点掌握得不错。",
+          "很好！你的理解到位了。",
+          "看来你已经准备好了。"
+        ],
+        wrong: [
+          "这个问题确实有难度，没关系，慢慢来。",
+          "别灰心，这个概念我们一起来梳理一下。",
+          "需要再修炼一下这个知识点。"
+        ]
+      },
+      "苏记者": {
+        correct: [
+          "犀利的眼光！你发现了关键。",
+          "不错，你的判断力很强。",
+          "就是这样！你的洞察力很棒。"
+        ],
+        wrong: [
+          "这个细节你漏掉了，下次注意。",
+          "注意这个线索，别被表面现象迷惑了。",
+          "这个地方确实容易迷惑人，别上当。"
+        ]
+      },
+      "陈创客": {
+        correct: [
+          "太棒了！你这个思路很到位。",
+          "看来你是个懂行的人。",
+          "完美！我喜欢你的思路。"
+        ],
+        wrong: [
+          "呀，这个方向似乎不太对，换个思路试试。",
+          "没关系，多试几次就好了！",
+          "这个地方坑不少人踩过，别紧张。"
+        ]
+      },
+      "周队长": {
+        correct: [
+          "干得漂亮！就是这个方向。",
+          "很好，你的判断是正确的。",
+          "果断！你展现了冷静的头脑。"
+        ],
+        wrong: [
+          "这个判断不够准确，需要更谨慎。",
+          "在压力下出错很正常，看看哪里出了问题。",
+          "记住，AI的建议需要人来验证。"
+        ]
+      },
+      "方法官": {
+        correct: [
+          "判断准确。你的伦理意识很强。",
+          "你的见解很到位。",
+          "公正的判断。"
+        ],
+        wrong: [
+          "这个判断需要更深入的思考，再想想。",
+          "这个问题确实值得反复思量，再仔细想想。",
+          "伦理问题往往没有简单答案，需要你多想想。"
+        ]
+      }
+    };
+
+
+    // ════════ 状态 ════════
+    let curLevel = 0;
+    let streaming = false;
+    let streamTimers = [];
+    let curQ = 0;
+    let correct = 0;
+    let runStats = null;
+    let dlgActive = false;
+    let dlgList = [];
+    let dlgPos = 0;
+    let dlgEndCb = null;
+    let dlgEndHint = "点击继续 ▾";
+    let quizShown = false;
+
+    const DIMENSION_NAMES = {
+      D1: "AI基础认知",
+      D2: "提示词工程",
+      D3: "AI工具使用",
+      D4: "AI结果评估",
+      D5: "人机协同",
+      D6: "AI伦理合规"
+    };
+
+    function createRunStats() {
+      return {
+        answered: 0,
+        correct: 0,
+        dims: Object.fromEntries(Object.keys(DIMENSION_NAMES).map((key) => [key, { score: 0, total: 0 }])),
+        levelResults: []
+      };
+    }
+
+    // ══════ 头像 ══════
+    function avatarHTML(role, lv) {
+      if (role === "xiao") return `<div class="ava"><div class="mini-core">${XIAO_SVG}</div></div>`;
+      if (role === "guardian") return `<div class="ava"><div class="sq" style="background:${lv.color}">${lv.guardian.charAt(0)}</div></div>`;
+      return `<div class="ava"><div class="sq player">你</div></div>`;
+    }
+    function whoName(role, lv) {
+      if (role === "xiao") return "AI导师 · 小源";
+      if (role === "guardian") return lv.guardian;
+      return "你";
+    }
+    function addBubble(role, text, lv) {
+      const msg = document.createElement("div");
+      const side = role === "guardian" ? "left" : "right";
+      const extra = role === "player" ? " player" : "";
+      msg.className = "msg " + side + extra;
+      msg.innerHTML = avatarHTML(role, lv) +
+        `<div class="bubble"><div class="who">${whoName(role, lv)}</div><div class="txt">${text}</div></div>`;
+      dialogueEl.appendChild(msg);
+      dlgPane.scrollTop = dlgPane.scrollHeight;
+    }
+    // 与 addBubble 类似，但文字以打字机方式逐字出现（用于守护者即时反馈）
+    function addBubbleTyping(role, text, lv, onDone) {
+      const msg = document.createElement("div");
+      const side = role === "guardian" ? "left" : "right";
+      const extra = role === "player" ? " player" : "";
+      msg.className = "msg " + side + extra;
+      msg.innerHTML = avatarHTML(role, lv) +
+        `<div class="bubble"><div class="who">${whoName(role, lv)}</div><div class="txt typing"></div></div>`;
+      dialogueEl.appendChild(msg);
+      dlgPane.scrollTop = dlgPane.scrollHeight;
+      typeWriter(msg.querySelector(".txt"), text, 55, onDone);
+    }
+
+    // ══════ 对话：点击逐条出现（开场 / 结束通用） ════════
+    function startDialogue(list, lv, onEnd, endHint) {
+      dlgList = list; dlgPos = 0; dlgActive = true;
+      dlgEndCb = onEnd;
+      dlgEndHint = endHint || "点击继续 ▾";
+      dialogueEl.innerHTML = "";
+      showNextDlg(lv);
+    }
+    function revealQuiz(lv) {
+      hideHint();
+      if (!quizShown) { quizShown = true; loadNextQuestion(lv, 0); }
+    }
+    function endDialogue(lv) {
+      dlgActive = false;
+      dlgHint.textContent = dlgEndHint;
+      showHint();
+    }
+    function showNextDlg(lv) {
+      if (dlgPos >= dlgList.length) {
+        endDialogue(lv);
+        return;
+      }
+      const m = dlgList[dlgPos];
+      dlgPos += 1;
+      addBubble(m.who, m.text, lv);
+      if (dlgPos < dlgList.length) {
+        dlgHint.textContent = "点击继续 ▾";
+        showHint();
+      } else endDialogue(lv);
+    }
+    function showHint() {
+      dlgHint.style.display = "block";
+      requestAnimationFrame(() => {
+        dlgPane.scrollTop = dlgPane.scrollHeight;
+      });
+    }
+    function hideHint() { dlgHint.style.display = "none"; }
+
+    // ══════ 题目：一次只出现一道 ════════
+    function showQuestion(lv, qi, total = QUESTIONS_PER_LEVEL) {
+      const q = lv._questions[qi];
+      const isLast = qi === total - 1;
+      const typeLabel = TYPE_LABEL[q.type];
+      const opts = q.options.map((o) =>
+        `<button class="opt" data-key="${o.key}"><span class="key">${o.key}</span><span class="otext">${esc(o.text)}</span></button>`
+      ).join("");
+      const dimTags = q.dims.map((d) => `<span class="dim">${esc(d)}</span>`).join("");
+      quizInner.innerHTML =
+        `<div class="qcard">` +
+          `<div class="qhead"><span>题目 ${qi + 1} / ${total}</span><span class="qtype">${typeLabel}</span></div>` +
+          `<div class="qstem">${esc(q.q)}</div>` +
+          `<div class="opts">${opts}</div>` +
+          `<div class="feedback">` +
+            `<div class="fb-analysis"></div>` +
+            `<div class="fb-answer"></div>` +
+            `<div class="fb-dims"><span>能力维度：</span>${dimTags}</div>` +
+          `</div>` +
+          `<div class="qnext"></div>` +
+        `</div>`;
+      quizPane.scrollTop = 0;
+
+      const optEls = quizInner.querySelectorAll(".opt");
+      const qcard = quizInner.querySelector(".qcard");
+      const fb = quizInner.querySelector(".feedback");
+      const qnext = quizInner.querySelector(".qnext");
+      let answered = false;
+
+      async function judge(selected) {
+        answered = true;
+        let result;
+        try {
+          result = await apiJson(`/api/quiz/sessions/${encodeURIComponent(activeSession.id)}/answers`, {
+            method: "POST",
+            body: JSON.stringify({ levelId: lv.id, questionId: q.id, selected: [...selected] })
+          });
+        } catch (error) {
+          answered = false;
+          optEls.forEach((b) => b.classList.remove("locked"));
+          alert(error.message);
+          return;
+        }
+
+        const ans = new Set(result.answer.map((item) => item.key));
+        const isCorrect = Boolean(result.correct);
+        optEls.forEach((b) => {
+          const k = b.dataset.key;
+          b.classList.add("locked");
+          if (ans.has(k)) b.classList.add("correct");
+          else if (selected.has(k)) b.classList.add("wrong");
+        });
+        if (isCorrect) correct += 1;
+        runStats.answered += 1;
+        if (isCorrect) runStats.correct += 1;
+        (q.dimKeys || []).forEach((key) => {
+          if (!runStats.dims[key]) return;
+          runStats.dims[key].score += isCorrect ? 100 : 0;
+          runStats.dims[key].total += 1;
+        });
+        applyFeedbackFx(qcard, isCorrect);
+        fb.querySelector(".fb-analysis").innerHTML = `<b>解析：</b>${esc(result.analysis)}`;
+        const scoreLabel = result.partialCorrect ? "部分正确。" : "";
+        fb.querySelector(".fb-answer").textContent = `${scoreLabel}正确答案：${result.answerText}`;
+        fb.classList.add("show");
+        quizPane.scrollTop = quizPane.scrollHeight;
+
+        // NPC 守护者反应语 → 放进对话框（左側守护者气泡，打字机效果）
+        const pool = (isCorrect ? NPC_REACTIONS[lv.guardian].correct : NPC_REACTIONS[lv.guardian].wrong);
+        const line = pool[Math.floor(Math.random() * pool.length)];
+        addBubbleTyping("guardian", line, lv, () => {
+          const nextBtn = document.createElement("button");
+          nextBtn.className = "btn";
+          nextBtn.innerHTML = (isLast ? "完成本关 " : "继续 ") + ARROW;
+          nextBtn.addEventListener("click", () => {
+            if (isLast) finishLevel(lv);
+            else loadNextQuestion(lv, qi + 1);
+          });
+          qnext.appendChild(nextBtn);
+          qnext.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+      }
+
+      if (q.type === "multi") {
+        // 多选题：点选多个选项，再点「提交答案」
+        const selected = new Set();
+        const submitBtn = document.createElement("button");
+        submitBtn.className = "btn";
+        submitBtn.textContent = "提交答案";
+        submitBtn.disabled = true;
+        qnext.appendChild(submitBtn);
+        optEls.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (answered) return;
+            const k = btn.dataset.key;
+            if (selected.has(k)) { selected.delete(k); btn.classList.remove("sel"); }
+            else { selected.add(k); btn.classList.add("sel"); }
+            submitBtn.disabled = selected.size === 0;
+          });
+        });
+        submitBtn.addEventListener("click", () => {
+          if (answered || selected.size === 0) return;
+          judge(selected);
+        });
+      } else {
+        optEls.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (answered) return;
+            judge(new Set([btn.dataset.key]));
+          });
+        });
+      }
+    }
+
+    // ══════ 反馈：打字机 / 视觉反馈 / 8-bit 音效 ════════
+    let typingTimer = null;
+    function typeWriter(el, text, speed, done) {
+      if (typingTimer) { clearInterval(typingTimer); typingTimer = null; }
+      el.textContent = "";
+      el.classList.remove("done");
+      let i = 0;
+      typingTimer = setInterval(() => {
+        el.textContent += text.charAt(i);
+        i += 1;
+        if (i >= text.length) {
+          clearInterval(typingTimer); typingTimer = null;
+          el.classList.add("done");
+          if (done) done();
+        }
+      }, speed);
+    }
+    let audioCtx = null;
+    function beep(kind) {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.connect(g); g.connect(audioCtx.destination);
+        const t = audioCtx.currentTime;
+        if (kind === "correct") {
+          o.type = "square";
+          o.frequency.setValueAtTime(660, t);
+          o.frequency.setValueAtTime(880, t + 0.09);
+          o.frequency.setValueAtTime(1046, t + 0.18);
+          g.gain.setValueAtTime(0.09, t);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+          o.start(t); o.stop(t + 0.34);
+        } else {
+          o.type = "sawtooth";
+          o.frequency.setValueAtTime(170, t);
+          o.frequency.setValueAtTime(120, t + 0.12);
+          g.gain.setValueAtTime(0.09, t);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+          o.start(t); o.stop(t + 0.32);
+        }
+      } catch (e) { /* 浏览器未授权音频时静默 */ }
+    }
+    function applyFeedbackFx(qcard, isCorrect) {
+      qcard.classList.add(isCorrect ? "fx-correct" : "fx-wrong");
+      beep(isCorrect ? "correct" : "wrong");
+      if (isCorrect) {
+        const star = document.createElement("div");
+        star.className = "star-pop";
+        star.textContent = "★";
+        const dimsBox = qcard.querySelector(".fb-dims");
+        (dimsBox || qcard).appendChild(star);
+        setTimeout(() => star.remove(), 2800);
+      }
+    }
+
+    // ══════ 完成本关 → 清空对话 → 点击后出现结束对话 → 点击后出现下一关 ════════
+    function finishLevel(lv) {
+      const stars = Math.max(1, Math.round((correct / QUESTIONS_PER_LEVEL) * 5));
+      runStats.levelResults = runStats.levelResults.filter((item) => item.levelId !== lv.id);
+      runStats.levelResults.push({
+        levelId: lv.id,
+        answeredCount: QUESTIONS_PER_LEVEL,
+        correctCount: correct,
+        stars
+      });
+      runStats.levelResults.sort((a, b) => Number(a.levelId) - Number(b.levelId));
+      const ending = lv.ending.map((m) => ({ who: m.who, text: m.text.replace("[X]", String(stars)) }));
+      const qn = quizInner.querySelector(".qnext");
+      if (qn) qn.innerHTML = "";
+      dialogueEl.innerHTML = "";
+      hideHint();
+      dlgActive = false;
+      dlgEndCb = () => startDialogue(ending, lv, renderFinalActions, "点击查看下一关 ▾");
+      dlgHint.textContent = "点击查看结束对话 ▾";
+      showHint();
+    }
+
+    function buildLocalReport() {
+      const dims = Object.fromEntries(Object.keys(DIMENSION_NAMES).map((key) => {
+        const item = runStats.dims[key];
+        return [key, item.total ? Math.round(item.score / item.total) : 0];
+      }));
+      const measurable = Object.entries(dims).filter(([, score]) => score > 0);
+      const overall = measurable.length
+        ? Math.round(measurable.reduce((sum, [, score]) => sum + score, 0) / measurable.length)
+        : 0;
+      const rating = overall >= 90 ? "S" : overall >= 80 ? "A" : overall >= 70 ? "B" : overall >= 60 ? "C" : "D";
+      const encouragement = {
+        S: "你已经在智核域点亮了完整的能力星图。保持好奇心，下一个复杂真实任务就交给你领航！",
+        A: "觉醒进度非常漂亮！你的判断力和协作意识已经成型，继续把强项用进真实挑战里吧。",
+        B: "星核已经稳定发光。你建立了可靠的能力基础，再集中打磨一两个维度，就能迎来大突破。",
+        C: "每一次答题都是一次校准。别急着比较，先选一个最想突破的维度，把它练成你的新优势。",
+        D: "萌芽期最重要是敢闯敢试。你已经完成了五关试炼，下一轮就从今天的错题里长出新的力量。"
+      }[rating];
+      return {
+        completedAt: new Date().toISOString(),
+        displayScores: dims,
+        overall,
+        rating,
+        stars: runStats.levelResults.reduce((sum, item) => sum + item.stars, 0),
+        encouragement,
+        activity: { answeredCount: runStats.answered, correctCount: runStats.correct },
+        levelResults: runStats.levelResults
+      };
+    }
+
+    function formatReportTime(value) {
+      const date = new Date(value);
+      const pad = (part) => String(part).padStart(2, "0");
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+
+    function showAwakeningReport(report, saveNote) {
+      document.querySelector(".awakening-overlay")?.remove();
+      const scores = report.displayScores || report.scores || {};
+      const valueFor = (key) => {
+        if (scores[key] !== undefined) return Number(scores[key]) || 0;
+        const ids = { D1: "basics", D2: "prompting", D3: "tools", D4: "evaluation", D5: "collaboration", D6: "ethics" };
+        return Number(scores[ids[key]]) || 0;
+      };
+      const overlay = document.createElement("div");
+      overlay.className = "awakening-overlay";
+      overlay.innerHTML =
+        `<div class="awakening-card">` +
+          `<button class="awakening-close" type="button" aria-label="关闭并返回">×</button>` +
+          `<div class="awakening-title">INTELLIGENCE REPORT</div>` +
+          `<h2 class="awakening-name">智核觉醒报告 · ${esc(formatReportTime(report.completedAt))}</h2>` +
+          `<div class="awakening-summary">` +
+            `<div class="awakening-rating">${esc(report.rating)}</div>` +
+            `<div class="awakening-stat"><b>${Number(report.overall) || 0}</b><span>综合分数</span></div>` +
+            `<div class="awakening-stat"><b>${Number(report.activity?.answeredCount) || 0}</b><span>答题数</span></div>` +
+            `<div class="awakening-stat"><b>${Number(report.activity?.correctCount) || 0}</b><span>答对数</span></div>` +
+          `</div>` +
+          `<p class="awakening-words">${esc(report.encouragement || "觉醒继续。把每一次判断都当作星图上的一颗新坐标，你会看得更远。")}</p>` +
+          `<div class="awakening-bars">` +
+            Object.keys(DIMENSION_NAMES).map((key) => `
+              <div class="awakening-bar">
+                <label>${DIMENSION_NAMES[key]}</label>
+                <div class="awakening-track"><div class="awakening-fill" data-width="${valueFor(key)}"></div></div>
+                <div class="awakening-score">${valueFor(key)}</div>
+              </div>
+            `).join("") +
+          `</div>` +
+          `<p class="awakening-note">${esc(saveNote || "报告已同步到个人中心与管理端结果库。")}</p>` +
+        `</div>`;
+      const close = () => { window.location.href = "fight.html"; };
+      overlay.querySelector(".awakening-close").addEventListener("click", close);
+      document.body.appendChild(overlay);
+      requestAnimationFrame(() => {
+        overlay.querySelectorAll(".awakening-fill").forEach((bar) => {
+          bar.style.width = bar.dataset.width + "%";
+        });
+      });
+    }
+
+    const LOGIN_URL = "../index.html";
+    function studentToken() {
+      try { return localStorage.getItem("ai-auth-token") || ""; } catch (_) { return ""; }
+    }
+    function showLoginGate(message) {
+      document.querySelector(".awakening-overlay")?.remove();
+      const overlay = document.createElement("div");
+      overlay.className = "awakening-overlay login-gate";
+      overlay.innerHTML =
+        '<div class="awakening-card">' +
+          '<div class="awakening-title">NEED LOGIN</div>' +
+          '<h2 class="awakening-name">' + esc(message || "需要先登录学员账号") + '</h2>' +
+          '<p class="awakening-words">能力闯关的答题记录与觉醒报告，需要以学员身份登录后才会保存并同步到个人中心与管理端。</p>' +
+          '<div class="login-gate-actions">' +
+            '<button class="btn" id="gateLoginBtn" type="button">去登录</button>' +
+            '<button class="btn" id="gateCloseBtn" type="button">关闭</button>' +
+          '</div>' +
+        '</div>';
+      overlay.querySelector("#gateLoginBtn").addEventListener("click", function () {
+        window.location.href = LOGIN_URL;
+      });
+      overlay.querySelector("#gateCloseBtn").addEventListener("click", function () {
+        overlay.remove();
+      });
+      document.body.appendChild(overlay);
+    }
+
+    async function generateAwakeningReport(button) {
+      button.disabled = true;
+      const localReport = buildLocalReport();
+      try {
+        const saved = await apiJson("/api/students/me/awakening-reports", {
+          method: "POST",
+          body: JSON.stringify({
+            sessionId: activeSession.id,
+            scores: localReport.displayScores,
+            levelResults: localReport.levelResults,
+            activity: localReport.activity
+          })
+        });
+        showAwakeningReport(saved);
+      } catch (error) {
+        button.disabled = false;
+        const authFail = error.message === "请先登录" || /没有权限/.test(error.message);
+        if (authFail) {
+          showLoginGate("保存觉醒报告需要先登录学员账号");
+          return;
+        }
+        localReport.encouragement += " 本次报告已在闯关页展示，稍后重新登录可继续同步。";
+        showAwakeningReport(localReport, "同步失败：" + error.message);
+      }
+    }
+
+    function renderFinalActions(lv) {
+      const isLast = curLevel === LEVELS.length - 1;
+      const qnext = quizInner.querySelector(".qnext");
+      if (!qnext) return;
+      qnext.innerHTML = "";
+      if (!isLast) {
+        const b = document.createElement("button");
+        b.className = "btn";
+        b.id = "nextLv";
+        b.innerHTML = "进入下一关 · " + LEVELS[curLevel + 1].short + " " + ARROW;
+        b.addEventListener("click", () => enterLevel(curLevel + 1));
+        qnext.appendChild(b);
+      } else {
+        const b1 = document.createElement("button");
+        b1.className = "btn";
+        b1.id = "reportBtn";
+        b1.innerHTML = "查看智核觉醒报告 " + ARROW;
+        b1.addEventListener("click", () => generateAwakeningReport(b1));
+        qnext.appendChild(b1);
+      }
+      quizPane.scrollTop = quizPane.scrollHeight;
+    }
+
+    // ══════ 顶部进度条 ════════
+    function updateNavProgress(i) {
+      npFill.style.width = (((i + 1) / LEVELS.length) * 100) + "%";
+      npLabel.textContent = "第 " + (i + 1) + " / " + LEVELS.length + " 关 · " + LEVELS[i].name;
+    }
+
+    // 点击对话区，逐条出现下一条
+    dlgPane.addEventListener("click", () => {
+      if (dlgActive) showNextDlg(LEVELS[curLevel]);
+      else if (dlgEndCb) {
+        const cb = dlgEndCb;
+        dlgEndCb = null;
+        hideHint();
+        cb(LEVELS[curLevel]);
+      }
+    });
+
+    // ══════ 进入某一关 ════════
+    function enterLevel(i) {
+      curLevel = i;
+      const lv = LEVELS[i];
+      updateNavProgress(i);
+      lv._questions = [];
+      curQ = 0;
+      correct = 0;
+      dialogueEl.innerHTML = "";
+      hideHint();
+      quizInner.innerHTML = "";
+      quizShown = false;
+      dlgEndCb = null;
+
+      startDialogue(lv.opening, lv, revealQuiz, "点击查看题目 ▾");
+    }
+
+    // 支持 ?lvl=1..5 指定起始关卡（默认第一关）
+    const params = new URLSearchParams(location.search);
+    let start = parseInt(params.get("lvl"), 10);
+    if (!Number.isFinite(start) || start < 1 || start > LEVELS.length) start = 1;
+    (async function boot() {
+      if (!studentToken()) {
+        showLoginGate("进入能力闯关需要先登录学员账号");
+        return;
+      }
+      try {
+        runStats = createRunStats();
+        await createQuizSession();
+        enterLevel(start - 1);
+      } catch (error) {
+        dialogueEl.innerHTML = "";
+        hideHint();
+        quizInner.innerHTML =
+          `<div class="qcard"><div class="qstem">${esc(error.message)}。请先启动 Node 后端，然后刷新页面。</div></div>`;
+      }
+    })();
+  })();
+  </script>
+</body>
+</html>

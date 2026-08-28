@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>综合测训练</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <link rel="stylesheet" href="qframe.css" />
+  <script src="cursor.js"></script>
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <span class="site-action-wrap">
+      <a class="site-action" href="test.html">返回
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+  </div>
+
+  <main class="qframe-stage">
+    <div class="qframe-top">
+      <div class="trained-bar">已训练 <b id="trainedCount">0</b> 题</div>
+    </div>
+    <section class="quiz-pane" id="quizPane">
+      <div id="quizInner"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script>
+    window.TRAIN_POOL = [
+      { q: "想让 AI 生成一份结构清晰的周报，最关键的提示词要素是？", type: "single",
+        options: [{ key: "A", text: "明确角色、任务、输出格式与约束条件" }, { key: "B", text: "只写“写一份周报”" }, { key: "C", text: "让 AI 自己猜需求" }, { key: "D", text: "越长越好，堆满背景" }],
+        answer: ["A"], analysis: "清晰的角色、任务、格式与约束能显著降低歧义，是写好提示词的基础。", dims: ["提示词工程", "综合应用"] },
+      { q: "大模型生成的内容一定真实可靠。", type: "judge",
+        options: [{ key: "A", text: "正确" }, { key: "B", text: "错误" }],
+        answer: ["B"], analysis: "模型可能“幻觉”出看似合理但错误的内容，关键事实必须人工核查。", dims: ["信息辨别"] },
+      { q: "以下哪些做法符合 AI 使用伦理？（多选）", type: "multi",
+        options: [{ key: "A", text: "不向公共 AI 输入他人隐私" }, { key: "B", text: "对 AI 生成内容做标注" }, { key: "C", text: "用 AI 代写考试答卷" }, { key: "D", text: "对 AI 给出的医疗建议进行核查" }],
+        answer: ["A", "B", "D"], analysis: "保护隐私、标注来源、核查专业建议是负责任的用法；代写考试违背诚信。", dims: ["安全伦理"] },
+      { q: "希望 AI 写出的诗句更有画面感，应当？", type: "single",
+        options: [{ key: "A", text: "增加具体意象与感官描写的要求" }, { key: "B", text: "要求它写得更抽象" }, { key: "C", text: "不提任何要求" }, { key: "D", text: "让它尽量简短" }],
+        answer: ["A"], analysis: "具体意象与感官细节能提升文本的具象与感染力。", dims: ["内容创造"] },
+      { q: "AI 给出一段有错误的代码，正确做法是？", type: "single",
+        options: [{ key: "A", text: "让它解释并修正，再由人工验证" }, { key: "B", text: "直接复制上线" }, { key: "C", text: "完全不用 AI" }, { key: "D", text: "让它再生成一版不检查" }],
+        answer: ["A"], analysis: "AI 产出需人机协作：理解、修正、验证缺一不可。", dims: ["人机协作"] },
+      { q: "使用 AI 时应完全依赖其结论以节省时间。", type: "judge",
+        options: [{ key: "A", text: "正确" }, { key: "B", text: "错误" }],
+        answer: ["B"], analysis: "AI 是辅助工具，关键决策仍需人的判断与责任。", dims: ["综合应用", "安全伦理"] },
+      { q: "提示词中的 “few-shot（少样本）”是指？", type: "single",
+        options: [{ key: "A", text: "提供若干示例来引导输出格式与风格" }, { key: "B", text: "减少模型参数量" }, { key: "C", text: "关闭联网" }, { key: "D", text: "降低温度" }],
+        answer: ["A"], analysis: "示例能稳定地引导模型按期望的结构与风格作答。", dims: ["提示词工程"] },
+      { q: "识别 AI 幻觉可采用哪些方法？（多选）", type: "multi",
+        options: [{ key: "A", text: "对关键事实做交叉核实" }, { key: "B", text: "要求给出可查证来源" }, { key: "C", text: "文本越流畅越可信" }, { key: "D", text: "对比多个模型/资料" }],
+        answer: ["A", "B", "D"], analysis: "流畅不等于正确；核实、溯源、交叉验证是识伪关键。", dims: ["信息辨别"] },
+      { q: "把公司内部机密文档直接上传到公共 AI 服务，应该？", type: "single",
+        options: [{ key: "A", text: "在脱敏/授权范围内处理，避免泄露" }, { key: "B", text: "随意上传最方便" }, { key: "C", text: "无所谓" }, { key: "D", text: "只上传标题" }],
+        answer: ["A"], analysis: "敏感数据须脱敏或经授权，防止隐私与商业机密泄露。", dims: ["安全伦理"] },
+      { q: "用 AI 生成营销文案时，避免侵权应？", type: "single",
+        options: [{ key: "A", text: "确保素材原创或已授权，并人工润色" }, { key: "B", text: "直接照搬热款文案" }, { key: "C", text: "不检查来源" }, { key: "D", text: "全部交给 AI" }],
+        answer: ["A"], analysis: "原创/授权 + 人工把关既能合规又保留品牌语气。", dims: ["内容创造", "安全伦理"] },
+      { q: "AI 可以替代人类完成所有决策。", type: "judge",
+        options: [{ key: "A", text: "正确" }, { key: "B", text: "错误" }],
+        answer: ["B"], analysis: "涉及价值、责任与不确定性的决策仍需人来拍板。", dims: ["人机协作"] },
+      { q: "完成一次数据分析报告，较合理的流程是？", type: "single",
+        options: [{ key: "A", text: "明确目标→准备数据→AI 辅助分析→人工校验结论" }, { key: "B", text: "直接让 AI 编一份结论" }, { key: "C", text: "只看图表不管来源" }, { key: "D", text: "跳过目标" }],
+        answer: ["A"], analysis: "目标清晰、数据可靠、人工校验，结论才站得住脚。", dims: ["综合应用"] }
+    ];
+  </script>
+  <script src="qframe.js"></script>
+</body>
+</html>

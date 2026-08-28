@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>引导教程 · 层叠卡片</title>
+<style>* { cursor: none !important; }</style>
+<link rel="stylesheet" href="cursor.css">
+<link rel="stylesheet" href="site-chrome.css">
+<script src="cursor.js"></script>
+<style>
+  :root{
+    --ink:#0f172a;
+    --sub:#64748b;
+    --line:#e8edf3;
+    --brand:#4f46e5;
+    --bg: rgb(30, 85, 157);          /* 与 main.html 一致 */
+  }
+  *{margin:0;padding:0;box-sizing:border-box;letter-spacing:normal}
+  html,body{height:100%;width:100%;overflow:hidden}
+  body{
+    font-family:"Inter","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+    color:#fff;
+    background:var(--bg);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:calc(var(--site-nav-h) + var(--site-nav-offset) + 44px) 24px calc(var(--site-footer-h) + 28px);
+  }
+
+  /* ════════════ 居中容器 ════════════ */
+  .center{
+    position:relative;
+    z-index:1;
+    width:min(1120px,100% - 48px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    padding:24px 0;
+  }
+
+  /* ════════════ 步骤切换 tabs（在深蓝底上提高可读性） ════════════ */
+  .tabs{
+    display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+    margin-bottom:34px;
+  }
+  .tab{
+    border:none;background:transparent;cursor:pointer;
+    display:flex;align-items:center;gap:10px;
+    padding:13px 24px;border-radius:999px;
+    font-size:16px;font-weight:600;color:rgba(255,255,255,0.72);
+    transition:all .35s cubic-bezier(.22,1,.36,1);
+  }
+  .tab .num{font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);font-variant-numeric:tabular-nums}
+  .tab:hover{color:#fff}
+  .tab.active{
+    background:rgba(255,255,255,0.92);color:var(--brand);
+    box-shadow:0 8px 20px -10px rgba(0,0,0,.45);
+  }
+  .tab.active .num{color:var(--brand)}
+
+  /* ════════════ 卡片轮播 =══════════ */
+  .carousel{
+    display:flex;
+    justify-content:center;
+    width:100%;
+    max-width:1160px;
+  }
+  .stage-wrap{position:relative;width:min(720px,100%);min-width:0}
+  .stage{position:relative;width:100%;height:clamp(350px,calc(100dvh - 405px),540px);perspective:1500px}
+
+  .card{
+    position:absolute;top:0;left:0;
+    width:min(720px,100%);height:100%;
+    background:#fff;
+    border:1px solid rgba(15,23,42,.07);
+    border-radius:8px;
+    padding:28px 30px 24px;
+    display:flex;flex-direction:column;gap:16px;
+    box-shadow:0 12px 30px -14px rgba(15,23,42,.16);
+    opacity:0;
+    transform:translate3d(0,56px,0) scale(.94);
+    transition:
+      transform .8s cubic-bezier(.22,1,.36,1),
+      opacity .65s ease,
+      box-shadow .65s ease;
+    will-change:transform,opacity;
+    cursor:pointer;
+  }
+  .card.is-active{
+    box-shadow:
+      0 34px 70px -26px rgba(99,102,241,.38),
+      0 14px 30px -14px rgba(15,23,42,.16);
+    cursor:default;
+  }
+
+  .card-head{display:flex;align-items:center;justify-content:space-between}
+  .tag{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;font-weight:700;
+    padding:7px 13px;border-radius:999px;
+    background:#eef2ff;color:var(--brand);
+  }
+  .tag .num{font-variant-numeric:tabular-nums;opacity:.7}
+  .head-ico{
+    width:42px;height:42px;border-radius:8px;
+    display:grid;place-items:center;
+    background:#eef2ff;color:var(--brand);
+  }
+  .head-ico svg{width:20px;height:20px}
+
+  .card h2{font-size:clamp(22px,3vw,30px);font-weight:700;line-height:1.25;color:var(--ink)}
+  .card p{font-size:14.5px;line-height:1.8;color:var(--sub);max-width:50ch}
+
+  .mock{
+    margin-top:auto;
+    background:#f8fafc;border:1px solid var(--line);
+    border-radius:8px;padding:16px;
+  }
+
+  .kpi{display:flex;gap:12px;margin-bottom:14px}
+  .kpi-item{
+    flex:1;background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:10px 12px;
+  }
+  .kpi-label{font-size:11px;color:#94a3b8;font-weight:600;margin-bottom:4px}
+  .kpi-row{display:flex;align-items:baseline;gap:8px}
+  .kpi-val{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+  .kpi-up{font-size:11px;font-weight:700;color:#059669}
+
+  .bars{display:flex;align-items:flex-end;gap:8px;height:108px}
+  .bar{flex:1;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,#818cf8,#6366f1)}
+  .bar:nth-child(3n){background:linear-gradient(180deg,#7dd3fc,#38bdf8)}
+  .bar:nth-child(5n){background:linear-gradient(180deg,#6ee7b7,#10b981)}
+
+  .flow{display:flex;align-items:stretch;gap:8px}
+  .node{
+    flex:1;background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:14px 10px;text-align:center;
+  }
+  .node-ico{
+    width:32px;height:32px;margin:0 auto 8px;border-radius:8px;
+    display:grid;place-items:center;background:#eef2ff;color:var(--brand);
+  }
+  .node-ico svg{width:16px;height:16px}
+  .node-t{font-size:12px;font-weight:700;margin-bottom:3px}
+  .node-d{font-size:11px;color:#94a3b8}
+  .flow-arrow{align-self:center;color:#94a3b8;flex:none}
+  .flow-arrow svg{width:16px;height:16px}
+
+  .chat{display:flex;flex-direction:column;gap:10px}
+  .chat-row{
+    display:flex;gap:10px;align-items:flex-start;
+    background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:11px 12px;
+  }
+  .avatar{
+    width:30px;height:30px;border-radius:50%;flex:none;
+    display:grid;place-items:center;
+    color:#fff;font-size:11px;font-weight:700;
+  }
+  .chat-name{font-size:12px;font-weight:700;margin-bottom:3px}
+  .chat-text{font-size:12px;color:var(--sub);line-height:1.5}
+  .chat-time{margin-left:auto;font-size:11px;color:#94a3b8;flex:none}
+
+  .sec{display:flex;flex-direction:column;gap:10px}
+  .sec-row{
+    display:flex;align-items:center;gap:11px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:11px 13px;
+  }
+  .sec-ico{
+    width:30px;height:30px;border-radius:8px;flex:none;
+    display:grid;place-items:center;
+    background:#ecfdf5;color:#059669;
+  }
+  .sec-ico svg{width:15px;height:15px}
+  .sec-t{font-size:13px;font-weight:600}
+  .status{
+    margin-left:auto;font-size:11px;font-weight:700;
+    color:#059669;background:#ecfdf5;
+    padding:4px 11px;border-radius:999px;
+  }
+
+  .apps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .app{
+    display:flex;align-items:center;gap:9px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:13px 11px;
+    font-size:13px;font-weight:600;color:#334155;
+  }
+  .app svg{width:18px;height:18px;color:var(--brand);flex:none}
+
+  .card.c2 .tag{background:#f0f9ff;color:#0284c7}
+  .card.c2 .head-ico{background:#f0f9ff;color:#0284c7}
+  .card.c3 .tag{background:#fffbeb;color:#b45309}
+  .card.c3 .head-ico{background:#fffbeb;color:#b45309}
+  .card.c4 .tag{background:#ecfdf5;color:#059669}
+  .card.c4 .head-ico{background:#ecfdf5;color:#059669}
+  .card.c5 .tag{background:#fdf2f8;color:#db2777}
+  .card.c5 .head-ico{background:#fdf2f8;color:#db2777}
+
+  .nav-below{display:flex;gap:18px;justify-content:center;margin-top:14px}
+  .nav-btn{
+    width:50px;height:50px;border-radius:50%;
+    background:transparent;border:1px solid rgba(255,255,255,.55);
+    box-shadow:none;
+    display:grid;place-items:center;cursor:pointer;color:rgba(255,255,255,.9);
+    transition:all .3s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-btn svg{width:22px;height:22px}
+  .nav-btn:hover{
+    transform:translateY(-3px);color:#fff;
+    border-color:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.12);
+  }
+  .nav-btn:active{transform:translateY(-1px) scale(.95)}
+
+  /* 底部黑色页尾：与 main.html 一致 */
+  .footer{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    height:42px;
+    display:flex;align-items:center;
+    padding:0 28px;
+    background:#000;
+    color:#fff;
+    font-size:14px;font-weight:500;letter-spacing:.08em;
+    text-align:left;
+    z-index:70;
+  }
+  .footer-link{
+    color:rgb(254,92,67);
+    text-decoration:none;
+    transition:opacity .15s ease;
+  }
+  .footer-link:hover{opacity:.78;text-decoration:underline}
+
+  @media (max-width:640px){
+    .center{padding-top:70px}
+    .tabs{margin-bottom:12px}
+    .stage{height:min(58vh,450px)}
+    .carousel{grid-template-columns:46px minmax(0,1fr) 46px;gap:10px}
+    .nav-btn{width:46px;height:46px}
+    .nav-btn svg{width:19px;height:19px}
+    .card{padding:22px 20px 18px;gap:13px}
+    .card p{font-size:13.5px}
+    .mock{padding:12px}
+    .kpi{flex-wrap:wrap}
+    .kpi-item{min-width:45%}
+    .bars{height:80px}
+    .apps{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .card,.tab,.nav-btn{transition:none}
+  }
+</style>
+</head>
+<body>
+<nav class="site-nav">
+  <span class="site-brand">AIQUOS</span>
+  <span class="site-action-wrap">
+    <a class="site-action" href="main.html">返回
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </span>
+</nav>
+
+<div class="site-lights" aria-hidden="true">
+  <div class="site-grid"></div>
+  <div class="site-scan"></div>
+</div>
+<div class="site-glow" aria-hidden="true"></div>
+
+<section class="center">
+  <nav class="tabs" id="tabs" aria-label="步骤切换"></nav>
+
+  <div class="carousel">
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+
+        <article class="card c1 is-active" data-tag="智能洞察">
+          <div class="card-head">
+            <span class="tag"><span class="num">01</span>智能洞察</span>
+            <span class="head-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></span>
+          </div>
+          <h2>让学习数据开口说话</h2>
+          <p>系统会把练习记录整理成清晰的能力画像，帮助你看到优势和薄弱点，而不是只给出一个冷冰冰的分数。</p>
+        </article>
+
+        <article class="card c2" data-tag="自动工作流">
+          <div class="card-head">
+            <span class="tag"><span class="num">02</span>自动工作流</span>
+            <span class="head-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/><circle cx="12" cy="12" r="3"/></svg></span>
+          </div>
+          <h2>把重复动作交给流程</h2>
+          <p>从安排练习到汇总反馈，常用步骤可以自动衔接，让你把注意力留给真正的思考和创作。</p>
+        </article>
+
+        <article class="card c3" data-tag="团队协作">
+          <div class="card-head">
+            <span class="tag"><span class="num">03</span>团队协作</span>
+            <span class="head-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.4"/><path d="M4 20c0-2.8 2.2-5 5-5s5 2.2 5 5"/><path d="M14.8 15.4c2.4.3 4.2 2.3 4.2 4.6"/></svg></span>
+          </div>
+          <h2>在同一份思路里相遇</h2>
+          <p>同学和老师可以在共享空间里查看进展、留下建议，让讨论从零散的消息变成连续的创作过程。</p>
+        </article>
+
+        <article class="card c4" data-tag="数据安全">
+          <div class="card-head">
+            <span class="tag"><span class="num">04</span>数据安全</span>
+            <span class="head-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-2.8 7.2-7 9-4.2-1.8-7-5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          </div>
+          <h2>隐私始终排在前面</h2>
+          <p>学习档案只在明确授权后使用，重要数据分层保护，让成长记录属于你自己。</p>
+        </article>
+
+        <article class="card c5" data-tag="开放集成">
+          <div class="card-head">
+            <span class="tag"><span class="num">05</span>开放集成</span>
+            <span class="head-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 7V4M14 7V4M8 7h8v4a4 4 0 0 1-8 0V7z"/><path d="M12 15v3M9 21h6"/></svg></span>
+          </div>
+          <h2>连接熟悉的工具</h2>
+          <p>开放接口让课程平台、资料库和练习工具更容易接入，成长轨迹可以跨场景连续记录。</p>
+        </article>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-below">
+    <button class="nav-btn" id="prevBtn" aria-label="上一张卡片"><i data-lucide="arrow-left"></i></button>
+    <button class="nav-btn" id="nextBtn" aria-label="下一张卡片"><i data-lucide="arrow-right"></i></button>
+  </div>
+</section>
+
+<footer class="site-footer"></footer>
+
+<script>
+  const stage = document.getElementById('stage');
+  const tabsBox = document.getElementById('tabs');
+  const cards = Array.from(stage.querySelectorAll('.card'));
+  const total = cards.length;
+  let active = 0;
+
+  cards.forEach((card, i) => {
+    const tab = document.createElement('button');
+    tab.className = 'tab';
+    tab.setAttribute('role', 'tab');
+    tab.innerHTML = '<span class="num">' + String(i + 1).padStart(2, '0') + '</span>' + card.dataset.tag;
+    tab.addEventListener('click', () => go(i));
+    tabsBox.appendChild(tab);
+  });
+  const tabs = Array.from(tabsBox.children);
+
+  function go(i) {
+    active = (i + total) % total;
+    render();
+  }
+
+  function render() {
+    const compact = window.innerWidth <= 640;
+    cards.forEach((card, i) => {
+      const off = (i - active + total) % total;
+      const x = off === 0 ? 0 : (compact ? 16 : 46) + off * (compact ? 12 : 30);
+      const y = off === 0 ? 0 : -off * (compact ? 8 : 12);
+      const rot = off * (compact ? 3.4 : 5.6);
+      const scale = 1 - off * (compact ? 0.065 : 0.075);
+      const opacity = off === 0 ? 1 : Math.max(0.16, 0.9 - off * 0.18);
+      card.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) rotate(' + rot + 'deg) scale(' + scale + ')';
+      card.style.opacity = opacity;
+      card.style.zIndex = 100 - off;
+      card.classList.toggle('is-active', off === 0);
+    });
+    tabs.forEach((tab, i) => {
+      tab.classList.toggle('active', i === active);
+      tab.setAttribute('aria-selected', i === active);
+    });
+  }
+
+  cards.forEach((card, i) => card.addEventListener('click', () => { if (i !== active) go(i); }));
+  document.getElementById('prevBtn').addEventListener('click', () => go(active - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => go(active + 1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') go(active - 1);
+    if (e.key === 'ArrowRight') go(active + 1);
+  });
+  window.addEventListener('resize', render);
+
+  if (window.lucide) {
+    lucide.createIcons();
+  } else {
+    const paths = {
+      'arrow-left': '<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
+      'arrow-right': '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'
+    };
+    document.querySelectorAll('i[data-lucide]').forEach(el => {
+      const p = paths[el.getAttribute('data-lucide')];
+      if (p) el.outerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + p + '</svg>';
+    });
+  }
+
+  requestAnimationFrame(() => requestAnimationFrame(render));
+</script>
+
+</body>
+</html>

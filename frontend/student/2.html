@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>客观题训练</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <link rel="stylesheet" href="qframe.css" />
+  <script src="cursor.js"></script>
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <span class="site-action-wrap">
+      <a class="site-action" href="test.html">返回
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+  </div>
+
+  <main class="qframe-stage">
+    <div class="qframe-top">
+      <div class="trained-bar">已训练 <b id="trainedCount">0</b> 题</div>
+    </div>
+    <section class="quiz-pane" id="quizPane">
+      <div id="quizInner"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script>
+    window.TRAIN_POOL = [
+      { q: "大模型的“幻觉（hallucination）”通常指？", type: "single",
+        options: [{ key: "A", text: "生成看似合理但事实错误的内容" }, { key: "B", text: "模型无法联网" }, { key: "C", text: "回答太快" }, { key: "D", text: "用户提问不清" }],
+        answer: ["A"], analysis: "幻觉指模型凭空编造看似可信但错误的信息，是核心风险之一。", dims: ["信息辨别"] },
+      { q: "温度（temperature）越高，模型输出越确定。", type: "judge",
+        options: [{ key: "A", text: "正确" }, { key: "B", text: "错误" }],
+        answer: ["B"], analysis: "温度越高随机性越强、越发散；越低输出越稳定保守。", dims: ["综合应用"] },
+      { q: "提高 AI 回答准确性的最有效做法是？", type: "single",
+        options: [{ key: "A", text: "清晰具体的提示 + 提供必要上下文" }, { key: "B", text: "反复说“请认真点”" }, { key: "C", text: "用最简短的问题" }, { key: "D", text: "多打感叹号" }],
+        answer: ["A"], analysis: "明确任务与上下文能显著减少误解与偏题。", dims: ["提示词工程"] },
+      { q: "开源模型一定比闭源模型差。", type: "judge",
+        options: [{ key: "A", text: "正确" }, { key: "B", text: "错误" }],
+        answer: ["B"], analysis: "优劣取决于场景、规模与微调，开源模型在很多任务上表现优秀。", dims: ["综合应用"] },
+      { q: "在大模型中，token 最接近的含义是？", type: "single",
+        options: [{ key: "A", text: "文本被拆分后的最小处理单元（词/字/片段）" }, { key: "B", text: "显卡型号" }, { key: "C", text: "用户账号" }, { key: "D", text: "网络延迟" }],
+        answer: ["A"], analysis: "计费与长度常以 token 计，中文通常几个字为一个 token。", dims: ["综合应用"] },
+      { q: "RAG（检索增强生成）的主要作用是？", type: "single",
+        options: [{ key: "A", text: "让模型先检索外部知识再作答，减少编造" }, { key: "B", text: "让模型变慢" }, { key: "C", text: "删除历史对话" }, { key: "D", text: "替代提示词" }],
+        answer: ["A"], analysis: "RAG 通过接入可信资料提升答案的可追溯与准确率。", dims: ["信息辨别", "综合应用"] },
+      { q: "提示词写得越长，效果一定越好。", type: "judge",
+        options: [{ key: "A", text: "正确" }, { key: "B", text: "错误" }],
+        answer: ["B"], analysis: "关键是清晰与相关信息，冗长且含噪声反而可能干扰。", dims: ["提示词工程"] },
+      { q: "防止敏感信息泄露，应当？", type: "single",
+        options: [{ key: "A", text: "不在提示中写入机密，必要时脱敏" }, { key: "B", text: "把所有资料都贴进去" }, { key: "C", text: "不用管" }, { key: "D", text: "只发文件名" }],
+        answer: ["A"], analysis: "最小必要原则：只提供完成任务所需的信息。", dims: ["安全伦理"] },
+      { q: "多轮对话中保持上下文，主要依靠？", type: "single",
+        options: [{ key: "A", text: "对话历史被持续传入模型" }, { key: "B", text: "模型记住了你之前所有会话" }, { key: "C", text: "每次都是全新对话" }, { key: "D", text: "浏览器缓存" }],
+        answer: ["A"], analysis: "上下文来自本轮传入的历史消息，跨会话通常不保留。", dims: ["人机协作"] },
+      { q: "AI 生成的内容无需标注来源。", type: "judge",
+        options: [{ key: "A", text: "正确" }, { key: "B", text: "错误" }],
+        answer: ["B"], analysis: "公开使用 AI 内容时，标注来源是透明与合规的常见要求。", dims: ["安全伦理"] },
+      { q: "对模型进行微调（fine-tuning）的主要目的是？", type: "single",
+        options: [{ key: "A", text: "让模型适配特定任务或领域风格" }, { key: "B", text: "让它断网" }, { key: "C", text: "缩短上下文" }, { key: "D", text: "更换品牌名" }],
+        answer: ["A"], analysis: "微调用领域数据强化特定能力或语气一致性。", dims: ["综合应用"] },
+      { q: "评估 AI 的回答，应当？", type: "single",
+        options: [{ key: "A", text: "结合事实核查与自身判断" }, { key: "B", text: "全盘接受" }, { key: "C", text: "只看字数" }, { key: "D", text: "谁先答听谁的" }],
+        answer: ["A"], analysis: "保持批判性，用事实与逻辑检验输出质量。", dims: ["信息辨别"] }
+    ];
+  </script>
+  <script src="qframe.js"></script>
+</body>
+</html>

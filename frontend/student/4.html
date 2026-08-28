@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>实操任务训练</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <link rel="stylesheet" href="qframe.css" />
+  <script src="cursor.js"></script>
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <span class="site-action-wrap">
+      <a class="site-action" href="test.html">返回
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+  </div>
+
+  <main class="qframe-stage">
+    <div class="qframe-top">
+      <div class="trained-bar">已训练 <b id="trainedCount">0</b> 题</div>
+    </div>
+    <section class="quiz-pane" id="quizPane">
+      <div id="quizInner"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script>
+    window.TRAIN_POOL = [
+      { q: "用 AI 整理 100 条用户反馈并归类，最佳做法是？", type: "task",
+        options: [{ key: "A", text: "先定义分类维度，再批量处理并抽样核对" }, { key: "B", text: "直接让 AI 随便分" }, { key: "C", text: "不定义维度" }, { key: "D", text: "只看几条就下结论" }],
+        answer: ["A"], analysis: "先立标准再批量，并抽样校验，结果才可信。", dims: ["综合应用", "人机协作"] },
+      { q: "用 AI 生成产品介绍图文案，应？", type: "task",
+        options: [{ key: "A", text: "明确卖点、受众、渠道后生成多版对比" }, { key: "B", text: "一句话交给它" }, { key: "C", text: "不写卖点" }, { key: "D", text: "直接发布首稿" }],
+        answer: ["A"], analysis: "目标清晰 + 多版候选，便于挑选与迭代。", dims: ["内容创造", "综合应用"] },
+      { q: "让 AI 写一段读 CSV 的 Python 脚本，最好提供？", type: "task",
+        options: [{ key: "A", text: "字段样例、期望输出与“加注释”的要求" }, { key: "B", text: "什么都不给" }, { key: "C", text: "只说“写代码”" }, { key: "D", text: "不要注释" }],
+        answer: ["A"], analysis: "样例 + 期望输出让代码更贴合，注释利于维护。", dims: ["人机协作", "提示词工程"] },
+      { q: "AI 生成的方案存在风险，应当？", type: "task",
+        options: [{ key: "A", text: "标注风险并人工评估可行性" }, { key: "B", text: "直接执行" }, { key: "C", text: "忽略风险" }, { key: "D", text: "交给别人" }],
+        answer: ["A"], analysis: "AI 不担责，风险须由人识别与把控。", dims: ["安全伦理", "综合应用"] },
+      { q: "用 AI 做会议纪要，最佳流程是？", type: "task",
+        options: [{ key: "A", text: "提供转写稿与模板，让其提炼决议与待办" }, { key: "B", text: "不给模板随便写" }, { key: "C", text: "不提供转写" }, { key: "D", text: "只记标题" }],
+        answer: ["A"], analysis: "素材 + 结构模板，产出更结构化可用。", dims: ["综合应用", "人机协作"] },
+      { q: "让 AI 评估两份方案，应？", type: "task",
+        options: [{ key: "A", text: "提供评判标准，让它对比打分并说明理由" }, { key: "B", text: "不给标准" }, { key: "C", text: "只说“哪个好”" }, { key: "D", text: "不让它解释" }],
+        answer: ["A"], analysis: "标准显式化，结论才可解释、可复核。", dims: ["综合应用", "信息辨别"] },
+      { q: "AI 输出包含不确定的数据，应？", type: "task",
+        options: [{ key: "A", text: "要求标注置信度与依据，再人工核实" }, { key: "B", text: "直接采用" }, { key: "C", text: "忽略不确定" }, { key: "D", text: "当作确定" }],
+        answer: ["A"], analysis: "对不确定信息要透明标注并核查。", dims: ["信息辨别", "安全伦理"] },
+      { q: "用 AI 辅助编程遇到报错，最佳做法是？", type: "task",
+        options: [{ key: "A", text: "贴上报错与相关上下文，让它定位并修复" }, { key: "B", text: "重开话题不提报错" }, { key: "C", text: "忽略错误" }, { key: "D", text: "不贴上下文" }],
+        answer: ["A"], analysis: "错误信息 + 上下文是高效排错的关键。", dims: ["人机协作"] },
+      { q: "让 AI 写周报，应？", type: "task",
+        options: [{ key: "A", text: "提供要点列表，让它组织成结构化周报" }, { key: "B", text: "不给要点" }, { key: "C", text: "只说“写周报”" }, { key: "D", text: "不检查" }],
+        answer: ["A"], analysis: "你提供事实，AI 负责组织，质量更可控。", dims: ["内容创造", "综合应用"] },
+      { q: "AI 生成的内容准备对外发布，最后一步应？", type: "task",
+        options: [{ key: "A", text: "人工审核事实与合规后再发布" }, { key: "B", text: "直接群发" }, { key: "C", text: "交给 AI 审核即可" }, { key: "D", text: "不审" }],
+        answer: ["A"], analysis: "发布前的人的审核是责任与合规的最后防线。", dims: ["安全伦理", "综合应用"] }
+    ];
+  </script>
+  <script src="qframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+/* =========================================================
+   qframe.css — 与 level.html 一致的问题框架样式
+   仅用于 1/2/3/4.html 训练页，不改动 level.html 等共享文件
+   ========================================================= */
+
+/* 舞台容器：占据导航与页脚之间的全部空间，纵向排列 */
+.qframe-stage {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding:
+    calc(var(--site-nav-h) + var(--site-nav-offset) + 8px)
+    clamp(16px, 3vw, 40px)
+    calc(var(--site-footer-h) + 18px);
+}
+
+/* 顶部「已训练 xx 题」条 */
+.qframe-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.trained-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: #fff !important;
+  background: #000 !important;
+  padding: 6px 14px;
+  box-shadow: 4px 4px 0 rgb(254, 92, 67);
+}
+.trained-bar b {
+  color: #fff;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 题目滚动区（与 level.html .quiz-pane 一致） */
+.quiz-pane {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 4px 18px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, .4) transparent;
+}
+.quiz-pane::-webkit-scrollbar { width: 7px; }
+.quiz-pane::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, .4); }
+.quiz-pane::-webkit-scrollbar-track { background: transparent; }
+
+.quiz-head {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .12em;
+  color: #fff; background: #000; padding: 3px 10px;
+  margin-bottom: 12px;
+}
+
+/* 问题卡片（与 level.html .qcard 完全一致） */
+.qcard {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  background: #fff; color: #111;
+  border: 3px solid #000;
+  padding: 18px 18px 20px;
+  box-shadow: 8px 8px 0 #000;
+  animation: slideUp .55s cubic-bezier(.22, .61, .36, 1) both;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* 答题视觉反馈 */
+.qcard.fx-correct { animation: goodFlash .6s ease; }
+.qcard.fx-wrong { animation: badShake .45s ease, redGlow .45s ease; }
+@keyframes goodFlash {
+  0%, 100% { box-shadow: 8px 8px 0 #000; }
+  40% { box-shadow: 0 0 0 5px #2fb673, 8px 8px 0 #2fb673; border-color: #2fb673; }
+}
+@keyframes redGlow {
+  0%, 100% { box-shadow: 8px 8px 0 #000; }
+  40% { box-shadow: 0 0 0 5px #e23b2e, 8px 8px 0 #e23b2e; border-color: #e23b2e; }
+}
+@keyframes badShake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-9px); }
+  30% { transform: translateX(9px); }
+  45% { transform: translateX(-7px); }
+  60% { transform: translateX(7px); }
+  80% { transform: translateX(-4px); }
+}
+
+/* 答对时的星星（放在能力维度行右侧） */
+.star-pop {
+  margin-left: auto;
+  font-size: 36px; line-height: 1; color: #2fb673;
+  text-shadow: 0 0 10px #2fb673, 2px 2px 0 #000;
+  animation: starPop .6s cubic-bezier(.22, .61, .36, 1) both, starGlow 1.15s ease-in-out .6s infinite;
+  pointer-events: none;
+}
+@keyframes starPop {
+  0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+  60% { transform: scale(1.45) rotate(12deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes starGlow {
+  0%, 100% { filter: drop-shadow(0 0 5px #2fb673) drop-shadow(0 0 10px #2fb673); }
+  50% { filter: drop-shadow(0 0 13px #2fb673) drop-shadow(0 0 24px #2fb673); transform: scale(1.12); }
+}
+
+.qhead {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .06em;
+  color: #111; margin-bottom: 10px;
+}
+.qhead .qtype { background: #000; color: #fff; padding: 2px 9px; font-size: 11.5px; letter-spacing: .04em; }
+.qstem { font-size: 16px; font-weight: 700; line-height: 1.7; color: #111; margin-bottom: 14px; text-align: justify; }
+
+.opts { display: flex; flex-direction: column; gap: 12px; }
+/* 注意：site-chrome.css 有全局 `button { … !important }` 规则，会压过不带 !important 的 .opt。
+   因此 .opt 的基础 background/color/border/border-radius/box-shadow 必须带 !important 才能生效。 */
+.opt {
+  position: relative;
+  display: flex !important; align-items: center; gap: 12px;
+  padding: 12px 14px !important;
+  border: 3px solid #000 !important;
+  border-radius: 0 !important;
+  background: #fff !important; color: #111 !important;
+  font-size: 15px !important; line-height: 1.6 !important; text-align: left !important;
+  box-shadow: 5px 5px 0 #000 !important;
+  cursor: none;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.opt:hover:not(.locked) { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 #000 !important; }
+.opt:active:not(.locked) { transform: translate(3px, 3px); box-shadow: 2px 2px 0 #000 !important; }
+.opt .key {
+  flex: none; width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border: 2px solid #000 !important; background: rgb(254, 92, 67) !important; color: #fff !important;
+  font-weight: 800; font-size: 13px;
+}
+.opt .otext { color: #111 !important; }
+/* 答对/答错反馈色（与 site-chrome.css 的 !important 规则同特异性，qframe 后加载胜出） */
+.opt.correct { background: #2fb673 !important; color: #fff !important; }
+.opt.correct .key { background: #0c3d24 !important; }
+.opt.wrong { background: rgb(254, 92, 67) !important; color: #fff !important; }
+.opt.wrong .key { background: #7a1f12 !important; }
+.opt.locked { cursor: default; }
+/* 选中态：白底黑字（压过 site-chrome.css .opt.sel 蓝绿底白字） */
+.opt.sel { background: #fff !important; color: #111 !important; border-color: #000 !important; box-shadow: 5px 5px 0 #000 !important; }
+.opt.sel .key { background: #000 !important; }
+.btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: 5px 5px 0 #000; transform: none; }
+
+/* 反馈区（解析 / 正确答案 / 能力维度） */
+.feedback {
+  margin-top: 14px;
+  border: 3px solid #000;
+  padding: 12px 14px;
+  background: #f3f6fb;
+  display: none;
+  animation: pop .3s ease both;
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to { opacity: 1; transform: none; }
+}
+.feedback.show { display: block; }
+.feedback .fb-analysis { margin-top: 9px; padding-top: 9px; font-size: 13.5px; line-height: 1.75; color: #2a3548; }
+.feedback .fb-analysis b { color: #c23a22; }
+.feedback .fb-answer { margin-top: 8px; font-size: 13.5px; font-weight: 700; color: #1f6b43; line-height: 1.7; }
+.feedback .fb-dims { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; color: #44506a; }
+.feedback .fb-dims .dim { border: 2px solid #000; background: #fff; padding: 1px 7px; font-weight: 700; }
+
+.qnext {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-top: 3px solid #000;
+  padding-top: 16px;
+}
+.qnext-right { display: flex; align-items: center; justify-content: flex-end; gap: 14px; flex-wrap: wrap; }
+.qnext .btn:disabled { opacity: .38; }
+
+/* 黑色图形按钮（与 level.html 一致） */
+.btn {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px;
+  border: 3px solid #000;
+  border-radius: 0;
+  background: rgb(254, 92, 67); color: #fff;
+  font-size: 15px; font-weight: 800; letter-spacing: .04em;
+  box-shadow: 5px 5px 0 #000;
+  cursor: none;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 #000; }
+.btn:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 #000; }
+.btn.white { background: #fff; color: #111; }
+.btn svg { width: 17px; height: 17px; }
+
+.qstart-wrap { display: grid; place-items: center; min-height: 220px; }
+
+@media (max-width: 720px) {
+  .qcard { padding: 14px 14px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qcard, .feedback, .star-pop { animation: none !important; }
+}

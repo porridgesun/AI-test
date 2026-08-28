@@ -18,7 +18,7 @@ export function registerAssessmentRoutes(router, { store }) {
   }, { auth: true });
 
   router.post("/api/assessments/:id/sessions", (ctx) => {
-    if (!ctx.student) throw httpError(404, "学生档案不存在");
+    if (!ctx.student) throw httpError(404, "学员档案不存在");
     const assessment = store.data.assessments.find((item) => item.id === ctx.params.id);
     if (!assessment || assessment.status !== "published") throw httpError(404, "测评不存在或未发布");
     if (!assessment.classIds.includes(ctx.student.classId)) throw httpError(403, "你不属于该测评目标班级");
@@ -266,7 +266,7 @@ function saveAnswer(store, session, question, submission, metadata = {}) {
     result: graded.result,
     score: graded.score,
     correctRatio: graded.correctRatio,
-    explanation: question.explanation,
+    explanation: question.explanation || question.analysis,
     npcReaction: npcFeedback(question.levelId, graded.result),
     dimensionScores,
     flags,

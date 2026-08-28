@@ -19,8 +19,9 @@ async function api(path, options = {}, token) {
 
 async function login(account, password) {
   if (tokenCache[account]) return tokenCache[account];
-  const data = await api("/api/auth/login", { method: "POST", body: { account, password } });
-  tokenCache[account] = data.token;
+  const scope = account === "student" ? "student" : "admin";
+  const data = await api("/api/auth/login", { method: "POST", body: { account, password, scope } });
+  tokenCache[`${scope}:${account}`] = data.token;
   return data.token;
 }
 

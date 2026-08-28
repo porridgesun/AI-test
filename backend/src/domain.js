@@ -4,7 +4,7 @@ export const dimensionName = (id) => DIMENSION_IDS.includes(id) ? id : null;
 
 export function publicUser(user) {
   if (!user) return null;
-  const { passwordHash, passwordSalt, ...rest } = user;
+  const { passwordHash, passwordSalt, hash, salt, ...rest } = user;
   return rest;
 }
 
@@ -137,10 +137,16 @@ export function pickQuestion(store, levelId, difficulty, usedIds, type = null) {
     !used.has(item.id) &&
     (!type || item.type === type)
   );
-  const near = pool.filter((item) => Math.abs(item.difficulty - difficulty) <= 1);
+  const targetDifficulty = Number(difficulty) || 3;
+  const near = pool.filter((item) => Math.abs(questionDifficultyValue(item) - targetDifficulty) <= 1);
   pool = near.length ? near : pool;
   if (!pool.length) return null;
   return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function questionDifficultyValue(question) {
+  const bands = { low: 1, medium: 3, high: 5, hard: 5 };
+  return bands[question.difficulty] || Number(question.difficulty) || 3;
 }
 
 export function sessionState(store, session) {

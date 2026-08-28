@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智核觉醒</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <script src="cursor.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root { --nav-h: 58px; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;                 /* 只要屏幕大小，无滚动条 */
+    }
+
+    body {
+      position: relative;
+      background: rgb(30, 85, 157);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      cursor: none;                     /* 隐藏原生鼠标，使用自定义光标 */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ════════════ 科技感背景光效 ════════════ */
+    .lights {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* 科技网格（全屏统一，更明显） */
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(170, 215, 255, 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(170, 215, 255, 0.14) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* 霓虹光束（来回流动，更淡） */
+    .bar {
+      position: absolute;
+      left: -40%;
+      width: 180%;
+      height: 3px;
+      border-radius: 3px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(130, 215, 255, 0.45) 45%,
+        rgba(235, 250, 255, 0.6) 50%,
+        rgba(130, 215, 255, 0.45) 55%,
+        transparent 100%
+      );
+      box-shadow: 0 0 10px 1px rgba(120, 200, 255, 0.22),
+                  0 0 24px 4px rgba(90, 170, 255, 0.10);
+      opacity: 0.32;
+      will-change: transform;
+    }
+    .bar.b1 { top: 10%; transform: rotate(-9deg); animation: sweep  9s ease-in-out infinite alternate; }
+    .bar.b2 { top: 26%; transform: rotate(5deg);  animation: sweepR 12s ease-in-out infinite alternate; }
+    .bar.b3 { top: 44%; transform: rotate(-4deg); animation: sweep 15s ease-in-out infinite alternate; }
+    .bar.b4 { top: 60%; transform: rotate(8deg);  animation: sweepR 11s ease-in-out infinite alternate; }
+    .bar.b5 { top: 78%; transform: rotate(-6deg); animation: sweep 17s ease-in-out infinite alternate; }
+    .bar.b6 { top: 90%; transform: rotate(3deg);  animation: sweepR 13s ease-in-out infinite alternate; }
+
+    @keyframes sweep  { from { transform: translateX(-20%) rotate(-9deg); } to { transform: translateX(20%) rotate(-9deg); } }
+    @keyframes sweepR { from { transform: translateX(20%)  rotate(8deg);  } to { transform: translateX(-20%) rotate(8deg); } }
+
+    /* 科技扫描线（自上而下，更淡） */
+    .scan {
+      position: absolute;
+      left: 0; right: 0; top: -4%;
+      height: 3px;
+      background: linear-gradient(to right, transparent, rgba(170, 225, 255, 0.32), transparent);
+      box-shadow: 0 0 12px 3px rgba(120, 200, 255, 0.15);
+      pointer-events: none;
+      z-index: 0;
+      animation: scan 7s linear infinite;
+    }
+    @keyframes scan { 0% { top: -4%; } 100% { top: 104%; } }
+
+    /* 中心柔光，更淡，左右统一 */
+    .glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(120, 180, 255, 0.07) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ════════════ 顶部白色导航栏 ════════════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      background: transparent;                /* 全透明，融入背景 */
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+      z-index: 50;
+      cursor: none;
+      transform: translateY(10px);            /* 品牌字与个人中心按钮整体下移一点 */
+    }
+    .navbar .brand {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: rgb(254, 92, 67);                /* 珊瑚红 */
+      text-shadow: 0 0 8px rgba(254, 92, 67, 0.55),
+                   0 0 18px rgba(254, 92, 67, 0.35);   /* 略微发光 */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    /* 右上角「个人中心」按钮：与进入按钮同款（珊瑚红胶囊 + 黑底块） */
+    .nav-profile-wrap {
+      margin-left: auto;              /* 推到导航栏最右 */
+      position: relative;
+      display: inline-flex;
+    }
+    .nav-profile-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #000;
+      border-radius: 999px;
+      transform: translate(6px, 6px);
+    }
+    .nav-profile {
+      position: relative;
+      z-index: 1;                     /* 红按钮压在黑块之上 */
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: rgb(254, 92, 67);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: none;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .nav-profile:hover {
+      transform: translateY(-2px);
+      background: rgb(232, 78, 55);
+      box-shadow: 0 0 14px rgba(254, 92, 67, 0.55),
+                  0 0 28px rgba(254, 92, 67, 0.30);
+    }
+
+    /* ════════════ 左半屏：标题 + 手风琴（垂直居中） ════════════ */
+    .left-col {
+      position: absolute;
+      top: calc(var(--site-nav-h) + var(--site-nav-offset));
+      left: 0;
+      width: 50%;
+      bottom: var(--site-footer-h);          /* 底部止于黑条之上 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;                    /* 水平居中于左半屏 */
+      justify-content: center;                /* 垂直居中（去掉黑条高度后） */
+      gap: 30px;
+      padding: 80px 20px 24px;               /* 顶部留更多，让内容视觉中心再下移 */
+      z-index: 3;
+    }
+    .title {
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      pointer-events: none;
+    }
+    .title h1 {
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      line-height: 1.05;
+      text-shadow: 0 0 26px rgba(150, 200, 255, 0.55),
+                   0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+    .title .sub-cn {
+      margin-top: 14px;
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      color: rgba(225, 240, 255, 0.95);
+      text-shadow: 0 0 14px rgba(120, 180, 255, 0.45);
+    }
+    .title .sub-en {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.32em;
+      color: rgba(200, 225, 255, 0.7);
+      text-shadow: 0 0 12px rgba(120, 180, 255, 0.35);
+    }
+    .title .intro {
+      max-width: 64%;                  /* 与手风琴一致：占左半屏 64% → 整屏 32% 宽 */
+      margin: 20px auto 0;             /* 居中于左半屏，左右边缘与手风琴对齐（9%~41%） */
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.75;
+      letter-spacing: 0.02em;
+      color: rgba(225, 238, 255, 0.88);
+      text-shadow: 0 0 10px rgba(120, 180, 255, 0.25);
+      text-align: left;
+    }
+
+    /* ════════════ 左侧 FAQ 折叠手风琴（轻量简约） ════════════ */
+    .faq {
+      width: 64%;                      /* 占左半屏 64% → 整屏 32% 宽，与标题 intro 对齐 */
+      flex: 1 1 auto;
+      min-height: 0;                   /* 防止展开内容把容器顶出可视区域 */
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;                      /* 面板之间垂直间距，互不粘连 */
+      overflow-y: auto;
+      padding-bottom: 16px;           /* 给最后一块方框的硬投影留出空间 */
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+    }
+    .faq::-webkit-scrollbar { width: 6px; }
+    .faq::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.25); border-radius: 3px; }
+    .faq::-webkit-scrollbar-track { background: transparent; }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.6);  /* 白色半透明填充 */
+      border: 3px solid #111;         /* 与按钮同类的厚描边 */
+      border-radius: 18px;            /* 与登录按钮一致的圆角 */
+      overflow: hidden;
+      /* 按钮式硬投影：保留原白底与黑描边，不使用发光 */
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.19),
+        0 5px 0 #111,
+        0 10px 18px rgba(0, 0, 0, 0.12);
+      transition: box-shadow 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+      flex: none;
+    }
+    /* 展开态不改变方框描边颜色，只保留黑边。 */
+    .faq-item summary {
+      list-style: none;
+      cursor: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;  /* 问题居左、箭头居右 */
+      gap: 12px;
+      padding: 18px 20px;              /* 上下充足内边距，文字不贴边 */
+      font-size: 19px;                 /* 字体放大 */
+      font-weight: 600;
+      color: #111;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::marker { display: none; }
+
+    .faq-q {
+      flex: 1 1 auto;
+      text-align: left;
+    }
+    .faq-arrow {
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      transition: transform 0.25s ease;
+    }
+    .faq-item[open] .faq-arrow {
+      transform: rotate(180deg);       /* 展开时箭头向上 */
+    }
+    /* 展开态：问题文字与箭头点亮为珊瑚红（不再发光） */
+    .faq-item[open] .faq-q {
+      color: rgb(254, 92, 67);
+    }
+    .faq-item[open] .faq-arrow path {
+      stroke: rgb(254, 92, 67);
+    }
+
+    /* 平滑展开/收起：高度由 JS 用 rAF 动画控制（无 fr 动画，跨浏览器不闪顿） */
+    .faq-answer-wrap {
+      display: block;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .faq-answer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      overflow: hidden;                /* 配合外层 grid 实现平滑收起 */
+      min-height: 0;
+      padding: 0 20px 20px;            /* 左右与头部一致，底部留白 */
+      font-size: 15px;                 /* 字体放大 */
+      font-weight: 400;
+      line-height: 1.9;                /* 行高宽松，阅读舒适 */
+      color: #333;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 0.5s ease 0.08s;
+    }
+    .faq-item[open] .faq-answer {
+      opacity: 1;
+    }
+    .faq-answer p {
+      width: 100%;
+      margin: 0;
+    }
+
+    /* 展开后右侧出现的“进入 →”（珊瑚红胶囊 + 下方纯黑底块） */
+    .enter-wrap {
+      align-self: flex-end;           /* 居右 */
+      margin-top: 16px;
+      position: relative;
+    }
+    .enter-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #000;
+      border-radius: 999px;
+      transform: translate(6px, 6px);
+    }
+    .faq-enter {
+      position: relative;
+      z-index: 1;                     /* 红按钮压在黑块之上 */
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: rgb(254, 92, 67);
+      color: #fff;
+      border-radius: 999px;           /* 圆润胶囊，与返回按钮一致 */
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: none;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .faq-enter:hover {
+      background: rgb(232, 78, 55);
+      transform: translateY(-2px);
+      box-shadow: 0 0 14px rgba(254, 92, 67, 0.55),
+                  0 0 28px rgba(254, 92, 67, 0.30);
+    }
+    .faq-enter svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ════════════ 右半屏：轨道光标球效果 ════════════ */
+    .stage {
+      position: absolute;
+      top: var(--nav-h);
+      right: 0;
+      width: 50%;
+      height: calc(100% - var(--nav-h));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      z-index: 2;
+    }
+    .card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      cursor: none;
+    }
+    .card canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: none;
+      touch-action: none;
+    }
+    /* ════════════ 底部黑色页尾 ════════════ */
+    .footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      background: #000000;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-align: left;
+      z-index: 40;
+      cursor: none;
+    }
+    .footer-link {
+      color: rgb(254, 92, 67);          /* 珊瑚红 */
+      text-decoration: none;
+      cursor: none;
+      transition: opacity 0.15s ease;
+    }
+    .footer-link:hover {
+      opacity: 0.78;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- 页面外壳：品牌导航 / 背景 / 页尾 -->
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <span class="site-action-wrap"><a class="site-action" href="self.html" data-target="profile">个人中心</a></span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+    <div class="site-bar b1"></div>
+    <div class="site-bar b2"></div>
+    <div class="site-bar b3"></div>
+    <div class="site-bar b4"></div>
+    <div class="site-bar b5"></div>
+    <div class="site-bar b6"></div>
+    <div class="site-scan"></div>
+  </div>
+  <div class="site-glow" aria-hidden="true"></div>
+
+  <!-- 左半屏：标题 + 手风琴，垂直居中（避开顶部导航与底部黑条） -->
+  <div class="left-col">
+  <div class="title">
+    <h1>智核觉醒</h1>
+    <p class="sub-cn">AI能力测评纪</p>
+    <p class="sub-en">CORE · AWAKENING</p>
+    <p class="intro">AI技术已深度融入人类生活的方方面面。全球AI素养评估中心“数字马力”打造了一个名为“智核域”的虚拟世界，用于对青年进行AI能力综合测评。最终，学员将获得一份反映其在六大维度上真实水平的“智核觉醒报告”。</p>
+  </div>
+
+  <!-- 左侧 FAQ 折叠手风琴 -->
+  <div class="faq">
+    <details class="faq-item" open>
+      <summary>
+        <span class="faq-q">能力闯关</span>
+        <svg class="faq-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="faq-answer-wrap" style="height:auto"><div class="faq-answer">
+        <p>通过游戏化关卡挑战，在限时任务中检验你的反应、策略与协作能力，每通过一关即可解锁更高难度与专属成就徽章。</p>
+        <span class="enter-wrap"><a class="faq-enter" href="fight.html" data-target="chuangguan">进入 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span>
+      </div>
+    </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-q">能力训练</span>
+        <svg class="faq-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="faq-answer-wrap"><div class="faq-answer">
+        <p>系统化评估六大核心维度，生成专属能力雷达图与百分位排名，帮助你精准定位优势与短板，并给出针对性提升建议。</p>
+        <span class="enter-wrap"><a class="faq-enter" href="test.html" data-target="pingce">进入 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span>
+      </div>
+    </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>
+        <span class="faq-q">分享论坛</span>
+        <svg class="faq-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="faq-answer-wrap"><div class="faq-answer">
+        <p>在这里发布测评心得、交流闯关技巧，与社区成员互评互鉴，参与话题讨论，在分享中共同提升 AI 应用能力。</p>
+        <span class="enter-wrap"><a class="faq-enter" href="sharing.html" data-target="forum">进入 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></span>
+      </div>
+    </div>
+    </details>
+  </div>
+  </div>
+
+  <!-- 右半屏效果 -->
+  <div class="stage">
+    <div class="card" role="img"
+      aria-label="26个多人光标环绕隐形球体，在呼吸的黑色环上运动">
+      <canvas id="orbit-canvas"></canvas>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <a class="site-footer-link" href="leading.html">引导教程</a>
+  </footer>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    //  ORBIT ENGINE — 26 光标环绕隐形球体（来自参考效果，预渲染贴图）
+    // ═══════════════════════════════════════════════════════════════
+
+    const BG = "#f7f3ea";
+
+    const RING_R_MIN = 0.205;
+    const RING_R_MAX = 0.305;
+    const RING_PERIOD = 5.0;
+    const RING_STROKE = 0.0037;
+    const RING_COLOR = "#111111";
+
+    const SPHERE_R = 0.361;
+
+    const PILL_H_FRONT = 0.0574;
+    const PILL_H_BACK = 0.0204;
+
+    const FADE_FULL = -0.1;
+    const FADE_GONE = -0.85;
+
+    const PILL_RADIUS = 0.32;
+    const PILL_PAD_X = 0.42;
+    const FONT_K = 0.47;
+    const ARROW_K = 0.68;
+    const ARROW_TILT = -0.31;
+    const TIP_GAP = 0.55;
+
+    const CAST = [
+      ["大模型", "#7728DB"], ["算力", "#7728DB"], ["Prompt", "#7728DB"],
+      ["推理", "#9C45F2"], ["微调", "#9C45F2"], ["训练", "#C864DB"],
+      ["向量", "#F37C31"], ["生成", "#F37C31"], ["多模态", "#F37C31"], ["张量", "#F37C31"],
+      ["语义", "#F34B4B"], ["聚类", "#F34B4B"], ["蒸馏", "#F34B4B"], ["感知", "#F34B4B"],
+      ["幻觉", "#31C67D"], ["预训练", "#31C67D"], ["权重", "#31C67D"],
+      ["嵌入", "#31C67D"], ["迭代", "#31C67D"],
+      ["解码", "#5677F2"], ["编码", "#5677F2"], ["样本", "#5677F2"], ["对齐", "#5677F2"],
+      ["泛化", "#1FC4C9"], ["特征", "#1FC4C9"], ["Agent", "#1FC4C9"]
+    ];
+
+    const TILT_BASE = 0.5;
+    const WOBBLE_X_AMP = 0.22;
+    const WOBBLE_X_PERIOD = 17;
+    const WOBBLE_Z_AMP = 0.32;
+    const WOBBLE_Z_PERIOD = 23;
+
+    const PHRASE = 27;
+    const RATE_DRIFT = 0.01;
+    const RATE_WHIP = 0.45;
+    const RATE_HOLD = 0.007;
+
+    const BUILD_AT = 0.58;
+    const WHIP_AT = 0.68;
+    const WHIP_END = 0.75;
+    const SETTLE_END = 0.88;
+
+    const WHIP_E = [
+      [0, 0], [0.15, 0.03], [0.3, 0.14], [0.45, 0.42],
+      [0.6, 0.76], [0.72, 0.91], [0.85, 0.975], [1, 1]
+    ];
+
+    const INERTIA_SPRING = 7.5;
+    const INERTIA_DAMP = 3.6;
+    const LAG_PER_ACCEL = 0.055;
+    const LAG_RECOVER = 5.5;
+
+    const DRAG_PER_REV = 1.15;
+    const DRAG_TILT = 0.5;
+    const DRAG_TILT_MAX = 0.3;
+    const THROW_FRICTION = 1.25;
+    const THROW_MAX = 1.6;
+    const DRAG_YIELD = 1.8;
+
+    const SWARM_OFF_X = -0.963;
+    const SWARM_OFF_Y = -0.628;
+
+    const DOF_FOCUS_Z = 1;
+    const DOF_MAX = 0.006;
+    const DOF_SLAB = 0.45;
+
+    const YOU_NAME = "You";
+    const YOU_COLOR = "#1b1b1b";
+    const YOU_PILL_H = 0.064;
+    const YOU_EASE = 0.22;
+
+    const ATTN_RADIUS = 0.26;
+    const ATTN_FOCUS = 0.85;
+    const ATTN_LIFT = 0.14;
+    const ATTN_LOOK = 0.5;
+    const ATTN_RATE = 5;
+
+    const POINTER_NEAR = 1.15;
+    const YOU_FADE = 0.11;
+
+    const MAG_RADIUS = 0.19;
+    const MAG_FORCE = 1.5;
+    const MAG_SPEED_GAIN = 0.5;
+    const MAG_MASS_BIAS = 1.7;
+    const MAG_SPRING = 46;
+    const MAG_DAMP = 7.4;
+    const MAG_MAX_OFF = 0.075;
+    const MAG_WAKE = 0.35;
+    const MAG_SLIP = 0.34;
+    const MAG_SPEED_FULL = 0.85;
+    const MAG_SPEED_MIN = 0.04;
+
+    const ARROW_TURN_MAX = 0.14;
+    const ARROW_TURN_AT = 0.5;
+
+    const WASH_ALPHA = 0.055;
+    const WASH_R = 0.62;
+    const WASH_A_COLOR = "#7728DB";
+    const WASH_B_COLOR = "#1FC4C9";
+    const WASH_A_PERIOD = 29;
+    const WASH_B_PERIOD = 41;
+    const WASH_DRIFT = 0.26;
+
+    const SHADOW_BLUR = 0.34;
+    const SHADOW_Y = 0.12;
+    const SHADOW_ALPHA = 0.16;
+    const PILL_SHEEN = 0.15;
+    const PILL_SHADE = 0.09;
+
+    const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+    const smooth = (v) => v * v * (3 - 2 * v);
+    const lerp = (a, b, k) => a + (b - a) * k;
+
+    function lcg(seed) {
+      let s = seed >>> 0;
+      return () => {
+        s = (s * 1664525 + 1013904223) >>> 0;
+        return s / 0xffffffff;
+      };
+    }
+
+    function spline(pts) {
+      const n = pts.length;
+      const xs = pts.map((p) => p[0]);
+      const ys = pts.map((p) => p[1]);
+      const dx = [];
+      const s = [];
+      for (let i = 0; i < n - 1; i++) {
+        dx.push(xs[i + 1] - xs[i]);
+        s.push((ys[i + 1] - ys[i]) / dx[i]);
+      }
+      const m = [s[0]];
+      for (let i = 1; i < n - 1; i++) {
+        if (s[i - 1] * s[i] <= 0) m.push(0);
+        else {
+          const w1 = 2 * dx[i] + dx[i - 1];
+          const w2 = dx[i] + 2 * dx[i - 1];
+          m.push((w1 + w2) / (w1 / s[i - 1] + w2 / s[i]));
+        }
+      }
+      m.push(s[n - 2]);
+      return (k) => {
+        if (k <= 0) return ys[0];
+        if (k >= 1) return ys[n - 1];
+        let i = 0;
+        while (i < n - 2 && xs[i + 1] < k) i++;
+        const h = dx[i];
+        const u = (k - xs[i]) / h;
+        const u2 = u * u;
+        const u3 = u2 * u;
+        return (
+          ys[i] * (2 * u3 - 3 * u2 + 1) +
+          m[i] * h * (u3 - 2 * u2 + u) +
+          ys[i + 1] * (-2 * u3 + 3 * u2) +
+          m[i + 1] * h * (u3 - u2)
+        );
+      };
+    }
+
+    const whipE = spline(WHIP_E);
+
+    function phraseRate(p) {
+      if (p < BUILD_AT) return RATE_DRIFT;
+      if (p < WHIP_AT) {
+        const k = (p - BUILD_AT) / (WHIP_AT - BUILD_AT);
+        return lerp(RATE_DRIFT, RATE_WHIP, whipE(k));
+      }
+      if (p < WHIP_END) return RATE_WHIP;
+      if (p < SETTLE_END) {
+        const k = (p - WHIP_END) / (SETTLE_END - WHIP_END);
+        return lerp(RATE_WHIP, RATE_HOLD, whipE(k));
+      }
+      const k = (p - SETTLE_END) / (1 - SETTLE_END);
+      return lerp(RATE_HOLD, RATE_DRIFT, smooth(k));
+    }
+
+    function rgbOf(hex) {
+      const h = hex.replace("#", "");
+      const n = parseInt(h, 16);
+      return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
+    }
+
+    const ARROW_PATH =
+      "M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L5.94 2.47a.5.5 0 0 0-.44.74Z";
+    const TIP_X = 5.5;
+    const TIP_Y = 3.21;
+    const arrowPath2D = new Path2D(ARROW_PATH);
+
+    const SPRITE_SCALE = 2;
+    const BLUR_LEVELS = [0.5, 1.0, 1.5, 2.0];
+
+    class Orbit {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext("2d");
+        if (!this.ctx) { this.ok = false; return; }
+        this.ok = true;
+
+        this.t0 = performance.now();
+        this.fontFamily = "sans-serif";
+
+        this.W = 0; this.H = 0; this.dpr = 1;
+        this.running = false; this.disposed = false;
+        this.raf = 0; this.paused = false;
+
+        this.lastT = 0; this.spin = 0; this.spinRate = 0; this.throwRate = 0;
+        this.lastRate = 0; this.accel = 0; this.dragTilt = 0;
+
+        this.dragging = false; this.dragX = 0; this.dragY = 0;
+        this.dragVX = 0; this.yieldFor = 0;
+
+        this.youX = 0.5; this.youY = 0.5; this.youTX = 0.5; this.youTY = 0.5;
+        this.youAlpha = 0; this.youLabelW = 0;
+        this.entering = false; this.seen = false; this.youVX = 0; this.youVY = 0;
+
+        this.dirX = 0; this.dirY = 0; this.near = 0;
+
+        const rand = lcg(20260815);
+        const n = CAST.length;
+        const golden = Math.PI * (3 - Math.sqrt(5));
+        this.nodes = CAST.map(([name, color], i) => {
+          const y = 1 - ((i + 0.5) / n) * 2;
+          const r = Math.sqrt(Math.max(0, 1 - y * y));
+          const a = golden * i + (rand() - 0.5) * 0.9;
+          const tiltJitter = (rand() - 0.5) * 0.35;
+          const px = Math.cos(a) * r;
+          const py = y + tiltJitter * r * 0.3;
+          const pz = Math.sin(a) * r;
+          const len = Math.hypot(px, py, pz) || 1;
+          return {
+            name, color,
+            bx: px / len, by: py / len, bz: pz / len,
+            x: 0, y: 0, z: 0,
+            labelW: 0, ox: 0, oy: 0, vx: 0, vy: 0, lag: 0, attn: 0,
+            _px: 0, _py: 0, _h: 0, _alpha: 0, _blur: 0, _turn: 0, _visible: false,
+            sprites: null, youSprite: null,
+          };
+        });
+
+        this.measureLabels();
+        this._washCache = new Map();
+        this.resize();
+      }
+
+      measureLabels() {
+        const ctx = this.ctx; if (!ctx) return;
+        ctx.font = `600 100px ${this.fontFamily}`;
+        for (const node of this.nodes) node.labelW = ctx.measureText(node.name).width;
+        this.youLabelW = ctx.measureText(YOU_NAME).width;
+      }
+
+      setFont(family) {
+        this.fontFamily = family;
+        this.measureLabels();
+        this._spritesBuilt = false;
+        if (!this.running && !this.disposed) this.renderStill();
+      }
+
+      resize() {
+        const rect = this.canvas.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.W = rect.width; this.H = rect.height;
+        this.canvas.width = Math.round(rect.width * this.dpr);
+        this.canvas.height = Math.round(rect.height * this.dpr);
+        this._spritesBuilt = false;
+        this._washCache.clear();
+        if (!this.running) this.renderStill();
+      }
+
+      buildSprites() {
+        const ctx = this.ctx; if (!ctx) return;
+        const S = this.H || 1;
+        const baseH = ((PILL_H_BACK + PILL_H_FRONT) * 0.5) * S;
+
+        for (const node of this.nodes) {
+          node.sprites = this.makePillSprites(node.color, node.name, node.labelW, baseH);
+        }
+        this.youSprite = this.makePillSprites(YOU_COLOR, YOU_NAME, this.youLabelW, YOU_PILL_H * S, true);
+        this._spritesBuilt = true;
+      }
+
+      makePillSprites(color, name, labelW, h, isYou = false) {
+        const fontPx = FONT_K * h;
+        const textW = (fontPx / 100) * labelW;
+        const pw = textW + 2 * PILL_PAD_X * h;
+        const x0 = TIP_GAP * h;
+        const y0 = TIP_GAP * h;
+        const rad = Math.min(PILL_RADIUS * h, pw / 2, h / 2);
+
+        const ah = ARROW_K * h;
+        const padLeft = ah + 4;
+        const padTop = ah + 4;
+        const padRight = pw + 8;
+        const padBottom = h + Math.max(SHADOW_BLUR * h + SHADOW_Y * h, 0) + 8;
+        const blurPad = 2.0 + 6;
+        const totalW = padLeft + padRight + blurPad * 2;
+        const totalH = padTop + padBottom + blurPad * 2;
+
+        const sprites = [];
+        const levels = [0, ...BLUR_LEVELS];
+        for (let li = 0; li < levels.length; li++) {
+          const blur = levels[li];
+          const oc = document.createElement("canvas");
+          oc.width = Math.ceil(totalW * SPRITE_SCALE);
+          oc.height = Math.ceil(totalH * SPRITE_SCALE);
+          const octx = oc.getContext("2d");
+          octx.scale(SPRITE_SCALE, SPRITE_SCALE);
+          const ox = padLeft + blurPad;
+          const oy = padTop + blurPad;
+
+          if (blur > 0) octx.filter = `blur(${blur}px)`;
+
+          if (blur === 0) {
+            octx.shadowColor = `rgba(0,0,0,${SHADOW_ALPHA})`;
+            octx.shadowBlur = SHADOW_BLUR * h;
+            octx.shadowOffsetY = SHADOW_Y * h;
+          }
+
+          octx.fillStyle = color;
+          const k = ah / 24;
+          octx.save();
+          octx.translate(ox, oy);
+          octx.rotate(ARROW_TILT);
+          octx.scale(k, k);
+          octx.translate(-TIP_X, -TIP_Y);
+          octx.fill(arrowPath2D);
+          octx.restore();
+
+          octx.beginPath();
+          octx.roundRect(ox + x0, oy + y0, pw, h, rad);
+          octx.fill();
+
+          octx.shadowColor = "transparent";
+          octx.shadowBlur = 0;
+          octx.shadowOffsetY = 0;
+
+          octx.save();
+          octx.beginPath();
+          octx.roundRect(ox + x0, oy + y0, pw, h, rad);
+          octx.clip();
+          const shade = octx.createLinearGradient(0, oy + y0, 0, oy + y0 + h);
+          shade.addColorStop(0, `rgba(255,255,255,${PILL_SHEEN})`);
+          shade.addColorStop(0.45, "rgba(255,255,255,0)");
+          shade.addColorStop(1, `rgba(0,0,0,${PILL_SHADE})`);
+          octx.fillStyle = shade;
+          octx.fillRect(ox + x0, oy + y0, pw, h);
+          octx.restore();
+
+          octx.fillStyle = "#fff";
+          octx.font = `600 ${fontPx}px ${this.fontFamily}`;
+          octx.textAlign = "center";
+          octx.textBaseline = "middle";
+          octx.fillText(name, ox + x0 + pw / 2, oy + y0 + h * 0.54);
+
+          sprites.push({ canvas: oc, anchorX: ox, anchorY: oy, contentW: totalW, contentH: totalH, blur });
+        }
+        return sprites;
+      }
+
+      getWash(color, period) {
+        const key = color;
+        let entry = this._washCache.get(key);
+        if (entry && entry.w === this.W && entry.h === this.H) return entry;
+        const S = this.H || 1;
+        const r = WASH_R * S;
+        const size = Math.ceil(r * 2);
+        const oc = document.createElement("canvas");
+        oc.width = size; oc.height = size;
+        const octx = oc.getContext("2d");
+        const cx = size / 2, cy = size / 2;
+        const rgb = rgbOf(color);
+        const g = octx.createRadialGradient(cx, cy, 0, cx, cy, r);
+        g.addColorStop(0, `rgba(${rgb},${WASH_ALPHA})`);
+        g.addColorStop(1, `rgba(${rgb},0)`);
+        octx.fillStyle = g;
+        octx.fillRect(0, 0, size, size);
+        entry = { canvas: oc, w: this.W, h: this.H, r };
+        this._washCache.set(key, entry);
+        return entry;
+      }
+
+      setPointer(p) {
+        if (!p) { this.near = 0; this.youAlpha = 0; return; }
+        const S = this.H || 1;
+        const outX = Math.max(0, -p.x, p.x - 1) * (this.W || 1);
+        const outY = Math.max(0, -p.y, p.y - 1) * S;
+        const outside = Math.hypot(outX, outY) / S;
+        this.near = 1 - smooth(clamp01(outside / POINTER_NEAR));
+        this.youTX = p.x; this.youTY = p.y;
+        if (!this.seen) {
+          this.youX = p.x; this.youY = p.y;
+          this.youVX = 0; this.youVY = 0;
+          this.entering = true; this.seen = true;
+        }
+      }
+
+      dragStart(p) {
+        this.dragging = true; this.dragX = p.x; this.dragY = p.y; this.dragVX = 0;
+      }
+
+      dragMove(p, dt) {
+        if (!this.dragging) return;
+        const dx = p.x - this.dragX;
+        const dy = p.y - this.dragY;
+        this.dragX = p.x; this.dragY = p.y;
+        const want = clamp01(dt) > 0 ? dx / DRAG_PER_REV / Math.max(dt, 1 / 240) : 0;
+        this.dragVX += (Math.max(-THROW_MAX, Math.min(THROW_MAX, want)) - this.dragVX) * 0.35;
+        this.dragTilt = Math.max(-DRAG_TILT_MAX, Math.min(DRAG_TILT_MAX, this.dragTilt + dy * DRAG_TILT));
+      }
+
+      dragEnd() {
+        if (!this.dragging) return;
+        this.dragging = false;
+        this.throwRate = Math.max(-THROW_MAX, Math.min(THROW_MAX, this.dragVX));
+        this.spinRate = this.throwRate;
+        this.yieldFor = DRAG_YIELD;
+      }
+
+      start() {
+        if (this.running || this.disposed || !this.ok) return;
+        if (!this._spritesBuilt) this.buildSprites();
+        this.running = true;
+        this.lastT = (performance.now() - this.t0) / 1000;
+        this.raf = requestAnimationFrame(this.loop);
+      }
+
+      stop() { this.running = false; if (this.raf) cancelAnimationFrame(this.raf); this.raf = 0; }
+      pause(flag) { this.paused = flag; }
+
+      renderStill() {
+        if (!this._spritesBuilt) this.buildSprites();
+        this.draw(2.6);
+      }
+
+      destroy() {
+        this.disposed = true; this.stop();
+        this.nodes = null; this.ctx = null; this._washCache.clear();
+      }
+
+      loop = () => {
+        if (!this.running || this.disposed) return;
+        if (this.paused) { this.raf = requestAnimationFrame(this.loop); return; }
+        const t = (performance.now() - this.t0) / 1000;
+        const dt = Math.min(Math.max(t - this.lastT, 1 / 240), 1 / 20);
+        this.lastT = t;
+
+        if (!this.dragging && this.dragTilt !== 0) {
+          this.dragTilt += (0 - this.dragTilt) * (1 - Math.exp(-dt * 0.6));
+          if (Math.abs(this.dragTilt) < 1e-4) this.dragTilt = 0;
+        }
+
+        const chase = 1 - Math.exp(-dt * YOU_EASE * 60);
+        const fade = 1 - Math.exp(-dt * YOU_FADE * 60);
+        this.youX += (this.youTX - this.youX) * chase;
+        this.youY += (this.youTY - this.youY) * chase;
+        this.youAlpha += (this.near - this.youAlpha) * fade;
+
+        if (this.entering) {
+          this.entering = false; this.youVX = 0; this.youVY = 0;
+        } else {
+          const S = this.H || 1;
+          const gapX = ((this.youTX - this.youX) * (this.W || 1)) / S;
+          const gapY = this.youTY - this.youY;
+          const k = YOU_EASE * 60;
+          const vSmooth = 1 - Math.exp(-dt * 9);
+          const gl = Math.hypot(gapX, gapY);
+          const gk = gl > 0.5 ? 0.5 / gl : 1;
+          this.youVX += (gapX * gk * k - this.youVX) * vSmooth;
+          this.youVY += (gapY * gk * k - this.youVY) * vSmooth;
+        }
+
+        this.spinStep(dt, t);
+        this.step(dt);
+        this.draw(t);
+        this.raf = requestAnimationFrame(this.loop);
+      };
+
+      rotate(t) {
+        const spin = this.spin;
+        const tiltX = TILT_BASE + WOBBLE_X_AMP * Math.sin((t / WOBBLE_X_PERIOD) * Math.PI * 2) + this.dragTilt;
+        const rotZ = WOBBLE_Z_AMP * Math.sin((t / WOBBLE_Z_PERIOD) * Math.PI * 2);
+        const sx = Math.sin(tiltX), cxn = Math.cos(tiltX);
+        const sz = Math.sin(rotZ), czn = Math.cos(rotZ);
+        const nodes = this.nodes;
+        for (let i = 0, len = nodes.length; i < len; i++) {
+          const node = nodes[i];
+          const own = spin - node.lag;
+          const so = Math.sin(own); const co = Math.cos(own);
+          const x1 = node.bx * co + node.bz * so;
+          const y1 = node.by;
+          const z1 = -node.bx * so + node.bz * co;
+          const x2 = x1;
+          const y2 = y1 * cxn - z1 * sx;
+          const z2 = y1 * sx + z1 * cxn;
+          node.x = x2 * czn - y2 * sz;
+          node.y = x2 * sz + y2 * czn;
+          node.z = z2;
+        }
+      }
+
+      spinStep(dt, t) {
+        const p = ((t / PHRASE) % 1 + 1) % 1;
+        const yieldK = this.dragging ? 0 : clamp01(1 - this.yieldFor / DRAG_YIELD);
+        const target = phraseRate(p) * yieldK;
+        if (this.dragging) {
+          this.spinRate = this.dragVX; this.throwRate = this.dragVX;
+        } else {
+          this.throwRate += (0 - this.throwRate) * clamp01(THROW_FRICTION * dt);
+          const err = target + this.throwRate - this.spinRate;
+          this.spinRate += err * clamp01(INERTIA_SPRING * dt);
+          this.spinRate -= (this.spinRate - target - this.throwRate) * clamp01(INERTIA_DAMP * dt) * 0.35;
+          if (this.yieldFor > 0) this.yieldFor = Math.max(0, this.yieldFor - dt);
+        }
+        const raw = (this.spinRate - this.lastRate) / dt;
+        this.lastRate = this.spinRate;
+        this.accel += (raw - this.accel) * clamp01(dt * 8);
+        this.spin += this.spinRate * Math.PI * 2 * dt;
+        if (this.spin > Math.PI * 2) this.spin -= Math.PI * 2;
+        if (this.spin < 0) this.spin += Math.PI * 2;
+      }
+
+      step(dt) {
+        if (!this.W || !this.H) return;
+        const S = this.H;
+        const off = PILL_H_FRONT * S;
+        const sx0 = this.W / 2 + SWARM_OFF_X * off;
+        const sy0 = this.H / 2 + SWARM_OFF_Y * off;
+        const R = SPHERE_R * S;
+        const pxF = (this.youX * this.W) / S;
+        const pyF = (this.youY * this.H) / S;
+        const speed = Math.hypot(this.youVX, this.youVY);
+        const wake = this.youAlpha * (MAG_SPEED_MIN + (1 - MAG_SPEED_MIN) * smooth(clamp01(speed / MAG_SPEED_FULL)));
+        const dirLen = speed > 1e-4 ? speed : 0;
+        const tx = dirLen ? this.youVX / dirLen : 0;
+        const ty = dirLen ? this.youVY / dirLen : 0;
+        const dirK = 1 - Math.exp(-dt * 6);
+        const speedNorm = clamp01(speed / (MAG_SPEED_FULL * 0.5));
+        this.dirX += (tx * speedNorm - this.dirX) * dirK;
+        this.dirY += (ty * speedNorm - this.dirY) * dirK;
+        const dirTrust = Math.min(1, Math.hypot(this.dirX, this.dirY));
+        const hLen = Math.hypot(this.dirX, this.dirY);
+        const hx = hLen > 1e-4 ? this.dirX / hLen : 0;
+        const hy = hLen > 1e-4 ? this.dirY / hLen : 0;
+
+        const nodes = this.nodes;
+        const accel = this.accel;
+        const youAlpha = this.youAlpha;
+        const youVX = this.youVX, youVY = this.youVY;
+
+        for (let i = 0, len = nodes.length; i < len; i++) {
+          const node = nodes[i];
+          const depthK = (node.z + 1) * 0.5;
+          const lagTarget = -accel * LAG_PER_ACCEL * depthK;
+          node.lag += (lagTarget - node.lag) * clamp01(LAG_RECOVER * dt);
+          const rx = (sx0 + node.x * R) / S;
+          const ry = (sy0 + node.y * R) / S;
+          const dx = rx + node.ox - pxF;
+          const dy = ry + node.oy - pyF;
+          const d2 = dx * dx + dy * dy;
+          const d = Math.sqrt(d2);
+          const want = youAlpha * (1 - smooth(clamp01(d / ATTN_RADIUS)));
+          node.attn += (want - node.attn) * clamp01(ATTN_RATE * dt);
+
+          let ax = 0, ay = 0;
+          if (wake > 0.001 && d < MAG_RADIUS) {
+            const f = smooth(1 - d / MAG_RADIUS) ** 2;
+            const ux = d > 1e-4 ? dx / d : 0.7;
+            const uy = d > 1e-4 ? dy / d : 0.7;
+            const w = MAG_WAKE * dirTrust;
+            const mx = ux * (1 - w) + hx * w;
+            const my = uy * (1 - w) + hy * w;
+            const side = (Math.sign(hx * uy - hy * ux) || 1) * MAG_SLIP * dirTrust;
+            const bx = mx - my * side;
+            const by = my + mx * side;
+            const bl = Math.hypot(bx, by) || 1;
+            const mass = 1 + (MAG_MASS_BIAS - 1) * (node.z + 1) * 0.5;
+            const gain = 1 + MAG_SPEED_GAIN * clamp01(speed / MAG_SPEED_FULL);
+            const a = (f * MAG_FORCE * wake * gain) / mass;
+            ax = (bx / bl) * a; ay = (by / bl) * a;
+          }
+          ax -= MAG_SPRING * node.ox + MAG_DAMP * node.vx;
+          ay -= MAG_SPRING * node.oy + MAG_DAMP * node.vy;
+          node.vx += ax * dt; node.vy += ay * dt;
+          node.ox += node.vx * dt; node.oy += node.vy * dt;
+          const ol = Math.hypot(node.ox, node.oy);
+          if (ol > MAG_MAX_OFF) {
+            const s = MAG_MAX_OFF / ol;
+            node.ox *= s; node.oy *= s;
+            const vr = node.vx * (node.ox / ol) + node.vy * (node.oy / ol);
+            if (vr > 0) {
+              node.vx -= vr * (node.ox / ol);
+              node.vy -= vr * (node.oy / ol);
+            }
+          }
+        }
+      }
+
+      draw(t) {
+        const ctx = this.ctx;
+        if (!ctx || !this.W || !this.H) return;
+        if (!this._spritesBuilt) this.buildSprites();
+
+        const { W, H } = this;
+        const S = H;
+        const cx = W / 2;
+        const cy = H / 2;
+
+        ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+
+        // 透明清屏：让米色页面背景透出，右侧效果与屏幕融为一体
+        ctx.clearRect(0, 0, W, H);
+
+        const breath = 0.5 - 0.5 * Math.cos((t / RING_PERIOD) * Math.PI * 2);
+        const ringR = (RING_R_MIN + (RING_R_MAX - RING_R_MIN) * breath) * S;
+        ctx.beginPath();
+        ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+        ctx.strokeStyle = RING_COLOR;
+        ctx.lineWidth = Math.max(1.25, RING_STROKE * S);
+        ctx.stroke();
+
+        this.rotate(t);
+
+        const nodes = this.nodes;
+        const len = nodes.length;
+        for (let i = 1; i < len; i++) {
+          const key = nodes[i];
+          let j = i - 1;
+          while (j >= 0 && nodes[j].z > key.z) { nodes[j + 1] = nodes[j]; j--; }
+          nodes[j + 1] = key;
+        }
+
+        const R = SPHERE_R * S;
+        const off = PILL_H_FRONT * S;
+        const sx0 = cx + SWARM_OFF_X * off;
+        const sy0 = cy + SWARM_OFF_Y * off;
+        const youX = this.youX, youY = this.youY, youAlpha = this.youAlpha;
+
+        for (let i = 0; i < len; i++) {
+          const node = nodes[i];
+          const depthAlpha = smooth(clamp01((node.z - FADE_GONE) / (FADE_FULL - FADE_GONE)));
+          const alpha = depthAlpha + (1 - depthAlpha) * 0.8 * node.attn;
+          if (alpha < 0.02) { node._visible = false; continue; }
+          node._visible = true;
+
+          const h = (PILL_H_BACK + (PILL_H_FRONT - PILL_H_BACK) * (node.z + 1) * 0.5) * S * (1 + ATTN_LIFT * node.attn);
+          const px = sx0 + node.x * R + node.ox * S;
+          const py = sy0 + node.y * R + node.oy * S;
+
+          const vs = Math.hypot(node.vx, node.vy);
+          let turn = 0;
+          if (vs > 1e-3) {
+            let d = Math.atan2(node.vy, node.vx) - ARROW_TILT;
+            d = Math.atan2(Math.sin(d), Math.cos(d));
+            turn = Math.max(-1, Math.min(1, d / Math.PI)) * ARROW_TURN_MAX * smooth(clamp01(vs / ARROW_TURN_AT));
+          }
+          if (node.attn > 0.01) {
+            let la = Math.atan2(youY * H - py, youX * W - px) - ARROW_TILT;
+            la = Math.atan2(Math.sin(la), Math.cos(la));
+            turn += Math.max(-1, Math.min(1, la / Math.PI)) * ATTN_LOOK * node.attn;
+          }
+
+          const defocus = Math.max(0, Math.abs(node.z - DOF_FOCUS_Z) - DOF_SLAB);
+          const rawBlur = (defocus / (1 + DOF_FOCUS_Z - DOF_SLAB)) * DOF_MAX * S * (1 - ATTN_FOCUS * node.attn);
+          const stepBlur = Math.round(rawBlur / 0.5) * 0.5;
+
+          node._px = px; node._py = py; node._h = h;
+          node._alpha = alpha; node._blur = stepBlur; node._turn = turn;
+        }
+
+        for (let i = 0; i < len; i++) {
+          const node = nodes[i];
+          if (!node._visible) continue;
+          const sprites = node.sprites;
+          let sprite;
+          if (node._blur < 0.5) sprite = sprites[0];
+          else {
+            let best = sprites[1], bestD = Infinity;
+            for (let li = 1; li < sprites.length; li++) {
+              const dd = Math.abs(sprites[li].blur - node._blur);
+              if (dd < bestD) { bestD = dd; best = sprites[li]; }
+            }
+            sprite = best;
+          }
+          const h = node._h;
+          const nodeBaseH = ((PILL_H_BACK + PILL_H_FRONT) * 0.5) * S;
+          const scale = h / nodeBaseH;
+          const px = node._px, py = node._py;
+          ctx.globalAlpha = node._alpha;
+          const dw = sprite.contentW * scale;
+          const dh = sprite.contentH * scale;
+          const dxPos = px - sprite.anchorX * scale;
+          const dyPos = py - sprite.anchorY * scale;
+          ctx.drawImage(sprite.canvas, dxPos, dyPos, dw, dh);
+        }
+        ctx.globalAlpha = 1;
+        // 注意：自定义光标（页面级 .cursor）已统一呈现箭头样式，
+        // 此处不再单独绘制 "You" 标签，避免双光标。
+      }
+
+      wash(ctx, cx, cy, S, t, color, period, phase) {
+        const entry = this.getWash(color, period);
+        const a = (t / period) * Math.PI * 2 + phase;
+        const px = cx + Math.cos(a) * WASH_DRIFT * S;
+        const py = cy + Math.sin(a * 1.37 + phase) * WASH_DRIFT * S * 0.7;
+        const r = entry.r;
+        ctx.drawImage(entry.canvas, px - r, py - r);
+      }
+    }
+
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii) {
+        const r = typeof radii === 'number' ? radii : (radii || 0);
+        const rad = Math.min(r, w / 2, h / 2);
+        this.moveTo(x + rad, y);
+        this.arcTo(x + w, y, x + w, y + h, rad);
+        this.arcTo(x + w, y + h, x, y + h, rad);
+        this.arcTo(x, y + h, x, y, rad);
+        this.arcTo(x, y, x + w, y, rad);
+        this.closePath();
+        return this;
+      };
+    }
+
+    const canvas = document.getElementById('orbit-canvas');
+    const engine = new Orbit(canvas);
+
+    let reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let onScreen = true;
+    let hidden = false;
+
+    function sync() {
+      if (!engine || reduced) return;
+      if (onScreen && !hidden) engine.start();
+      else engine.stop();
+    }
+    if (!reduced) sync();
+
+    if (document.fonts?.load) {
+      const fam = getComputedStyle(document.body).fontFamily.split(',')[0].replace(/["']/g, '').trim();
+      if (fam) {
+        document.fonts.load(`600 1em "${fam}"`).then(
+          () => engine?.setFont(`"${fam}", sans-serif`),
+          () => {}
+        );
+      }
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => { onScreen = entries[0]?.isIntersecting ?? false; sync(); },
+      { threshold: 0.1 }
+    );
+    io.observe(canvas);
+
+    const onVis = () => { hidden = document.hidden; sync(); };
+    document.addEventListener('visibilitychange', onVis);
+
+    let rt = 0;
+    const onResize = () => { window.clearTimeout(rt); rt = window.setTimeout(() => engine?.resize(), 80); };
+    window.addEventListener('resize', onResize);
+
+    // 指针：驱动自定义光标 + 让轨道光标产生吸引/注视反应
+    let lastClientX = 0, lastClientY = 0, havePointer = false;
+    const pushPointer = () => {
+      if (!havePointer) return;
+      const r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      engine?.setPointer({ x: (lastClientX - r.left) / r.width, y: (lastClientY - r.top) / r.height });
+    };
+    const onMove = (e) => {
+      if (e.pointerType !== 'mouse') return;
+      lastClientX = e.clientX; lastClientY = e.clientY; havePointer = true;
+      pushPointer();
+    };
+    const onScroll = () => pushPointer();
+    const onLeave = () => { engine?.setPointer(null); engine?.dragEnd(); };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('blur', onLeave);
+
+    let dragT = 0, claimed = false, startX = 0, startY = 0;
+    const frac = (e) => {
+      const r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return null;
+      return { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
+    };
+    const onDown = (e) => {
+      const p = frac(e); if (!p) return;
+      startX = p.x; startY = p.y; claimed = e.pointerType === 'mouse';
+      dragT = performance.now();
+      if (claimed) { canvas.setPointerCapture(e.pointerId); engine?.dragStart(p); }
+    };
+    const onDrag = (e) => {
+      const p = frac(e); if (!p) return;
+      if (!claimed) {
+        const dx = Math.abs(p.x - startX), dy = Math.abs(p.y - startY);
+        if (dx < 0.02 && dy < 0.02) return;
+        if (dx <= dy) return;
+        claimed = true; canvas.setPointerCapture(e.pointerId);
+        engine?.dragStart({ x: startX, y: startY });
+      }
+      const now = performance.now();
+      const dt = Math.min(Math.max((now - dragT) / 1000, 1 / 240), 0.1);
+      dragT = now; engine?.dragMove(p, dt); e.preventDefault();
+    };
+    const onUp = (e) => {
+      if (claimed && canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+      claimed = false; engine?.dragEnd();
+    };
+    canvas.addEventListener('pointerdown', onDown);
+    canvas.addEventListener('pointermove', onDrag);
+    canvas.addEventListener('pointerup', onUp);
+    canvas.addEventListener('pointercancel', onUp);
+
+    // ═══════════════════════════════════════════════════════════════
+    //  FAQ 手风琴：JS 驱动高度动画（rAF，无闪顿）
+    //  rootSelector 直接子级 .faq-item 参与同层逻辑；singleSelect 控制是否单选
+    // ═══════════════════════════════════════════════════════════════
+    (function () {
+      function setupAccordion(rootSelector, singleSelect) {
+        const items = Array.from(document.querySelectorAll(rootSelector + ' > .faq-item'));
+        if (!items.length) return;
+        const DUR = 460;
+        const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+        const raf = window.requestAnimationFrame.bind(window);
+
+        function innerH(item) {
+          const inner = item.querySelector('.faq-answer');
+          return inner ? inner.offsetHeight : 0;
+        }
+        function animate(item, open) {
+          const wrap = item.querySelector('.faq-answer-wrap');
+          if (!wrap) return;
+          if (wrap._raf) cancelAnimationFrame(wrap._raf);
+          const from = wrap.offsetHeight;
+          const to = open ? innerH(item) : 0;
+          const start = performance.now();
+          function frame(now) {
+            let t = (now - start) / DUR;
+            if (t > 1) t = 1;
+            const e = easeInOut(t);
+            wrap.style.height = (from + (to - from) * e) + 'px';
+            if (t < 1) wrap._raf = raf(frame);
+            else { wrap._raf = 0; wrap.style.height = open ? 'auto' : '0px'; }
+          }
+          wrap._raf = raf(frame);
+        }
+
+        // 初始化：按默认 open 状态设定高度（避免首屏闪动）
+        items.forEach((item) => {
+          const wrap = item.querySelector('.faq-answer-wrap');
+          if (wrap) wrap.style.height = item.open ? 'auto' : '0px';
+        });
+
+        items.forEach((item) => {
+          const summary = item.querySelector('summary');
+          if (!summary) return;
+          summary.addEventListener('click', (e) => {
+            e.preventDefault(); // 阻止原生瞬间切换造成的跳变
+            const willOpen = !item.open;
+            if (willOpen) {
+              if (singleSelect) {
+                items.forEach((other) => {
+                  if (other !== item && other.open) {
+                    other.open = false;
+                    animate(other, false);
+                  }
+                });
+              }
+              item.open = true;
+              animate(item, true);
+            } else {
+              item.open = false;
+              animate(item, false);
+            }
+          });
+        });
+      }
+
+      setupAccordion('.faq', true);      // 顶层手风琴：单选
+    })();
+
+    // 「进入 →」点击：接入真实板块路由（当前为占位）
+    document.querySelectorAll('.faq-enter').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = link.dataset.target;
+        if (target === 'chuangguan') {
+          window.location.href = 'fight.html';
+          return;
+        }
+        if (target === 'pingce') {
+          window.location.href = 'test.html';
+          return;
+        }
+        if (target === 'forum') {
+          window.location.href = 'sharing.html';
+          return;
+        }
+        // TODO: 替换为真实页面跳转，例如 location.href = `/${target}`;
+        console.log('进入板块：', target);
+      });
+    });
+
+
+    // 右上角「个人中心」按钮 → 进入 self.html
+    document.querySelectorAll('.site-action').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'self.html';
+      });
+    });
+  </script>
+</body>
+</html>

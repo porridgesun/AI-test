@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>能力闯关</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <script src="cursor.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --marquee-height: 268px;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    body {
+      position: relative;
+      display: block;
+      min-height: 100dvh;
+      background: rgb(30, 85, 157);
+      color: #fff;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .background {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(170, 215, 255, 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(170, 215, 255, 0.14) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 50% 45%,
+        rgba(120, 180, 255, 0.08) 0%,
+        transparent 62%
+      );
+    }
+
+    .beam {
+      position: absolute;
+      left: -40%;
+      width: 180%;
+      height: 3px;
+      border-radius: 3px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(130, 215, 255, 0.45) 45%,
+        rgba(235, 250, 255, 0.6) 50%,
+        rgba(130, 215, 255, 0.45) 55%,
+        transparent 100%
+      );
+      box-shadow:
+        0 0 10px 1px rgba(120, 200, 255, 0.22),
+        0 0 24px 4px rgba(90, 170, 255, 0.1);
+      opacity: 0.34;
+      will-change: transform;
+    }
+
+    .beam-a {
+      top: 24%;
+      animation: beam-a 9s ease-in-out infinite alternate;
+    }
+
+    .beam-b {
+      top: 72%;
+      animation: beam-b 11s ease-in-out infinite alternate;
+    }
+
+    @keyframes beam-a {
+      from { transform: translateX(-22%) rotate(-8deg); }
+      to { transform: translateX(22%) rotate(-8deg); }
+    }
+
+    @keyframes beam-b {
+      from { transform: translateX(20%) rotate(7deg); }
+      to { transform: translateX(-20%) rotate(7deg); }
+    }
+
+    /* hero 区：上下居中对齐（grid place-items:center） */
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      height: 100dvh;
+      padding:
+        calc(var(--site-nav-h) + var(--site-nav-offset) + 16px)
+        clamp(28px, 6vw, 92px)
+        calc(var(--marquee-height) + var(--site-footer-h) + 16px)
+        clamp(28px, 6vw, 92px);
+    }
+
+    .headline {
+      text-align: center;
+      margin-bottom: clamp(14px, 2.2vh, 22px);
+      text-shadow:
+        0 0 26px rgba(150, 200, 255, 0.55),
+        0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .headline h1 {
+      font-size: clamp(38px, 6vw, 60px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: 0.12em;
+    }
+
+    .intro-row {
+      display: block;
+      width: min(900px, 86vw);
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      width: min(980px, min(92vw, 1040px));
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .intro {
+      flex: 1 1 720px;
+      max-width: 720px;
+      margin-inline: auto;
+      font-size: clamp(16px, 1.95vw, 22px);
+      line-height: clamp(1.7, 2.6vh, 2.05);
+      color: rgba(225, 238, 255, 0.9);
+      text-shadow: 0 0 10px rgba(120, 180, 255, 0.25);
+      text-align: center;
+      text-align-last: center;
+    }
+
+    .enter-wrap {
+      position: relative;
+      display: inline-flex;
+      pointer-events: auto;
+      margin-top: clamp(24px, 4vh, 38px);
+    }
+
+    .enter-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #000;
+      border-radius: 999px;
+      transform: translate(6px, 6px);
+    }
+
+    .enter {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 176px;
+      min-height: 50px;
+      gap: 9px;
+      padding: 12px 27px;
+      border: none;
+      border-radius: 999px;
+      background: rgb(254, 92, 67);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .enter svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .enter:hover {
+      background: rgb(232, 78, 55);
+      transform: translateY(-2px);
+      box-shadow:
+        0 0 14px rgba(254, 92, 67, 0.55),
+        0 0 28px rgba(254, 92, 67, 0.3);
+    }
+
+    .enter:active {
+      transform: translateY(0);
+    }
+
+    .enter:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.9);
+      outline-offset: 4px;
+    }
+
+    /* 可拖拽的 mentor 小球 */
+    .mentor {
+      position: absolute;
+      left: auto;
+      right: clamp(56px, 8vw, 130px);
+      top: 42%;
+      flex: none;
+      z-index: 0;
+      width: clamp(116px, 11vw, 152px);
+      display: grid;
+      justify-items: center;
+      gap: 9px;
+      touch-action: none;
+      cursor: none;
+      will-change: left, top;
+    }
+
+    .mentor-core {
+      position: relative;
+      width: clamp(84px, 8vw, 108px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 48% 52% 46% 54% / 52% 46% 54% 48%;
+      background:
+        radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.98), transparent 32%),
+        radial-gradient(circle at 50% 65%, rgba(130, 220, 255, 0.95), rgba(27, 90, 160, 0.88) 70%);
+      box-shadow:
+        0 0 18px rgba(123, 207, 255, 0.72),
+        0 0 46px rgba(75, 156, 255, 0.42),
+        inset 0 0 22px rgba(255, 255, 255, 0.45);
+      transition: border-radius 0.7s ease, transform 0.7s ease, box-shadow 0.7s ease;
+    }
+
+    .mentor::before {
+      content: "";
+      position: absolute;
+      top: 8%;
+      left: 50%;
+      width: 118%;
+      aspect-ratio: 1;
+      border: 1px dashed rgba(170, 225, 255, 0.58);
+      border-radius: 50%;
+      transform: translateX(-50%) rotate(0deg);
+      animation: mentor-ring 9s linear infinite;
+    }
+
+    .mentor-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 34%;
+      color: #fff;
+      opacity: 0;
+      transform: translate(-50%, -50%) translateY(7px) scale(.72);
+      transition: opacity .45s ease, transform .55s cubic-bezier(.22,1,.36,1);
+      filter: drop-shadow(0 0 7px rgba(190, 235, 255, .95));
+    }
+
+    .mentor-icon svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .mentor[data-form="core"] .mentor-icon-core,
+    .mentor[data-form="alert"] .mentor-icon-alert,
+    .mentor[data-form="bulb"] .mentor-icon-bulb,
+    .mentor[data-form="spark"] .mentor-icon-spark {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .mentor[data-form="alert"] .mentor-core {
+      border-radius: 46% 54% 46% 54% / 58% 48% 52% 42%;
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    .mentor[data-form="bulb"] .mentor-core {
+      border-radius: 56% 44% 42% 58% / 44% 58% 42% 56%;
+      transform: scale(.98);
+      box-shadow:
+        0 0 24px rgba(255, 218, 138, .75),
+        0 0 56px rgba(255, 178, 82, .38),
+        inset 0 0 22px rgba(255, 255, 255, .52);
+    }
+
+    .mentor-name {
+      position: relative;
+      color: #111111;
+      font-size: clamp(13px, 1.25vw, 15px);
+      font-weight: 700;
+      letter-spacing: .08em;
+      white-space: nowrap;
+      text-shadow: none;
+    }
+
+    .mentor.dragging {
+      transition: none;
+    }
+
+    .mentor.dragging .mentor-core {
+      box-shadow:
+        0 0 26px rgba(123, 207, 255, .82),
+        0 0 62px rgba(75, 156, 255, .5),
+        inset 0 0 24px rgba(255, 255, 255, .55);
+    }
+
+    /* 底部守护者跑马灯（5 张卡片循环播放） */
+    .marquee {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: var(--site-footer-h);
+      z-index: 3;
+      display: flex;
+      height: var(--marquee-height);
+      padding: 0 clamp(12px, 2vw, 24px) clamp(10px, 1.6vh, 16px);
+      pointer-events: none;
+    }
+
+    .marquee-wrapper {
+      position: relative;
+      display: flex;
+      width: 100%;
+      min-height: 0;
+      overflow: hidden;
+      pointer-events: auto;
+    }
+
+    .marquee-track {
+      display: flex;
+      flex-grow: 1;
+      gap: clamp(32px, 4.5vw, 52px);
+      align-items: flex-start;
+      min-width: 0;
+      min-height: 0;
+      padding: clamp(14px, 2vh, 20px) clamp(14px, 2vw, 28px);
+      user-select: none;
+      -webkit-user-select: none;
+      will-change: transform;
+      cursor: grab;
+    }
+
+    .marquee-track.dragging {
+      cursor: grabbing;
+      transition: none;
+    }
+
+    .g-card-wrap {
+      position: relative;
+      flex: 0 0 auto;
+      width: clamp(280px, 23vw, 340px);
+    }
+
+    .g-card {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 20px 22px;
+      border: 3px solid #111;
+      border-radius: 18px;
+      background: var(--student-page-bg, #f7f3ea);
+      color: #172033;
+      overflow: hidden;
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.19),
+        0 5px 0 #111,
+        0 10px 18px rgba(0, 0, 0, 0.12);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .g-card:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.26),
+        0 8px 0 #111,
+        0 14px 22px rgba(0, 0, 0, 0.16);
+    }
+
+    .g-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: rgb(254, 92, 67);
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+    }
+
+    .g-area {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgb(30, 85, 157);
+      letter-spacing: 0.06em;
+      opacity: 0.82;
+    }
+
+    .g-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #425066;
+      /* 高度自适应：不截断，按实际字数自然展开 */
+    }
+
+    /* 上下错落：每 5 张循环一次（原始 5 + 复制 5 的对应位置） */
+    .g-card-wrap:nth-child(5n+1) { margin-top: 0; }
+    .g-card-wrap:nth-child(5n+2) { margin-top: 28px; }
+    .g-card-wrap:nth-child(5n+3) { margin-top: 10px; }
+    .g-card-wrap:nth-child(5n+4) { margin-top: 36px; }
+    .g-card-wrap:nth-child(5n+5) { margin-top: 16px; }
+
+    @media (max-width: 640px) {
+      .content {
+        margin-left: clamp(24px, 7vw, 48px);
+      }
+
+      .hero {
+        padding-top: calc(var(--site-nav-h) + var(--site-nav-offset) + 20px);
+      }
+
+      .intro {
+        max-width: none;
+        text-align: center;
+        text-align-last: center;
+      }
+
+      .intro-row {
+        width: 100%;
+      }
+
+      .enter {
+        min-width: 158px;
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+
+      .mentor {
+        width: 88px;
+      }
+
+      .mentor-core {
+        width: 64px;
+      }
+
+      .mentor-name {
+        font-size: 11px;
+      }
+
+      .g-card {
+        width: clamp(220px, 56vw, 300px);
+        padding: 16px 18px;
+      }
+      .g-name { font-size: 16px; }
+      .g-area { font-size: 11px; }
+      .g-desc { font-size: 13.5px; line-height: 1.55; }
+    }
+
+    @media (max-height: 620px) {
+      .hero {
+        padding-top: calc(var(--site-nav-h) + var(--site-nav-offset) + 18px);
+      }
+
+      .headline h1 {
+        font-size: clamp(32px, 5vw, 42px);
+      }
+
+      .headline {
+        margin-bottom: 12px;
+      }
+
+      .intro {
+        font-size: clamp(14px, 2.1vh, 17px);
+        line-height: 1.55;
+      }
+
+      .enter-wrap {
+        margin-top: 18px;
+      }
+    }
+
+    @media (max-height: 520px) {
+      :root {
+        --marquee-height: 228px;
+      }
+
+      .hero {
+        padding-top: calc(var(--site-nav-h) + var(--site-nav-offset) + 14px);
+      }
+
+      .headline {
+        margin-bottom: 9px;
+      }
+
+      .intro {
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .enter-wrap {
+        margin-top: 13px;
+      }
+
+      .g-card {
+        padding: 14px 16px;
+      }
+      .g-name { font-size: 15px; }
+      .g-desc { font-size: 12.5px; line-height: 1.5; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .beam {
+        animation: none;
+      }
+
+      .mentor,
+      .mentor::before {
+        animation: none;
+      }
+    }
+
+    @keyframes mentor-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-9px); }
+    }
+
+    @keyframes mentor-ring {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <span class="site-action-wrap">
+      <a class="site-action" href="main.html" aria-label="返回首页">返回
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+    <div class="site-bar b1"></div>
+    <div class="site-bar b2"></div>
+    <div class="site-bar b3"></div>
+    <div class="site-bar b4"></div>
+    <div class="site-bar b5"></div>
+    <div class="site-bar b6"></div>
+    <div class="site-scan"></div>
+  </div>
+  <div class="site-glow" aria-hidden="true"></div>
+
+  <main class="hero">
+    <div class="content">
+      <header class="headline">
+        <h1>能力闯关</h1>
+      </header>
+
+      <div class="intro-row">
+        <p class="intro">智核域面临一场"AI能力危机"，需要找到具备综合AI素养的觉醒者来化解。您需要依次前往五个区域——智核学院、信息迷城、创客工坊、协同空间站、伦理殿堂——在每位守护者的考验中展现自己的AI能力。每个区域的考验都不是单一维度的测试，而是模拟真实世界AI应用场景的综合挑战。最终，你将获得"智核觉醒报告"，揭示自己在六大AI能力维度上的真实水平。</p>
+      </div>
+
+      <div class="enter-wrap">
+        <a class="enter" href="level.html">进入智核域
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="mentor" data-form="core" role="img" aria-label="AI导师小源，一个固定的发光AI核心">
+      <div class="mentor-core">
+        <span class="mentor-icon mentor-icon-core">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="12" r="3.1" fill="currentColor"/></svg>
+        </span>
+        <span class="mentor-icon mentor-icon-alert">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/><circle cx="12" cy="19" r="1.7" fill="currentColor"/></svg>
+        </span>
+        <span class="mentor-icon mentor-icon-bulb">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21h6M10 18h4M12 3a6 6 0 0 0-3.5 10.9c.6.5.9 1.2.9 1.9v.2h5.2v-.2c0-.7.3-1.4.9-1.9A6 6 0 0 0 12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="mentor-icon mentor-icon-spark">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" fill="currentColor"/><path d="M18.5 16.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2Z" fill="currentColor" opacity=".78"/></svg>
+        </span>
+      </div>
+      <span class="mentor-name">AI导师 · 小源</span>
+    </div>
+  </main>
+
+  <!-- 底部：守护者跑马灯（5 张卡片循环播放） -->
+  <section class="marquee" aria-label="守护者介绍">
+    <div class="marquee-wrapper">
+      <div class="marquee-track" id="track">
+        <div class="g-card-wrap"><article class="g-card">
+          <h3 class="g-name">林教授</h3>
+          <span class="g-area">第一关 · 智核学院</span>
+          <p class="g-desc">温和的大学AI实验室教授，戴圆框眼镜，身穿学者长袍。循循善诱地通过实际问题引导玩家展现对AI基础概念、提示词设计和工具使用的理解。</p>
+        </article></div>
+        <div class="g-card-wrap"><article class="g-card">
+          <h3 class="g-name">苏记者</h3>
+          <span class="g-area">第二关 · 信息迷城</span>
+          <p class="g-desc">干练的调查记者，手持相机，身穿风衣。她正在调查一起AI生成假新闻配图事件，考验玩家辨别信息真伪、分析AI生成痕迹的能力。</p>
+        </article></div>
+        <div class="g-card-wrap"><article class="g-card">
+          <h3 class="g-name">陈创客</h3>
+          <span class="g-area">第三关 · 创客工坊</span>
+          <p class="g-desc">热情的科技创业者，身穿工装背心，头戴护目镜。实操导向地让玩家亲自动手使用AI终端完成任务，关注提示词迭代过程。</p>
+        </article></div>
+        <div class="g-card-wrap"><article class="g-card">
+          <h3 class="g-name">周队长</h3>
+          <span class="g-area">第四关 · 协同空间站</span>
+          <p class="g-desc">退役航天指挥官，军装笔挺。空间站AI系统检测到氧气循环异常，在模拟紧急情况下考察玩家合理利用AI但不盲信的协作能力。</p>
+        </article></div>
+        <div class="g-card-wrap"><article class="g-card">
+          <h3 class="g-name">方法官</h3>
+          <span class="g-area">第五关 · 伦理殿堂</span>
+          <p class="g-desc">银发的AI伦理法庭法官，身穿法袍，手持天平。审理三起AI相关案件，需要玩家综合运用AI伦理知识、人机协作能力做出判断。</p>
+        </article></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer"></footer>
+
+  <script>
+    (function () {
+      // ===== 可拖拽 mentor 小球 =====
+      const mentor = document.querySelector(".mentor");
+      const mentorForms = ["core", "alert", "bulb", "spark"];
+      let mentorIndex = 0;
+      const hero = document.querySelector(".hero");
+      const marquee = document.querySelector(".marquee");
+      let mentorX = 0, mentorY = 0, mentorBounds = null;
+      let isMentorDragging = false, mentorPointerId = null;
+      let mentorDragStartX = 0, mentorDragStartY = 0;
+      let mentorDragOriginX = 0, mentorDragOriginY = 0;
+
+      window.setXiaoyuanForm = (form) => {
+        if (mentorForms.includes(form)) mentor.dataset.form = form;
+      };
+
+      function updateMentorBounds() {
+        const heroRect = hero.getBoundingClientRect();
+        const navRect = document.querySelector(".site-nav").getBoundingClientRect();
+        const marqueeRect = marquee.getBoundingClientRect();
+        const mentorWidth = mentor.offsetWidth;
+        const mentorHeight = mentor.offsetHeight;
+        const heroStyle = getComputedStyle(hero);
+        const inset = {
+          left: parseFloat(heroStyle.paddingLeft),
+          right: parseFloat(heroStyle.paddingRight),
+          top: parseFloat(heroStyle.paddingTop),
+          bottom: parseFloat(heroStyle.paddingBottom)
+        };
+        const edgeGap = Math.max(22, window.innerWidth * 0.025);
+        const bottomGap = 20;
+
+        const minX = 0;
+        const maxX = heroRect.width - inset.right - edgeGap - mentorWidth;
+        const minY = Math.max(
+          inset.top + edgeGap,
+          navRect.bottom - heroRect.top + 18
+        );
+        const maxY = Math.min(
+          heroRect.height - inset.bottom - edgeGap - mentorHeight,
+          marqueeRect.top - heroRect.top - bottomGap - mentorHeight
+        );
+        mentorBounds = {
+          minX,
+          maxX,
+          minY: Math.min(minY, maxY),
+          maxY: Math.max(minY, maxY),
+          width: mentorWidth,
+          height: mentorHeight
+        };
+        return mentorBounds;
+      }
+
+      function clampMentorPoint(x, y) {
+        const bounds = mentorBounds || updateMentorBounds();
+        return {
+          x: Math.min(Math.max(x, bounds.minX), bounds.maxX),
+          y: Math.min(Math.max(y, bounds.minY), bounds.maxY)
+        };
+      }
+
+      function setMentorPoint(x, y) {
+        const point = typeof x === "object"
+          ? clampMentorPoint(x.x, x.y)
+          : clampMentorPoint(x, y);
+        mentorX = point.x;
+        mentorY = point.y;
+        mentor.style.left = `${mentorX}px`;
+        mentor.style.top = `${mentorY}px`;
+      }
+
+      updateMentorBounds();
+      (function readInitialMentorPoint() {
+        const heroRect = hero.getBoundingClientRect();
+        const mentorRect = mentor.getBoundingClientRect();
+        mentorX = mentorRect.left - heroRect.left;
+        mentorY = mentorRect.top - heroRect.top;
+      })();
+
+      mentor.addEventListener("pointerdown", (event) => {
+        isMentorDragging = true;
+        mentorPointerId = event.pointerId;
+        mentorDragStartX = event.clientX;
+        mentorDragStartY = event.clientY;
+        mentorDragOriginX = mentorX;
+        mentorDragOriginY = mentorY;
+        mentor.classList.add("dragging");
+        mentor.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      });
+
+      mentor.addEventListener("pointermove", (event) => {
+        if (!isMentorDragging || event.pointerId !== mentorPointerId) return;
+        setMentorPoint(
+          mentorDragOriginX + event.clientX - mentorDragStartX,
+          mentorDragOriginY + event.clientY - mentorDragStartY
+        );
+      });
+
+      function endMentorDrag(event) {
+        if (!isMentorDragging || event.pointerId !== mentorPointerId) return;
+        isMentorDragging = false;
+        mentorPointerId = null;
+        mentor.classList.remove("dragging");
+      }
+
+      mentor.addEventListener("pointerup", endMentorDrag);
+      mentor.addEventListener("pointercancel", endMentorDrag);
+      window.addEventListener("resize", () => {
+        updateMentorBounds();
+        setMentorPoint(mentorX, mentorY);
+      });
+
+      setInterval(() => {
+        if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        mentorIndex = (mentorIndex + 1) % mentorForms.length;
+        mentor.dataset.form = mentorForms[mentorIndex];
+      }, 3600);
+
+      // ===== 守护者跑马灯（5 张卡片，无缝循环 + 拖拽 + hover 加速） =====
+      const track = document.getElementById("track");
+      const wrapper = track.closest(".marquee-wrapper");
+      const originalCards = Array.from(track.children);
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // 复制 5 张卡片以实现无缝循环
+      originalCards.forEach((card) => {
+        const clone = card.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        track.appendChild(clone);
+      });
+
+      let currentOffset = 0;
+      let isDragging = false;
+      let dragPointerId = null;
+      let startX = 0;
+      let startOffset = 0;
+      let totalWidth = 0;
+      let animationFrame = null;
+      let lastTimestamp = 0;
+      let isHover = false;
+      const baseSpeed = 0.45;
+
+      function readGap() {
+        const cs = getComputedStyle(track);
+        const raw = cs.columnGap && cs.columnGap !== "normal" ? cs.columnGap : cs.gap;
+        return Number.parseFloat(raw) || 0;
+      }
+
+      function updateDimensions() {
+        const gap = readGap();
+        const half = track.children.length / 2;
+        let width = 0;
+        for (let index = 0; index < half; index += 1) {
+          width += track.children[index].getBoundingClientRect().width + gap;
+        }
+        totalWidth = Math.max(0, width - gap);
+      }
+
+      function normalizeOffset() {
+        if (totalWidth <= 0) return;
+        while (currentOffset > 0) currentOffset -= totalWidth;
+        while (currentOffset <= -totalWidth) currentOffset += totalWidth;
+      }
+
+      function render() {
+        track.style.transform = `translateX(${currentOffset}px)`;
+      }
+
+      function step(timestamp) {
+        if (!isDragging) {
+          const delta = timestamp - lastTimestamp;
+          lastTimestamp = timestamp;
+          const speed = isHover ? baseSpeed * 2.8 : baseSpeed;
+          currentOffset -= speed * (delta / 16.67);
+          normalizeOffset();
+          render();
+        }
+        animationFrame = window.requestAnimationFrame(step);
+      }
+
+      function startAutoScroll() {
+        if (reducedMotion || animationFrame !== null) return;
+        lastTimestamp = performance.now();
+        animationFrame = window.requestAnimationFrame(step);
+      }
+
+      function stopAutoScroll() {
+        if (animationFrame === null) return;
+        window.cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+
+      track.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        isDragging = true;
+        dragPointerId = event.pointerId;
+        startX = event.clientX;
+        startOffset = currentOffset;
+        track.classList.add("dragging");
+        stopAutoScroll();
+        event.preventDefault();
+      });
+
+      window.addEventListener("pointermove", (event) => {
+        if (!isDragging || event.pointerId !== dragPointerId) return;
+        currentOffset = startOffset + (event.clientX - startX) * 0.9;
+        normalizeOffset();
+        render();
+      });
+
+      function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        dragPointerId = null;
+        track.classList.remove("dragging");
+        startAutoScroll();
+      }
+
+      window.addEventListener("pointerup", endDrag);
+      window.addEventListener("pointercancel", endDrag);
+      track.addEventListener("selectstart", (event) => event.preventDefault());
+      wrapper.addEventListener("mouseenter", () => { isHover = true; });
+      wrapper.addEventListener("mouseleave", () => { isHover = false; });
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopAutoScroll();
+        else startAutoScroll();
+      });
+
+      const observer = new ResizeObserver(updateDimensions);
+      observer.observe(track);
+      window.addEventListener("load", updateDimensions);
+      updateDimensions();
+      startAutoScroll();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,561 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  --site-nav-h: 58px;
+  --site-nav-offset: 10px;
+  --site-footer-h: 42px;
+  position: relative;
+  background: rgb(30, 85, 157);
+  color: #fff;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.site-lights {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.site-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(170, 215, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(170, 215, 255, 0.14) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.site-bar {
+  position: absolute;
+  left: -40%;
+  width: 180%;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(130, 215, 255, 0.45) 45%,
+    rgba(235, 250, 255, 0.6) 50%,
+    rgba(130, 215, 255, 0.45) 55%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 10px 1px rgba(120, 200, 255, 0.22),
+    0 0 24px 4px rgba(90, 170, 255, 0.1);
+  opacity: 0.32;
+  will-change: transform;
+}
+
+.site-bar.b1 { top: 10%; animation: site-sweep 9s ease-in-out infinite alternate; }
+.site-bar.b2 { top: 26%; animation: site-sweep-r 12s ease-in-out infinite alternate; }
+.site-bar.b3 { top: 44%; animation: site-sweep 15s ease-in-out infinite alternate; }
+.site-bar.b4 { top: 60%; animation: site-sweep-r 11s ease-in-out infinite alternate; }
+.site-bar.b5 { top: 78%; animation: site-sweep 17s ease-in-out infinite alternate; }
+.site-bar.b6 { top: 90%; animation: site-sweep-r 13s ease-in-out infinite alternate; }
+
+.site-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -4%;
+  height: 3px;
+  background: linear-gradient(to right, transparent, rgba(170, 225, 255, 0.32), transparent);
+  box-shadow: 0 0 12px 3px rgba(120, 200, 255, 0.15);
+  animation: site-scan 7s linear infinite;
+}
+
+.site-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(120, 180, 255, 0.07) 0%,
+    transparent 60%
+  );
+}
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  height: var(--site-nav-h);
+  padding: 0 28px;
+  transform: translateY(var(--site-nav-offset));
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+}
+
+.site-brand {
+  color: rgb(254, 92, 67);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-shadow:
+    0 0 8px rgba(254, 92, 67, 0.55),
+    0 0 18px rgba(254, 92, 67, 0.35);
+}
+
+.site-action-wrap {
+  position: relative;
+  display: inline-flex;
+  margin-left: auto;
+}
+
+.site-action-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #000;
+  border-radius: 999px;
+  transform: translate(6px, 6px);
+}
+
+.site-action {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  min-width: 0;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: rgb(254, 92, 67);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.15s ease, background 0.15s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-action,
+.site-action:hover,
+.site-action:focus,
+.site-action:focus-visible,
+.site-action:active {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.site-action:hover {
+  transform: translateY(-2px);
+  background: rgb(232, 78, 55);
+  box-shadow:
+    0 0 14px rgba(254, 92, 67, 0.55),
+    0 0 28px rgba(254, 92, 67, 0.3);
+}
+
+.site-action svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.site-footer {
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  bottom: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  height: var(--site-footer-h);
+  padding: 0 28px;
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-align: left;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+}
+
+.site-footer-link {
+  color: rgb(254, 92, 67);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.site-footer-link:hover {
+  opacity: 0.78;
+  text-decoration: underline;
+}
+
+@keyframes site-sweep {
+  from { transform: translateX(-20%) rotate(-9deg); }
+  to { transform: translateX(20%) rotate(-9deg); }
+}
+
+@keyframes site-sweep-r {
+  from { transform: translateX(20%) rotate(8deg); }
+  to { transform: translateX(-20%) rotate(8deg); }
+}
+
+@keyframes site-scan {
+  from { top: -4%; }
+  to { top: 104%; }
+}
+
+@media (max-width: 640px) {
+  .site-nav {
+    padding: 0 16px;
+  }
+
+  .site-brand {
+    font-size: 18px;
+    letter-spacing: 0.16em;
+  }
+
+  .site-action {
+    min-width: 0;
+    padding: 9px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-bar,
+  .site-scan {
+    animation: none;
+  }
+}
+
+/* Student-wide background and login-button styling */
+:root {
+  --student-page-bg: rgb(247, 243, 234);
+  --student-button: #20aac7;
+  --student-button-deep: #087f9e;
+}
+
+html,
+body {
+  background: var(--student-page-bg) !important;
+  color: #10224a;
+}
+
+/* Remove the former full-screen blue light effects so the page background
+   remains the exact beige color across every student entry. */
+.site-lights,
+.site-glow,
+.lights,
+.background,
+.site-grid,
+.grid,
+.site-bar,
+.bar,
+.site-scan,
+.scan,
+.site-glow,
+.glow,
+.beam {
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.share-layout {
+  background: var(--student-page-bg) !important;
+}
+
+/* The sharing page was designed directly on the old blue background, so its
+   own card text needs light-theme colors on the beige background. */
+.share-cards {
+  background: transparent !important;
+}
+
+.share-cards::-webkit-scrollbar-thumb {
+  background: rgb(16 34 74 / 22%) !important;
+}
+
+.share-cards::-webkit-scrollbar-track {
+  background: rgb(16 34 74 / 7%) !important;
+}
+
+.post_item {
+  border: 4px solid #10224a !important;
+  border-radius: 26px !important;
+  background: #f7f3ea !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 80%),
+    0 6px 0 #071736,
+    0 14px 24px rgb(0 13 49 / 20%) !important;
+}
+
+.post_item:hover {
+  border-color: #10224a !important;
+  background: #f7f3ea !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 84%),
+    0 8px 0 #071736,
+    0 18px 30px rgb(0 13 49 / 22%) !important;
+}
+
+.post_title,
+.post_title a,
+.post_meta_item.post_author,
+.post_meta_item .num {
+  color: #10224a !important;
+}
+
+.post_title:hover,
+.post_title a:hover {
+  color: var(--student-button-deep) !important;
+}
+
+.title-line {
+  background: #10224a !important;
+}
+
+.post_content_inner {
+  color: #4c5a76 !important;
+}
+
+.post_meta {
+  color: #66738d !important;
+}
+
+button,
+[role="button"],
+.site-action,
+.nav-profile,
+.faq-enter,
+.enter,
+.level-button,
+.back-link {
+  appearance: none !important;
+  color: #fff !important;
+  border: 3px solid var(--student-button-deep) !important;
+  border-radius: 18px !important;
+  background: var(--student-button) !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 19%),
+    0 5px 0 var(--student-button-deep),
+    0 10px 18px rgb(0 54 86 / 18%) !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+  transition: filter 180ms ease, transform 180ms ease, box-shadow 180ms ease !important;
+}
+
+button:hover:not(:disabled),
+[role="button"]:hover,
+.site-action:hover,
+.nav-profile:hover,
+.faq-enter:hover,
+.enter:hover,
+.level-button:hover,
+.back-link:hover {
+  filter: brightness(1.045);
+  transform: translateY(-3px) scale(1.008);
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 26%),
+    0 8px 0 var(--student-button-deep),
+    0 14px 22px rgb(0 54 86 / 22%) !important;
+}
+
+button:disabled,
+button[aria-disabled="true"] {
+  cursor: wait !important;
+  filter: saturate(.72) !important;
+  opacity: .78 !important;
+  transform: none !important;
+}
+
+/* Remove legacy pill shadow layers that were part of the old button style. */
+.site-action-wrap::before,
+.nav-profile-wrap::before,
+.enter-wrap::before,
+.level-button-wrap::before {
+  display: none !important;
+  background: none !important;
+}
+
+/* Keep answer feedback readable while still using the new button shape. */
+.opt.correct {
+  color: #fff !important;
+  border-color: #1f9b5c !important;
+  background: #2fb673 !important;
+}
+
+.opt.wrong {
+  color: #fff !important;
+  border-color: #d8432c !important;
+  background: rgb(254, 92, 67) !important;
+}
+
+/* Multi-choice answers still need a visible selection state within the
+   login-button family. */
+.opt.sel {
+  color: #fff !important;
+  border-color: #066b86 !important;
+  background: #1994ae !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 24%),
+    0 5px 0 #066b86,
+    0 10px 18px rgb(0 54 86 / 18%) !important;
+}
+
+.tab .num {
+  color: rgb(255 255 255 / 80%) !important;
+}
+
+/* Page headings need enough contrast on the new beige background. */
+.title h1,
+.title .sub-cn,
+.title .sub-en,
+.title .intro,
+.test-head h1,
+.test-head .sub-cn,
+.test-head .intro,
+.headline h1,
+.headline .intro,
+.intro-row .intro,
+.self-head h1,
+.self-head .sub,
+.share-head h1,
+.share-head .sub-en,
+.share-head .intro {
+  color: #10224a !important;
+  text-shadow: none !important;
+}
+
+.intro-row .intro {
+  color: #43506a !important;
+}
+
+/* Training-path cards still carried their old translucent blue surface. */
+.train-card {
+  border: 4px solid #10224a !important;
+  border-radius: 26px !important;
+  background: #f7f3ea !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: #10224a !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 80%),
+    0 6px 0 #071736,
+    0 14px 24px rgb(0 13 49 / 20%) !important;
+}
+
+.train-card:hover {
+  border-color: #10224a !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 84%),
+    0 8px 0 #071736,
+    0 18px 30px rgb(0 13 49 / 22%) !important;
+}
+
+.train-desc {
+  color: #4c5a76 !important;
+}
+
+.train-no {
+  color: rgb(16 34 74 / 46%) !important;
+}
+
+/* Personal-center panels follow the beige login-panel framing, while role
+   choices stay white cards instead of inheriting the cyan button surface. */
+.self-wrap .panel {
+  border: 4px solid #10224a !important;
+  border-radius: 26px !important;
+  background: #f7f3ea !important;
+  color: #10224a !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 80%),
+    0 6px 0 #071736,
+    0 14px 24px rgb(0 13 49 / 20%) !important;
+}
+
+.self-wrap .role-card {
+  appearance: none !important;
+  border: 3px solid #10224a !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  color: #10224a !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 80%),
+    0 5px 0 #071736,
+    0 10px 18px rgb(0 13 49 / 18%) !important;
+}
+
+.self-wrap .role-card:hover {
+  border-color: #10224a !important;
+  background: #fff !important;
+  color: #10224a !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 84%),
+    0 7px 0 #071736,
+    0 14px 22px rgb(0 13 49 / 20%) !important;
+}
+
+.self-wrap .role-card.sel {
+  border-color: rgb(254 92 67) !important;
+  background: #fff !important;
+}
+
+.self-wrap .stat {
+  background: #fff !important;
+}
+
+.self-wrap .sc-actions .sc-btn {
+  border: 3px solid #10224a !important;
+  background: #fff !important;
+  color: #10224a !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 80%),
+    0 5px 0 #071736,
+    0 10px 18px rgb(0 13 49 / 18%) !important;
+}
+
+.self-wrap .sc-actions .sc-btn:hover {
+  background: #fff !important;
+  color: #10224a !important;
+  box-shadow:
+    inset 0 0 0 2px rgb(255 255 255 / 84%),
+    0 7px 0 #071736,
+    0 14px 22px rgb(0 13 49 / 20%) !important;
+}
+
+.self-wrap .panel + .panel,
+.self-wrap .panel.nonprint {
+  margin-top: 32px !important;
+}
+
+/* Quiz navigation labels were tuned for the old dark background. */
+.np-label {
+  color: #10224a !important;
+  text-shadow: none !important;
+}
+
+.dlg-hint {
+  color: var(--student-button-deep) !important;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}

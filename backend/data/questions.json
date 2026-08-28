@@ -1,40 +1,6 @@
 {
-  "users": [
-    {
-      "id": "u_student",
-      "account": "123456",
-      "role": "student",
-      "name": "学员123456",
-      "password": "123456"
-    },
-    {
-      "id": "u_teacher",
-      "account": "123456",
-      "role": "teacher",
-      "name": "管理员",
-      "password": "123456"
-    }
-  ],
-  "classes": [],
-  "students": [
-    {
-      "id": "s_student",
-      "userId": "u_student",
-      "studentNo": "123456",
-      "name": "学员123456",
-      "classId": null,
-      "nickname": "探险者",
-      "avatarId": "sage"
-    }
-  ],
-  "teachers": [
-    {
-      "id": "t_admin",
-      "userId": "u_teacher",
-      "teacherNo": "123456",
-      "name": "管理员"
-    }
-  ],
+  "version": 6,
+  "source": "题库6版.docx",
   "questions": [
     {
       "id": "q001",
@@ -8460,15 +8426,5 @@
       "createdBy": "u_teacher",
       "createdAt": "2026-08-28T00:00:00.000Z"
     }
-  ],
-  "assessments": [],
-  "sessions": [],
-  "practicalSubmissions": [],
-  "reports": [],
-  "selfAssessments": [],
-  "tokens": [],
-  "quizAttempts": [],
-  "practiceAttempts": [],
-  "tasks": [],
-  "forumPosts": []
+  ]
 }

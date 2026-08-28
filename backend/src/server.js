@@ -10,6 +10,8 @@ import { registerStudentRoutes } from "./routes/student.js";
 import { registerAssessmentRoutes } from "./routes/assessment.js";
 import { registerTeacherRoutes } from "./routes/teacher.js";
 import { registerAIRoutes } from "./routes/ai.js";
+import { registerQuizSessionRoutes } from "./routes/quiz-session.js";
+import { registerForumRoutes } from "./routes/forum.js";
 
 const projectRoot = existsSync(join(process.cwd(), "backend", "src", "server.js"))
   ? process.cwd()
@@ -18,8 +20,8 @@ loadDotEnv(join(projectRoot, "backend", ".env"));
 
 const port = Number(process.env.PORT || 8787);
 const host = process.env.HOST || "127.0.0.1";
-const staticRoot = resolve(projectRoot, process.env.STATIC_ROOT || "src");
-const frontendAssetsRoot = resolve(projectRoot, "frontend", "public", "assets");
+const staticRoot = resolve(projectRoot, process.env.STATIC_ROOT || "frontend");
+const frontendAssetsRoot = resolve(projectRoot, "frontend", "assets");
 const store = new Store(process.env.RESET_DB === "1");
 const router = new Router();
 const contextBase = { store };
@@ -37,6 +39,8 @@ registerStudentRoutes(router, contextBase);
 registerAssessmentRoutes(router, contextBase);
 registerTeacherRoutes(router, contextBase);
 registerAIRoutes(router, contextBase);
+registerQuizSessionRoutes(router, contextBase);
+registerForumRoutes(router, contextBase);
 
 const server = createServer(async (req, res) => {
   const started = Date.now();
@@ -160,8 +164,11 @@ function serveStatic(req, res, pathname) {
   const safePath = normalize(pathname).replace(/^(\.\.[/\\])+/, "");
   let filePath = join(staticRoot, safePath);
   if (!filePath.startsWith(staticRoot)) throw httpError(403, "禁止访问该路径");
-  if ((!existsSync(filePath) || statSync(filePath).isDirectory()) && safePath.startsWith("/assets/")) {
-    const publicAssetPath = join(frontendAssetsRoot, safePath.slice("/assets/".length));
+  const publicAssetRelativePath = safePath.replace(/^[/\\]+/, "");
+  const isPublicAssetPath = publicAssetRelativePath.startsWith("assets/")
+    || publicAssetRelativePath.startsWith("assets\\");
+  if ((!existsSync(filePath) || statSync(filePath).isDirectory()) && isPublicAssetPath) {
+    const publicAssetPath = join(frontendAssetsRoot, publicAssetRelativePath.slice("assets/".length));
     if (publicAssetPath.startsWith(frontendAssetsRoot) && existsSync(publicAssetPath) && !statSync(publicAssetPath).isDirectory()) {
       filePath = publicAssetPath;
     }
@@ -200,5 +207,5 @@ export function httpError(statusCode, message) {
 server.listen(port, host, () => {
   console.log(`Backend listening at http://${host}:${port}`);
   console.log(`API base: http://${host}:${port}/api`);
-  console.log(`Demo accounts: student/123456, teacher/123456, admin/admin123456`);
+  console.log(`Demo accounts: 学员端 123456 / 123456, 管理端 123456 / 123456`);
 });

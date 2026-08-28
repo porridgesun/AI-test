@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>对话式训练</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <link rel="stylesheet" href="qframe.css" />
+  <script src="cursor.js"></script>
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <span class="site-action-wrap">
+      <a class="site-action" href="test.html">返回
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+  </div>
+
+  <main class="qframe-stage">
+    <div class="qframe-top">
+      <div class="trained-bar">已训练 <b id="trainedCount">0</b> 题</div>
+    </div>
+    <section class="quiz-pane" id="quizPane">
+      <div id="quizInner"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <script>
+    window.TRAIN_POOL = [
+      { q: "你想让 AI 帮你写一封请假邮件，怎样开头表达最好？", type: "dialogue",
+        options: [{ key: "A", text: "我是员工，需向主管请明天一天病假，语气正式、简短" }, { key: "B", text: "帮我写个邮件" }, { key: "C", text: "写点东西" }, { key: "D", text: "随便写" }],
+        answer: ["A"], analysis: "交代身份、目的、约束，AI 才能产出可直接用的结果。", dims: ["提示词工程", "人机协作"] },
+      { q: "AI 第一次回答你不满意，最合适的做法是？", type: "dialogue",
+        options: [{ key: "A", text: "指出哪里不对并补充具体要求" }, { key: "B", text: "直接重新问一模一样的问题" }, { key: "C", text: "放弃使用" }, { key: "D", text: "骂它" }],
+        answer: ["A"], analysis: "把反馈说清楚，对话才能收敛到目标。", dims: ["人机协作"] },
+      { q: "想让 AI 扮演面试官，应如何设定？", type: "dialogue",
+        options: [{ key: "A", text: "说明岗位、面试风格与要考察的能力点" }, { key: "B", text: "你当面试官" }, { key: "C", text: "随便聊" }, { key: "D", text: "不问岗位" }],
+        answer: ["A"], analysis: "角色与场景越具体，AI 的表现越贴合需求。", dims: ["提示词工程"] },
+      { q: "需要 AI 用小学生能懂的话解释“量子”，应？", type: "dialogue",
+        options: [{ key: "A", text: "指定受众为小学生，并要求使用生活类比" }, { key: "B", text: "直接说“解释量子”" }, { key: "C", text: "要求越专业越好" }, { key: "D", text: "不发受众" }],
+        answer: ["A"], analysis: "明确受众与表达方式，控制语言难度。", dims: ["内容创造", "提示词工程"] },
+      { q: "AI 给的回答太长，想让它精简，应当？", type: "dialogue",
+        options: [{ key: "A", text: "要求用三句话总结核心要点" }, { key: "B", text: "再说一遍" }, { key: "C", text: "不理会" }, { key: "D", text: "让它更长" }],
+        answer: ["A"], analysis: "用明确的压缩指令比泛泛要求更有效。", dims: ["人机协作"] },
+      { q: "让 AI 翻译一段文字并保留原语气，应？", type: "dialogue",
+        options: [{ key: "A", text: "提供原文、目标语言与期望语气（如正式/亲切）" }, { key: "B", text: "只说“翻译”" }, { key: "C", text: "不提语气" }, { key: "D", text: "随便翻" }],
+        answer: ["A"], analysis: "语气是显式约束，需主动告知。", dims: ["提示词工程"] },
+      { q: "希望 AI 连续完成多步任务，最佳做法是？", type: "dialogue",
+        options: [{ key: "A", text: "分步说明，并让它每步确认后再继续" }, { key: "B", text: "一次性丢一大段不分解" }, { key: "C", text: "不让它确认" }, { key: "D", text: "跳步" }],
+        answer: ["A"], analysis: "分步+确认降低出错，便于纠偏。", dims: ["人机协作", "综合应用"] },
+      { q: "AI 给出的内容出现事实错误，应？", type: "dialogue",
+        options: [{ key: "A", text: "提供正确信息并要求其据此修正" }, { key: "B", text: "当作正确" }, { key: "C", text: "忽略" }, { key: "D", text: "不再理会" }],
+        answer: ["A"], analysis: "用证据纠正，可让后续输出更可靠。", dims: ["信息辨别"] },
+      { q: "想从 AI 获得创意点子，应？", type: "dialogue",
+        options: [{ key: "A", text: "鼓励发散思考，同时给出约束范围" }, { key: "B", text: "只要求唯一答案" }, { key: "C", text: "不给背景" }, { key: "D", text: "不让它发散" }],
+        answer: ["A"], analysis: "发散 + 约束能在创意与可行间平衡。", dims: ["内容创造"] },
+      { q: "让 AI 润色文字但保留原意，应？", type: "dialogue",
+        options: [{ key: "A", text: "说明目标风格与“不可改动”的关键信息" }, { key: "B", text: "全权交给它改" }, { key: "C", text: "不提风格" }, { key: "D", text: "让它重写主题" }],
+        answer: ["A"], analysis: "边界清晰，AI 才不会跑偏或误改重点。", dims: ["提示词工程", "内容创造"] }
+    ];
+  </script>
+  <script src="qframe.js"></script>
+</body>
+</html>

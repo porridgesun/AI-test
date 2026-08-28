@@ -15,9 +15,10 @@ export class Store {
   constructor(reset = false) {
     mkdirSync(dataDir, { recursive: true });
     const shouldLoadRuntime = !reset && existsSync(runtimePath);
+    const seed = JSON.parse(readFileSync(seedPath, "utf8"));
     this.data = shouldLoadRuntime
-      ? JSON.parse(readFileSync(runtimePath, "utf8"))
-      : this.prepareSeed(JSON.parse(readFileSync(seedPath, "utf8")));
+      ? this.prepareRuntime(seed, JSON.parse(readFileSync(runtimePath, "utf8")))
+      : this.prepareSeed(seed);
     if (!shouldLoadRuntime) this.persist();
   }
 
@@ -32,6 +33,28 @@ export class Store {
       }
     }
     return data;
+  }
+
+  prepareRuntime(seed, runtime) {
+    for (const user of runtime.users || []) {
+      if (user.password) {
+        const { salt, hash } = hashPassword(user.password);
+        user.passwordSalt = salt;
+        user.passwordHash = hash;
+        delete user.password;
+        continue;
+      }
+
+      if (!user.passwordSalt || !user.passwordHash) {
+        const seedUser = (seed.users || []).find((item) => item.id === user.id)
+          || (seed.users || []).find((item) => item.account === user.account && item.role === user.role);
+        const password = seedUser?.password || "123456";
+        const { salt, hash } = hashPassword(password);
+        user.passwordSalt = salt;
+        user.passwordHash = hash;
+      }
+    }
+    return runtime;
   }
 
   persist() {

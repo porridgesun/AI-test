@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="cursor: none;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智核档案 · 个人中心</title>
+  <style>* { cursor: none !important; }</style>
+  <link rel="stylesheet" href="cursor.css" />
+  <link rel="stylesheet" href="site-chrome.css" />
+  <script src="cursor.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      cursor: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ════════ 可滚动内容区（位于导航与页尾之间） ════════ */
+    .self-wrap {
+      position: absolute;
+      top: calc(var(--site-nav-h) + var(--site-nav-offset) + 6px);
+      left: 0; right: 0;
+      bottom: calc(var(--site-footer-h) + 6px);
+      overflow-y: auto;
+      padding: 18px clamp(16px, 4vw, 64px) 26px;
+      z-index: 1;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0,0,0,.3) transparent;
+    }
+    .self-wrap::-webkit-scrollbar { width: 8px; }
+    .self-wrap::-webkit-scrollbar-thumb { background: rgba(0,0,0,.32); border-radius: 4px; }
+    .self-wrap::-webkit-scrollbar-track { background: transparent; }
+
+    .self-head {
+      display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+      margin: 2px 0 18px;
+    }
+    .self-head h1 {
+      font-size: 30px; font-weight: 800; letter-spacing: .04em; color: #fff;
+      text-shadow: 0 0 18px rgba(150,200,255,.45);
+    }
+    .self-head .sub {
+      font-size: 14px; letter-spacing: .26em; color: rgba(220,238,255,.78);
+      text-transform: uppercase;
+    }
+
+    .view { display: block; animation: viewIn .35s cubic-bezier(.22,1,.36,1) both; }
+    .view[hidden] { display: none; }
+    @keyframes viewIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    /* ════════ 通用面板 / 卡片 ════════ */
+    .panel {
+      position: relative;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 18px 46px rgba(8,24,52,0.34);
+      color: #16213a;
+    }
+    .panel + .panel { margin-top: 24px; }
+    .panel-title {
+      font-size: 13px; font-weight: 800; letter-spacing: .14em;
+      color: rgb(254,92,67); text-transform: uppercase; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .panel-title::before {
+      content: ""; width: 8px; height: 18px; border-radius: 3px;
+      background: rgb(254,92,67); box-shadow: 0 0 10px rgba(254,92,67,.5);
+    }
+    .grid-2 { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; }
+    @media (max-width: 880px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .class-state { margin: 2px 0 14px; font-size: 15px; font-weight: 800; color: #16213a; }
+    .class-state em { font-style: normal; color: rgb(254,92,67); }
+    .class-join-row { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+    .class-code-input {
+      flex: 1 1 220px; min-width: 0; height: 48px; padding: 0 14px;
+      border: 3px solid #000; border-radius: 0; background: #fff;
+      color: #111; font-size: 17px; font-weight: 800; letter-spacing: 5px;
+      text-transform: uppercase; outline: none; box-shadow: 5px 5px 0 #000;
+    }
+    .class-code-input::placeholder { color: #a8a8a8; letter-spacing: 1px; font-weight: 600; }
+    .class-code-input:focus { box-shadow: 7px 7px 0 rgb(254,92,67); }
+    .class-note { margin-top: 10px; font-size: 13px; line-height: 1.6; color: #5a6884; }
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .account-grid label { display: grid; gap: 6px; font-size: 12.5px; font-weight: 800; color: #5a6884; }
+    .account-grid label:nth-child(3),
+    .account-grid .account-submit { grid-column: 1 / -1; }
+    .account-grid input {
+      height: 48px; padding: 0 14px; max-width: 100%; box-sizing: border-box;
+      border: 3px solid #000; border-radius: 0; background: #fff;
+      color: #111; font-size: 15px; font-weight: 700; outline: none;
+      box-shadow: 5px 5px 0 #000;
+    }
+    .account-grid input:focus { box-shadow: 7px 7px 0 rgb(254,92,67); }
+    .account-grid .account-submit { justify-content: center; }
+    .settings-panel {
+      background: rgb(247,243,234); border: 3px solid #000; border-radius: 0;
+      box-shadow: 8px 8px 0 #000;
+    }
+    .settings-panel .panel-title { color: #111; }
+    .settings-panel .panel-title::before { background: #000; box-shadow: none; }
+    .settings-panel .sc-btn { background: #fff; color: #111; box-shadow: 5px 5px 0 #000; }
+    .settings-panel .sc-btn:hover { background: #f3f6fb; box-shadow: 7px 7px 0 #000; }
+    .modal-box.account-modal-box {
+      width: min(720px, 94vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 30px 30px 32px;
+    }
+    .account-modal-title { color: #111; font-size: 20px; }
+
+    /* ════════ 个人资料头部 ════════ */
+    .profile {
+      display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    }
+    .avatar {
+      flex: none; width: 96px; height: 96px; border-radius: 22px;
+      display: grid; place-items: center;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 26px rgba(8,24,52,.35);
+      color: #fff;
+    }
+    .avatar svg { width: 50%; height: 50%; }
+    .pinfo { flex: 1 1 220px; min-width: 0; }
+    .nick-row { display: flex; align-items: center; gap: 10px; }
+    .nick {
+      font-size: 26px; font-weight: 800; color: #16213a; letter-spacing: .02em;
+      border-bottom: 2px dashed transparent; padding-bottom: 2px; cursor: none;
+    }
+    .nick-input {
+      font-size: 26px; font-weight: 800; color: #16213a;
+      border: none; border-bottom: 2px solid rgb(254,92,67);
+      background: transparent; outline: none; width: 12ch; font-family: inherit;
+    }
+    .nick-edit {
+      appearance: none; border: none; background: rgba(254,92,67,.12);
+      color: rgb(254,92,67); font-weight: 700; font-size: 12px;
+      padding: 5px 11px; border-radius: 999px; cursor: none;
+    }
+    .role-tag {
+      margin-top: 8px; display: inline-flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 700; color: #41506a;
+      background: rgba(27,40,70,.06); padding: 5px 12px; border-radius: 999px;
+    }
+    .role-tag .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ════════ 角色选择 ════════ */
+    .roles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 720px) { .roles { grid-template-columns: repeat(2, 1fr); } }
+    .role-card {
+      position: relative; text-align: left; cursor: none;
+      border: 2px solid rgba(27,40,70,.12); border-radius: 14px;
+      background: #fff; padding: 14px 14px 16px;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .role-card:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(8,24,52,.2); }
+    .role-card.sel { border-color: rgb(254,92,67); box-shadow: 0 0 0 3px rgba(254,92,67,.18); }
+    .role-ico {
+      width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
+      color: #fff; margin-bottom: 10px;
+    }
+    .role-ico svg { width: 56%; height: 56%; }
+    .role-card .rn { font-size: 15px; font-weight: 800; color: #16213a; }
+    .role-card .rd { font-size: 12px; color: #5a6884; margin-top: 4px; line-height: 1.5; }
+
+    /* ════════ 按钮 ════════ */
+    .sc-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+    .sc-btn {
+      position: relative; display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 22px; border: none; border-radius: 999px;
+      background: rgb(254,92,67); color: #fff;
+      font-size: 15px; font-weight: 700; letter-spacing: .03em; cursor: none;
+      box-shadow: 5px 5px 0 rgba(0,0,0,.55);
+      transition: transform .12s ease, box-shadow .12s ease, background .15s ease;
+    }
+    .sc-btn svg { width: 17px; height: 17px; }
+    .sc-btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 rgba(0,0,0,.55); background: rgb(232,78,55); }
+    .sc-btn:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 rgba(0,0,0,.55); }
+    .sc-btn.ghost { background: #fff; color: #16213a; box-shadow: 5px 5px 0 rgba(27,40,70,.25); }
+    .sc-btn.ghost:hover { background: #f3f6fb; box-shadow: 7px 7px 0 rgba(27,40,70,.25); }
+    .sc-btn.block { width: 100%; justify-content: center; }
+    .sc-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: 5px 5px 0 rgba(0,0,0,.4); }
+
+    /* ════════ 统计条 ════════ */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px; }
+    .stat {
+      background: rgba(27,40,70,.05); border-radius: 12px; padding: 14px 16px; text-align: center;
+    }
+    .stat .v { font-size: 28px; font-weight: 800; color: rgb(254,92,67); }
+    .stat .k { font-size: 12px; color: #5a6884; margin-top: 4px; letter-spacing: .04em; }
+
+    /* ════════ 复测目标引导 ════════ */
+    .goal-banner {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      background: linear-gradient(120deg, rgba(254,92,67,.16), rgba(155,69,242,.14));
+      border: 2px solid rgba(254,92,67,.4); border-radius: 14px;
+      padding: 16px 20px; margin-bottom: 16px;
+    }
+    .goal-badge {
+      flex: none; min-width: 76px; text-align: center;
+      border-radius: 12px; padding: 10px 6px; color: #fff; font-weight: 800;
+    }
+    .goal-badge .g { font-size: 30px; line-height: 1; }
+    .goal-badge .l { font-size: 11px; opacity: .85; margin-top: 3px; letter-spacing: .1em; }
+    .goal-text { font-size: 19px; font-weight: 800; color: #16213a; }
+    .goal-text .hl { color: rgb(254,92,67); }
+    .mini-bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 18px; margin-top: 6px; }
+    .mini-bar { font-size: 12px; color: #41506a; }
+    .mini-bar .mb-track { height: 8px; border-radius: 6px; background: rgba(27,40,70,.12); overflow: hidden; margin-top: 4px; }
+    .mini-bar .mb-fill { height: 100%; border-radius: 6px; }
+
+    /* ════════ 自评 / 题目 ════════ */
+    .q-progress { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .q-progress .qp-label { font-size: 13px; font-weight: 800; letter-spacing: .1em; color: rgb(254,92,67); }
+    .q-progress .qp-count { font-size: 13px; color: #5a6884; font-weight: 700; }
+    .qstem { font-size: 19px; font-weight: 700; line-height: 1.65; color: #16213a; margin-bottom: 18px; }
+    .opts { display: flex; flex-direction: column; gap: 12px; }
+    .opt {
+      display: flex; align-items: center; gap: 14px; text-align: left; cursor: none;
+      border: 2px solid rgba(27,40,70,.18); border-radius: 12px; background: #fff;
+      padding: 14px 16px; font-size: 15px; color: #16213a;
+      box-shadow: 4px 4px 0 rgba(27,40,70,.12);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .opt:hover:not(.locked) { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 rgba(27,40,70,.16); }
+    .opt:active:not(.locked) { transform: translate(2px,2px); box-shadow: 2px 2px 0 rgba(27,40,70,.12); }
+    .opt .key {
+      flex: none; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center;
+      background: rgb(254,92,67); color: #fff; font-weight: 800; font-size: 14px;
+    }
+    .opt.correct { background: #2fb673; color: #fff; border-color: #1f9b5c; }
+    .opt.correct .key { background: #0c3d24; }
+    .opt.wrong { background: rgb(254,92,67); color: #fff; border-color: #d8432c; }
+    .opt.wrong .key { background: #7a1f12; }
+    .opt.locked { cursor: default; }
+    .q-feedback {
+      margin-top: 16px; border-top: 1px dashed rgba(27,40,70,.18); padding-top: 14px;
+      font-size: 14px; line-height: 1.7; color: #2a3548; display: none;
+    }
+    .q-feedback.show { display: block; }
+    .q-feedback .fa { font-weight: 800; color: rgb(254,92,67); }
+    .q-feedback .ca { font-weight: 700; color: #1f6b43; }
+
+    /* ════════ 报告 ════════ */
+    .report-top { display: grid; grid-template-columns: 320px 1fr; gap: 22px; align-items: center; }
+    @media (max-width: 820px) { .report-top { grid-template-columns: 1fr; } }
+    .radar-box { display: grid; place-items: center; }
+    .radar-box canvas { width: 300px; height: 300px; }
+    .rating-big { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+    .rating-badge {
+      width: 78px; height: 78px; border-radius: 18px; display: grid; place-items: center;
+      color: #fff; font-size: 40px; font-weight: 800; box-shadow: 0 10px 24px rgba(8,24,52,.3);
+    }
+    .rating-meta .rt { font-size: 14px; color: #5a6884; letter-spacing: .06em; }
+    .rating-meta .rs { font-size: 22px; font-weight: 800; color: #16213a; margin-top: 2px; }
+    .dim-list { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+    .dim-row { display: grid; grid-template-columns: 110px 1fr 52px; align-items: center; gap: 12px; }
+    .dim-row .dn { font-size: 13.5px; font-weight: 700; color: #2a3548; }
+    .dim-row .dt { height: 14px; border-radius: 8px; background: rgba(27,40,70,.12); overflow: hidden; position: relative; }
+    .dim-row .df { height: 100%; border-radius: 8px; transition: width .9s cubic-bezier(.22,1,.36,1); }
+    .dim-row .dv { font-size: 14px; font-weight: 800; color: #16213a; text-align: right; }
+    .dim-delta { font-size: 12px; font-weight: 800; margin-left: 6px; }
+    .dim-delta.up { color: #1f9b5c; }
+    .dim-delta.down { color: #d8432c; }
+    .dim-delta.flat { color: #8a96ad; }
+
+    .break-box { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .break-item {
+      display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(100deg, rgba(49,198,125,.18), rgba(255,255,255,0));
+      border: 1px solid rgba(49,198,125,.5); border-radius: 12px; padding: 12px 16px;
+      animation: breakPop .6s cubic-bezier(.22,1.36,1) both;
+    }
+    @keyframes breakPop { from { opacity: 0; transform: scale(.92) translateY(8px); } to { opacity: 1; transform: none; } }
+    .break-item .bstar {
+      flex: none; width: 34px; height: 34px; display: grid; place-items: center;
+      color: #2fb673; filter: drop-shadow(0 0 8px rgba(47,182,115,.7));
+      animation: starPulse 1.1s ease-in-out infinite;
+    }
+    @keyframes starPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+    .break-item .bt { font-size: 15px; font-weight: 800; color: #14532d; }
+
+    .ach-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .ach {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700;
+      background: rgba(27,40,70,.06); border: 1px solid rgba(27,40,70,.12);
+      border-radius: 999px; padding: 7px 14px 7px 10px; color: #2a3548;
+    }
+    .ach.new { background: rgba(254,92,67,.12); border-color: rgba(254,92,67,.4); color: rgb(254,92,67); }
+    .ach .medal { width: 18px; height: 18px; color: rgb(254,92,67); }
+
+    .suggest { display: flex; flex-direction: column; gap: 10px; }
+    .sug {
+      display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: start;
+      border-left: 3px solid rgb(254,92,67); background: rgba(254,92,67,.05);
+      border-radius: 0 10px 10px 0; padding: 11px 14px;
+    }
+    .sug .sl { font-size: 13px; font-weight: 800; color: rgb(254,92,67); }
+    .sug .st { font-size: 14px; line-height: 1.7; color: #2a3548; }
+
+    .growth-box canvas { width: 100%; height: 260px; display: block; }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
+    .legend .lg { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: #41506a; }
+    .legend .lg .lc { width: 16px; height: 4px; border-radius: 3px; }
+
+    /* ════════ 历史列表 ════════ */
+    .hist-list { display: flex; flex-direction: column; gap: 12px; }
+    .hist-item {
+      display: flex; align-items: center; gap: 16px; cursor: none;
+      border: 2px solid rgba(27,40,70,.12); border-radius: 14px; background: #fff;
+      padding: 14px 18px; transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .hist-item:hover { transform: translate(-2px,-2px); box-shadow: 0 12px 24px rgba(8,24,52,.18); }
+    .hist-item .hb {
+      flex: none; width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center;
+      color: #fff; font-size: 26px; font-weight: 800;
+    }
+    .hist-item .hi { flex: 1 1 auto; min-width: 0; }
+    .hist-item .hd { font-size: 15px; font-weight: 800; color: #16213a; }
+    .hist-item .hm { font-size: 12.5px; color: #5a6884; margin-top: 3px; }
+    .hist-item .ha { font-size: 13px; font-weight: 800; color: #41506a; }
+    .empty {
+      text-align: center; color: #5a6884; font-size: 14px; padding: 34px 10px;
+      border: 1px dashed rgba(27,40,70,.2); border-radius: 14px;
+    }
+
+    /* 错题集：与闯关答题框同套硬边视觉 */
+    #view-wrong .panel {
+      background: #fff; border: 3px solid #000; border-radius: 0;
+      box-shadow: 8px 8px 0 #000;
+    }
+    #view-wrong .panel-title { color: #111; }
+    #view-wrong .panel-title::before { background: #000; box-shadow: none; }
+    .wrong-scroll {
+      max-height: min(68vh, 760px);
+      overflow-y: auto;
+      padding: 4px 10px 8px 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #000 transparent;
+    }
+    .wrong-scroll::-webkit-scrollbar { width: 8px; }
+    .wrong-scroll::-webkit-scrollbar-thumb { background: #000; }
+    .wrong-scroll::-webkit-scrollbar-track { background: transparent; }
+    .wrong-list { display: flex; flex-direction: column; gap: 22px; }
+    .wrong-card {
+      background: #fff; color: #111; border: 3px solid #000;
+      border-radius: 0; padding: 18px; box-shadow: 6px 6px 0 #000;
+    }
+    .wrong-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
+      font-size: 12.5px; font-weight: 800; letter-spacing: .05em;
+    }
+    .wrong-source { background: #000; color: #fff; padding: 3px 9px; }
+    .wrong-meta { color: #5a6884; }
+    .wrong-card .qstem { font-size: 17px; margin-bottom: 14px; }
+    #view-wrong .opt {
+      border: 3px solid #000 !important; border-radius: 0 !important; background: #fff !important; color: #111 !important;
+      padding: 12px 14px; font-weight: 700; box-shadow: 5px 5px 0 #000 !important;
+    }
+    #view-wrong .opt .key { border: 2px solid #000 !important; border-radius: 0 !important; background: #000 !important; color: #fff !important; }
+    #view-wrong .opt.correct { background: #fff !important; color: #111 !important; box-shadow: 5px 5px 0 #2fb673 !important; }
+    #view-wrong .opt.correct .key { background: #2fb673 !important; }
+    #view-wrong .opt.wrong { background: #fff !important; color: #111 !important; box-shadow: 5px 5px 0 rgb(254,92,67) !important; }
+    #view-wrong .opt.wrong .key { background: rgb(254,92,67) !important; }
+    #view-wrong .q-feedback {
+      margin-top: 14px; border: 3px solid #000; background: #f3f6fb; padding: 12px 14px;
+    }
+    #view-wrong .q-feedback .fa { color: #c23a22; }
+    #view-wrong .q-feedback .fb-analysis {
+      margin-top: 9px; padding-top: 9px; font-size: 13.5px; line-height: 1.75; color: #2a3548;
+    }
+    #view-wrong .q-feedback .fb-analysis b { color: #c23a22; }
+    #view-wrong .q-feedback .fb-dims {
+      margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+      font-size: 12px; color: #44506a;
+    }
+    #view-wrong .q-feedback .fb-dims .dim {
+      border: 2px solid #000; background: #fff; padding: 1px 7px; font-weight: 700;
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px;
+      font-size: 13px; font-weight: 700; color: rgb(254,92,67); cursor: none;
+    }
+
+    /* ════════ 弹窗提示 ════════ */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(8,14,28,.55); backdrop-filter: blur(2px);
+      animation: modalFade .18s ease both;
+    }
+    .modal-overlay[hidden] { display: none; }
+    @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+    .modal-box {
+      position: relative; width: min(420px, 88vw);
+      background: #fff; color: #16202e; border-radius: 16px;
+      padding: 26px 26px 28px; cursor: none;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      border: 3px solid #000;
+      animation: modalPop .22s cubic-bezier(.22,.61,.36,1) both;
+    }
+    @keyframes modalPop { from { transform: translateY(14px) scale(.96); opacity: 0; } to { transform: none; opacity: 1; } }
+    .modal-x {
+      position: absolute; top: 10px; right: 12px;
+      width: 30px; height: 30px; line-height: 1;
+      border: 2px solid #000; background: rgb(254,92,67); color: #fff;
+      font-size: 20px; font-weight: 800; border-radius: 8px; cursor: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .modal-x:hover { transform: rotate(90deg); background: #d8351f; }
+    .modal-title { font-size: 17px; font-weight: 800; color: #c23a22; margin: 2px 34px 10px 0; }
+    .modal-msg { font-size: 14px; line-height: 1.7; color: #2a3548; }
+
+    /* 右上角「返回」按钮下方的「返回个人中心」副按钮（与返回按钮同款） */
+    .site-action-float {
+      position: fixed;
+      top: calc(var(--site-nav-h) + 8px);
+      right: 28px;
+      margin-left: 0;
+    }
+    .site-action-float[hidden] { display: none; }
+    /* 测评历史视图的「返回个人中心」按钮：去掉黑色硬阴影块 */
+    .site-action-float::before { content: none; }
+    /* 测评历史视图：隐藏「返回」，把「返回个人中心」放到返回按钮的原位置 */
+    .site-action-float.in-nav {
+      position: static;
+      top: auto; right: auto;
+      margin-left: auto;
+    }
+    #navBackWrap[hidden] { display: none; }
+
+    /* 觉醒报告沿用闯关答题框的硬边卡片语言 */
+    #view-report .panel,
+    #view-detail .panel {
+      background: #fff;
+      border: 3px solid #000;
+      border-radius: 0;
+      box-shadow: 8px 8px 0 #000;
+    }
+    #view-report .panel-title::before,
+    #view-detail .panel-title::before { box-shadow: none; }
+
+    /* ════════ 导出打印 ════════ */
+    #printArea { background: #fff; }
+    @media print {
+      body { overflow: visible; background: #fff; }
+      .site-nav, .site-footer, .site-lights, .site-glow,
+      .self-head, .sc-actions, .back-link, .nonprint { display: none !important; }
+      .self-wrap { position: static; overflow: visible; padding: 0; height: auto; }
+      .view { display: none !important; }
+      #view-report { display: block !important; }
+      .panel { box-shadow: none; break-inside: avoid; }
+      #printArea { display: block !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .view, .break-item, .break-item .bstar { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <span class="site-brand">AIQUOS</span>
+    <span class="site-action-wrap" id="navBackWrap">
+      <a class="site-action" href="main.html">
+        返回
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </span>
+    <span class="site-action-wrap site-action-float" id="navHomeWrap" hidden>
+      <a class="site-action" id="navHomeBtn" href="self.html">返回个人中心</a>
+    </span>
+  </nav>
+
+  <div class="site-lights" aria-hidden="true">
+    <div class="site-grid"></div>
+    <div class="site-bar b1"></div>
+    <div class="site-bar b2"></div>
+    <div class="site-bar b3"></div>
+    <div class="site-bar b4"></div>
+    <div class="site-bar b5"></div>
+    <div class="site-bar b6"></div>
+    <div class="site-scan"></div>
+  </div>
+  <div class="site-glow" aria-hidden="true"></div>
+
+  <main class="self-wrap">
+    <div class="self-head">
+      <h1>智核档案</h1>
+      <span class="sub">Personal Center</span>
+    </div>
+
+    <section id="view-home" class="view"></section>
+    <section id="view-retest" class="view" hidden></section>
+    <section id="view-self" class="view" hidden></section>
+    <section id="view-quiz" class="view" hidden></section>
+    <section id="view-report" class="view" hidden></section>
+    <section id="view-history" class="view" hidden></section>
+    <section id="view-wrong" class="view" hidden></section>
+    <section id="view-detail" class="view" hidden></section>
+  </main>
+
+  <footer class="site-footer"></footer>
+
+  <!-- 弹窗提示（替代 alert） -->
+  <div class="modal-overlay" id="modal" hidden>
+    <div class="modal-box">
+      <button class="modal-x" id="modalX" title="关闭" aria-label="关闭">×</button>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-msg" id="modalMsg"></div>
+    </div>
+  </div>
+
+  <!-- 账号与密码管理弹窗 -->
+  <div class="modal-overlay" id="accountModal" hidden>
+    <div class="modal-box account-modal-box">
+      <button class="modal-x" id="accountModalX" title="关闭" aria-label="关闭">×</button>
+      <div class="modal-title account-modal-title">管理账号密码</div>
+      <div class="class-state">当前账号：<em id="modalAccountName">加载中…</em></div>
+      <form class="account-grid" id="accountForm">
+        <label>新账号
+          <input id="newAccount" maxlength="40" placeholder="不修改可留空" autocomplete="username">
+        </label>
+        <label>新密码
+          <input id="newPassword" type="password" minlength="6" maxlength="64" placeholder="不修改可留空" autocomplete="new-password">
+        </label>
+        <label>当前密码（保存前必须验证）
+          <input id="currentPassword" type="password" required placeholder="输入当前密码" autocomplete="current-password">
+        </label>
+        <button class="sc-btn account-submit" id="saveAccountBtn" type="submit">保存修改</button>
+      </form>
+      <p class="class-note" id="accountNote">同一入口内账号不能重复；密码至少 6 位。</p>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    "use strict";
+
+    // ════════════ 常量与数据 ════════════
+    const DIMS = [
+      { key: "D1", name: "AI基础认知", color: "#5AA9FF" },
+      { key: "D2", name: "提示词工程", color: "#9C45F2" },
+      { key: "D3", name: "AI工具使用", color: "#1FC4C9" },
+      { key: "D4", name: "AI结果评估", color: "#31C67D" },
+      { key: "D5", name: "人机协同", color: "#F37C31" },
+      { key: "D6", name: "AI伦理合规", color: "#F34B4B" }
+    ];
+    const DIM_MAP = Object.fromEntries(DIMS.map((d) => [d.key, d]));
+    const RATING_ORDER = ["D", "C", "B", "A", "S"];
+    const RATING_COLOR = { S: "#FFC93C", A: "#31C67D", B: "#5AA9FF", C: "#F37C31", D: "#F34B4B" };
+    const RATING_DESC = {
+      S: "觉醒巅峰 · 全能领航", A: "游刃有余 · 独当一面",
+      B: "稳健进阶 · 中流砥柱", C: "初露锋芒 · 仍需锤炼", D: "萌芽起步 · 大有可为"
+    };
+
+    const ROLES = [
+      { id: "ranger", name: "数据游侠", color: "#1FC4C9", desc: "理性分析，洞察数据真相",
+        glyph: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' },
+      { id: "poet", name: "提示词诗人", color: "#9C45F2", desc: "精于表达，驾驭语言魔力",
+        glyph: '<svg viewBox="0 0 24 24"><path d="M4 20l4-1 10-10-3-3L5 16l-1 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>' },
+      { id: "watcher", name: "伦理守望者", color: "#F34B4B", desc: "坚守底线，捍卫价值边界",
+        glyph: '<svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6l7-3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>' },
+      { id: "commander", name: "协作指挥官", color: "#F37C31", desc: "统筹人机，协同制胜",
+        glyph: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' }
+    ];
+    const ROLE_MAP = Object.fromEntries(ROLES.map((r) => [r.id, r]));
+
+    const STAR_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.2 6.8.8-5 4.7 1.3 6.7L12 17.8 5.9 20.4 7.2 13.7 2.2 9l6.8-.8z" fill="currentColor"/></svg>';
+    const MEDAL_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 15l-2 7 5-3 5 3-2-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+    const ARROW = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    const SELF_Q = [
+      { q: "你日常使用 AI 工具（对话、绘图、写作、编程等）的频率？",
+        opts: ["几乎不用", "偶尔尝鲜", "经常使用", "每天离不开"], diff: [1, 2, 3, 4] },
+      { q: "你为获得更好结果而调整提示词（Prompt）的经验？",
+        opts: ["没写过", "试过几次", "经常优化", "很熟练"], diff: [1, 2, 3, 4] },
+      { q: "你对 AI 伦理、隐私与偏见风险的了解程度？",
+        opts: ["不了解", "略知一二", "比较了解", "很了解"], diff: [1, 2, 3, 4] }
+    ];
+
+    const BANK = [
+      // D1
+      { id: "q1", dim: "D1", difficulty: "low",
+        q: "以下哪项最能准确描述“大语言模型(LLM)”？",
+        options: [{ key: "A", text: "一个被预先录入所有知识的数据库" }, { key: "B", text: "基于海量文本训练、通过预测下一个词生成内容的神经网络模型" }, { key: "C", text: "一套固定规则的 if-else 程序" }, { key: "D", text: "只能做翻译的专用软件" }],
+        answer: ["B"], analysis: "LLM 在海量语料上学习语言统计规律，以自回归方式预测并生成下一个词元，并非存储固定知识或规则。" },
+      { id: "q2", dim: "D1", difficulty: "low",
+        q: "“训练数据”对 AI 模型的主要作用是什么？",
+        options: [{ key: "A", text: "决定模型外观颜色" }, { key: "B", text: "让模型从数据中学习模式与规律" }, { key: "C", text: "仅用于增加运行内存" }, { key: "D", text: "与控制算力无关" }],
+        answer: ["B"], analysis: "模型的能力来自训练数据所蕴含的模式；数据质量与覆盖面直接影响模型表现。" },
+      { id: "q3", dim: "D1", difficulty: "medium",
+        q: "关于“幻觉(hallucination)”，下列说法正确的是？",
+        options: [{ key: "A", text: "模型故意撒谎" }, { key: "B", text: "模型生成看似合理但虚假的内容" }, { key: "C", text: "只在图像模型中出现" }, { key: "D", text: "关闭后即可彻底消失" }],
+        answer: ["B"], analysis: "幻觉是模型基于概率生成了与事实不符但流畅的内容，需人工核实，而非主观欺骗。" },
+      { id: "q4", dim: "D1", difficulty: "hard",
+        q: "“微调(fine-tuning)”的典型目的是？",
+        options: [{ key: "A", text: "把模型全部权重替换为随机数" }, { key: "B", text: "在预训练基础上用特定数据调整参数以适配任务" }, { key: "C", text: "删除模型已有记忆" }, { key: "D", text: "仅改变界面主题" }],
+        answer: ["B"], analysis: "微调是在预训练模型之上用领域数据继续训练，使模型更贴合具体任务，而非从头重训。" },
+
+      // D2
+      { id: "q5", dim: "D2", difficulty: "low",
+        q: "一份好的提示词通常更应？",
+        options: [{ key: "A", text: "越长越好、堆砌关键词" }, { key: "B", text: "清晰说明任务、上下文与输出格式" }, { key: "C", text: "只用英文才有效" }, { key: "D", text: "完全不加任何约束" }],
+        answer: ["B"], analysis: "清晰的任务、上下文与格式约束能显著降低歧义，提升输出可控性。" },
+      { id: "q6", dim: "D2", difficulty: "low",
+        q: "“角色设定(Role)”在提示词中的作用是？",
+        options: [{ key: "A", text: "纯装饰、没作用" }, { key: "B", text: "引导模型以特定视角与语气回答" }, { key: "C", text: "让模型变慢" }, { key: "D", text: "仅用于游戏场景" }],
+        answer: ["B"], analysis: "角色设定为模型建立立场与语域，使回答更贴合预期身份。" },
+      { id: "q7", dim: "D2", difficulty: "medium",
+        q: "当模型输出不稳定时，较有效的做法是？",
+        options: [{ key: "A", text: "反复提完全相同的问题" }, { key: "B", text: "加入示例(few-shot)与约束并固定随机种子" }, { key: "C", text: "更换电脑" }, { key: "D", text: "直接放弃使用" }],
+        answer: ["B"], analysis: "示例与约束可锚定任务，固定种子有助于复现，从而提升稳定性。" },
+      { id: "q8", dim: "D2", difficulty: "hard",
+        q: "“思维链(Chain-of-Thought)”主要帮助模型？",
+        options: [{ key: "A", text: "缩短回答字数" }, { key: "B", text: "通过分步推理提升复杂任务准确率" }, { key: "C", text: "避免所有错误" }, { key: "D", text: "减少生成时间" }],
+        answer: ["B"], analysis: "让模型显式分步推理，可显著改善数学、逻辑等复杂任务的正确率，但非万能。" },
+
+      // D3
+      { id: "q9", dim: "D3", difficulty: "low",
+        q: "用 AI 绘图时，“提示词 + 参考图”通常？",
+        options: [{ key: "A", text: "没有区别" }, { key: "B", text: "能更好控制风格与构图" }, { key: "C", text: "属于违规行为" }, { key: "D", text: "只能用纯文字" }],
+        answer: ["B"], analysis: "参考图提供风格与构图锚点，配合提示词可大幅提升可控性。" },
+      { id: "q10", dim: "D3", difficulty: "low",
+        q: "把涉密文件直接粘贴进公开 AI 聊天框，风险是？",
+        options: [{ key: "A", text: "没有任何风险" }, { key: "B", text: "可能造成敏感数据泄露" }, { key: "C", text: "仅会拖慢速度" }, { key: "D", text: "仅影响排版" }],
+        answer: ["B"], analysis: "公开服务可能记录输入内容，涉密信息应做脱敏或仅在受控环境处理。" },
+      { id: "q11", dim: "D3", difficulty: "medium",
+        q: "为确保 AI 生成的代码可用，应当？",
+        options: [{ key: "A", text: "直接上线部署" }, { key: "B", text: "人工审阅、测试并验证安全性" }, { key: "C", text: "不看直接运行" }, { key: "D", text: "只相信绿色提示" }],
+        answer: ["B"], analysis: "AI 代码可能含漏洞或幻觉，必须经审阅、测试与安全验证后方可使用。" },
+      { id: "q12", dim: "D3", difficulty: "hard",
+        q: "关于调用 AI 服务的 API，正确的是？",
+        options: [{ key: "A", text: "无需任何密钥" }, { key: "B", text: "应妥善保管密钥、限制权限并加错误处理" }, { key: "C", text: "可把密钥公开分享" }, { key: "D", text: "只能在网页里用" }],
+        answer: ["B"], analysis: "密钥等同于凭证，需保密并最小化权限；调用应处理限流、超时与错误。" },
+
+      // D4
+      { id: "q13", dim: "D4", difficulty: "low",
+        q: "判断 AI 生成内容是否真实，首先应？",
+        options: [{ key: "A", text: "直接采信" }, { key: "B", text: "交叉核实来源与事实" }, { key: "C", text: "看字数多少" }, { key: "D", text: "看颜色深浅" }],
+        answer: ["B"], analysis: "AI 可能编造来源，关键事实应回到权威出处核验。" },
+      { id: "q14", dim: "D4", difficulty: "low",
+        q: "发现 AI 给出过时信息，应？",
+        options: [{ key: "A", text: "照常用" }, { key: "B", text: "结合权威最新来源核对" }, { key: "C", text: "忽略不管" }, { key: "D", text: "责骂模型" }],
+        answer: ["B"], analysis: "模型知识有截止时间，时效性结论需用最新权威来源确认。" },
+      { id: "q15", dim: "D4", difficulty: "medium",
+        q: "“可解释性”是指？",
+        options: [{ key: "A", text: "模型运行速度" }, { key: "B", text: "能理解模型为何给出该结果" }, { key: "C", text: "界面语言" }, { key: "D", text: "显卡型号" }],
+        answer: ["B"], analysis: "可解释性关注模型决策的依凭，是评估与问责的基础。" },
+      { id: "q16", dim: "D4", difficulty: "hard",
+        q: "评估 AI 偏见，较稳妥的做法是？",
+        options: [{ key: "A", text: "直接忽略" }, { key: "B", text: "用多样样本测试并审视群体差异" }, { key: "C", text: "只看一次输出" }, { key: "D", text: "凭直觉判断" }],
+        answer: ["B"], analysis: "偏见需在多样、有代表性的样本上系统检验，而非个案直觉。" },
+
+      // D5
+      { id: "q17", dim: "D5", difficulty: "low",
+        q: "人机协同的核心思想是？",
+        options: [{ key: "A", text: "完全替代人" }, { key: "B", text: "人定目标与判断、AI 做执行与辅助" }, { key: "C", text: "只靠 AI" }, { key: "D", text: "只靠人" }],
+        answer: ["B"], analysis: "协同强调以人为中心：人负责目标、价值与最终判断，AI 负责执行与增益。" },
+      { id: "q18", dim: "D5", difficulty: "low",
+        q: "让 AI 起草方案后，你应当？",
+        options: [{ key: "A", text: "直接发布" }, { key: "B", text: "审核、修正并承担责任" }, { key: "C", text: "不看内容" }, { key: "D", text: "转交他人了事" }],
+        answer: ["B"], analysis: "AI 产出需经人审核与修正，最终责任仍由人承担。" },
+      { id: "q19", dim: "D5", difficulty: "medium",
+        q: "当 AI 建议与人类专家冲突，应？",
+        options: [{ key: "A", text: "盲从 AI" }, { key: "B", text: "比较依据、请人复核后再决策" }, { key: "C", text: "忽略专家" }, { key: "D", text: "抛硬币决定" }],
+        answer: ["B"], analysis: "冲突时应回到证据与情境，由人综合判断，而非盲目取舍。" },
+      { id: "q20", dim: "D5", difficulty: "hard",
+        q: "“人在回路(human-in-the-loop)”强调？",
+        options: [{ key: "A", text: "去掉人" }, { key: "B", text: "关键决策保留人类审核与干预" }, { key: "C", text: "全自动化" }, { key: "D", text: "仅做记录" }],
+        answer: ["B"], analysis: "在关键节点保留人类审核与干预，是高风险场景下的安全基线。" },
+
+      // D6
+      { id: "q21", dim: "D6", difficulty: "low",
+        q: "使用他人作品训练或生成内容时，应关注？",
+        options: [{ key: "A", text: "无所谓" }, { key: "B", text: "版权与授权" }, { key: "C", text: "仅看颜色" }, { key: "D", text: "仅看字数" }],
+        answer: ["B"], analysis: "涉及他人受保护内容时，应确认授权与合规使用范围。" },
+      { id: "q22", dim: "D6", difficulty: "low",
+        q: "用 AI 生成“某人发言”的假视频，风险是？",
+        options: [{ key: "A", text: "毫无风险" }, { key: "B", text: "可能构成深伪欺诈与侵权" }, { key: "C", text: "仅算搞笑" }, { key: "D", text: "仅会变慢" }],
+        answer: ["B"], analysis: "伪造他人言行可能触犯肖像权、名誉权及相关法规，须谨慎授权。" },
+      { id: "q23", dim: "D6", difficulty: "medium",
+        q: "保护个人隐私，应当？",
+        options: [{ key: "A", text: "随意上传" }, { key: "B", text: "去标识化、最小必要、获授权" }, { key: "C", text: "全部公开" }, { key: "D", text: "直接忽略" }],
+        answer: ["B"], analysis: "遵循最小必要与去标识化原则，并在收集前取得授权。" },
+      { id: "q24", dim: "D6", difficulty: "hard",
+        q: "面对“算法歧视”，企业应当？",
+        options: [{ key: "A", text: "无视" }, { key: "B", text: "做影响评估、审计并纠偏" }, { key: "C", text: "刻意隐藏" }, { key: "D", text: "仅道歉了事" }],
+        answer: ["B"], analysis: "应通过影响评估、持续审计与纠偏机制主动治理歧视风险。" }
+    ];
+    const BANK_MAP = Object.fromEntries(BANK.map((q) => [q.id, q]));
+
+    const DRAFT_TTL = 48 * 60 * 60 * 1000;
+
+    // ════════════ 存储 ════════════
+    const LS_PROFILE = "aiquos_self_profile";
+    const LS_RECORDS = "aiquos_self_records";
+    const LS_DRAFT = "aiquos_self_draft";
+    function loadJSON(k, def) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
+    function saveJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+    let profile = loadJSON(LS_PROFILE, { nickname: "", role: "ranger" });
+    let records = loadJSON(LS_RECORDS, []);
+    let draft = loadJSON(LS_DRAFT, null);
+    let accountProfile = null;
+
+    function flushDraft() { if (draft) saveJSON(LS_DRAFT, draft); }
+    function clearDraft() { draft = null; try { localStorage.removeItem(LS_DRAFT); } catch (e) {} }
+
+    async function authedJson(pathname, options = {}) {
+      let token = "";
+      try { token = localStorage.getItem("ai-auth-token") || ""; } catch (e) {}
+      const response = await fetch(pathname, {
+        headers: Object.assign(
+          options.body ? { "Content-Type": "application/json" } : {},
+          token ? { Authorization: "Bearer " + token } : {}
+        ),
+        ...options
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error?.message || data.error || data.message || "服务请求失败");
+      return data;
+    }
+
+    function serverDimValue(item, key) {
+      const source = item.displayScores || item.scores || {};
+      const ids = { D1: "basics", D2: "prompting", D3: "tools", D4: "evaluation", D5: "collaboration", D6: "ethics" };
+      const value = source[key] !== undefined ? source[key] : source[ids[key]];
+      return Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+    }
+
+    function normalizeServerReport(item) {
+      return {
+        id: "srv-" + item.id,
+        serverId: item.id,
+        date: item.completedAt || item.createdAt || new Date().toISOString(),
+        rating: item.rating || "D",
+        overall: Math.round(Number(item.overall) || 0),
+        dims: Object.fromEntries(DIMS.map((d) => [d.key, serverDimValue(item, d.key)])),
+        achievements: [],
+        source: item.source || "assessment",
+        encouragement: item.encouragement || ""
+      };
+    }
+
+    async function loadServerData() {
+      let token = "";
+      try { token = localStorage.getItem("ai-auth-token") || ""; } catch (e) {}
+      if (!token) return;
+      try {
+        const results = await Promise.all([
+          authedJson("/api/students/me/profile"),
+          authedJson("/api/students/me/history"),
+          authedJson("/api/auth/me")
+        ]);
+        accountProfile = Object.assign({}, results[0], { account: results[2]?.user?.account || "" });
+        const serverRecords = (results[1].reports || []).map(normalizeServerReport);
+        const known = new Set(records.map((item) => item.serverId || item.id));
+        serverRecords.forEach((item) => {
+          if (!known.has(item.serverId)) records.push(item);
+        });
+        records.sort((a, b) => new Date(a.date) - new Date(b.date));
+        saveJSON(LS_RECORDS, records);
+        renderHome();
+      } catch (e) {
+        // 学员端仍可浏览本地记录；口令/报告同步在网络恢复后重试。
+      }
+    }
+
+    async function updateAccount() {
+      const newAccount = $("newAccount").value.trim();
+      const currentPassword = $("currentPassword").value;
+      const newPassword = $("newPassword").value;
+      const note = $("accountNote");
+      if (!newAccount && !newPassword) {
+        note.textContent = "请填写要修改的新账号或新密码。";
+        return;
+      }
+
+      const button = $("saveAccountBtn");
+      button.disabled = true;
+      note.textContent = "正在保存账号设置……";
+      try {
+        const result = await authedJson("/api/auth/account", {
+          method: "PUT",
+          body: JSON.stringify({ account: newAccount, currentPassword, newPassword })
+        });
+        accountProfile = Object.assign({}, accountProfile, { account: result.user?.account || accountProfile?.account });
+        $("newAccount").value = "";
+        $("currentPassword").value = "";
+        $("newPassword").value = "";
+        renderHome();
+        const accountName = accountProfile.account || "已更新";
+        $("modalAccountName").textContent = accountName;
+        $("accountNote").textContent = "账号设置已保存。";
+      } catch (e) {
+        note.textContent = e.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function openAccountModal() {
+      const el = $("modalAccountName");
+      if (accountProfile && accountProfile.account) {
+        el.textContent = accountProfile.account;
+      } else {
+        el.textContent = "加载中…";
+        try {
+          const me = await authedJson("/api/auth/me");
+          accountProfile = Object.assign({}, accountProfile, { account: (me && me.user && me.user.account) || "" });
+          el.textContent = accountProfile.account || "（未知）";
+        } catch (e) { el.textContent = "（未知）"; }
+      }
+      $("accountNote").textContent = "同一入口内账号不能重复；密码至少 6 位。";
+      $("accountModal").hidden = false;
+      $("newAccount").focus();
+    }
+
+    function closeAccountModal() {
+      $("accountModal").hidden = true;
+    }
+
+    async function logout() {
+      const button = $("logoutBtn");
+      if (button) button.disabled = true;
+      try {
+        await authedJson("/api/auth/logout", { method: "POST", body: JSON.stringify({}) });
+      } catch (e) {
+        // Token 过期时也继续清理本地登录态。
+      } finally {
+        ["ai-auth-token", "ai-auth-role", "ai-auth-user"].forEach((key) => {
+          try { localStorage.removeItem(key); } catch (e) {}
+        });
+        window.location.replace("/index.html");
+      }
+    }
+
+    async function joinClass() {
+      const input = $("classCodeInput");
+      const button = $("joinClassBtn");
+      const note = $("classJoinNote");
+      const code = input.value.trim();
+      if (!code) {
+        note.textContent = "请先输入老师提供的班级口令。";
+        return;
+      }
+      button.disabled = true;
+      note.textContent = "正在加入班级……";
+      try {
+        const result = await authedJson("/api/students/me/join-class", {
+          method: "POST",
+          body: JSON.stringify({ code })
+        });
+        accountProfile = Object.assign({}, accountProfile, {
+          classId: result.class.id,
+          className: result.class.name
+        });
+        input.value = "";
+        renderHome();
+        $("classJoinNote").textContent = "已加入：" + result.class.name;
+      } catch (e) {
+        note.textContent = e.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    // ════════════ 工具 ════════════
+    const $ = (id) => document.getElementById(id);
+    function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+    function ratingOf(avg) { return avg >= 92 ? "S" : avg >= 82 ? "A" : avg >= 70 ? "B" : avg >= 58 ? "C" : "D"; }
+    function avg(arr) { return arr.reduce((a, b) => a + b, 0) / (arr.length || 1); }
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      const p = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    }
+    function shuffle(a) { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; }
+
+    // ════════════ 视图切换 ════════════
+    const VIEWS = ["home", "retest", "self", "quiz", "report", "history", "wrong", "detail"];
+    function showView(name) {
+      VIEWS.forEach((v) => { $(("view-" + v)).hidden = (v !== name); });
+      $("view-" + name).scrollIntoView ? 0 : 0;
+      document.querySelector(".self-wrap").scrollTop = 0;
+    }
+
+    // ════════════ 首页 ════════════
+    function renderHome() {
+      exitHistoryNav();
+      const role = ROLE_MAP[profile.role] || ROLES[0];
+      const last = records.length ? records[records.length - 1] : null;
+      const className = accountProfile?.className || "未加入班级";
+      const draftValid = draft && (Date.now() - draft.startedAt <= DRAFT_TTL);
+      if (!draftValid) clearDraft();
+
+      const statsHtml = `
+        <div class="stats">
+          <div class="stat"><div class="v">${records.length}</div><div class="k">测评次数</div></div>
+          <div class="stat"><div class="v">${last ? last.rating : "—"}</div><div class="k">最近评级</div></div>
+          <div class="stat"><div class="v">${last ? new Date(last.date).getMonth() + 1 + "/" + new Date(last.date).getDate() : "—"}</div><div class="k">最近测评</div></div>
+        </div>`;
+
+      const resumeHtml = draftValid ? `
+        <div class="panel" style="border-color:rgba(49,198,125,.5)">
+          <div class="panel-title">检测到未完成的测评</div>
+          <p style="font-size:14px;color:#2a3548;line-height:1.7;margin-bottom:14px">
+            你有一份 ${Math.round((Date.now() - draft.startedAt) / 60000)} 分钟前开始的测评尚未完成，进度将保留 48 小时，可随时继续。
+          </p>
+          <div class="sc-actions">
+            <button class="sc-btn" id="resumeBtn">继续上次测评 ${ARROW}</button>
+            <button class="sc-btn ghost" id="discardBtn">放弃并重新开始</button>
+          </div>
+        </div>` : "";
+
+      $("view-home").innerHTML = `
+        <div class="panel">
+          ${statsHtml}
+          <div class="profile" style="margin-top:18px">
+            <div class="avatar" style="background:${role.color}">${role.glyph}</div>
+            <div class="pinfo">
+              <div class="nick-row">
+                <span class="nick" id="nickShow">${esc(profile.nickname || "未命名探险者")}</span>
+                <button class="nick-edit" id="nickEdit">编辑昵称</button>
+              </div>
+              <div class="role-tag"><span class="dot" style="background:${role.color}"></span>${esc(role.name)} · ${esc(role.desc)}</div>
+            </div>
+          </div>        </div>
+
+        <div class="panel class-panel">
+          <div class="panel-title">我的班级</div>
+          <div class="class-state">当前班级：<em>${esc(className)}</em></div>
+          <div class="class-join-row">
+            <input class="class-code-input" id="classCodeInput" maxlength="6" placeholder="输入班级口令" autocomplete="off">
+            <button class="sc-btn" id="joinClassBtn">加入班级</button>
+          </div>
+          <p class="class-note" id="classJoinNote">向老师获取口令，口令有效期为一天。</p>
+        </div>
+
+        ${resumeHtml}
+
+        <div class="panel">
+          <div class="panel-title">选择你的探险者身份</div>
+          <div class="roles" id="roleGrid">
+            ${ROLES.map((r) => `
+              <button class="role-card ${r.id === profile.role ? "sel" : ""}" data-role="${r.id}">
+                <div class="role-ico" style="background:${r.color}">${r.glyph}</div>
+                <div class="rn">${esc(r.name)}</div>
+                <div class="rd">${esc(r.desc)}</div>
+              </button>`).join("")}
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">开始你的智核觉醒</div>
+          <div class="sc-actions">
+            <button class="sc-btn" id="startBtn">开始能力测评 ${ARROW}</button>
+            <button class="sc-btn ghost" id="reportBtn">查看能力报告</button>
+            <button class="sc-btn ghost" id="historyBtn">测评历史</button>
+            <button class="sc-btn ghost" id="wrongBtn">错题集</button>
+            <button class="sc-btn ghost" id="exportBtn">导出报告</button>
+          </div>
+        </div>
+
+        <div class="panel settings-panel">
+          <div class="panel-title">设置</div>
+          <div class="class-state">当前账号：<em id="settingsAccountName">${esc(accountProfile?.account || "加载中…")}</em></div>
+          <div class="sc-actions">
+            <button class="sc-btn" id="settingsAccountBtn">管理账号密码</button>
+            <button class="sc-btn" id="logoutBtn">退出登录</button>
+          </div>
+        </div>
+      `;
+
+      $("nickEdit").addEventListener("click", startNickEdit);
+      $("joinClassBtn").addEventListener("click", joinClass);
+      $("classCodeInput").addEventListener("keydown", (e) => { if (e.key === "Enter") joinClass(); });
+      $("settingsAccountBtn").addEventListener("click", openAccountModal);
+      $("logoutBtn").addEventListener("click", logout);
+      $("roleGrid").querySelectorAll(".role-card").forEach((c) => {
+        c.addEventListener("click", () => {
+          profile.role = c.dataset.role; saveJSON(LS_PROFILE, profile); renderHome();
+        });
+      });
+      $("startBtn").addEventListener("click", () => { window.location.href = "level.html"; });
+      $("reportBtn").addEventListener("click", () => {
+        if (last) showReport(last, records.length - 2 >= 0 ? records[records.length - 2] : null, false);
+        else showModal("暂无测评记录", "还没有测评记录，先去完成一次能力测评吧！");
+      });
+      $("historyBtn").addEventListener("click", renderHistory);
+      $("wrongBtn").addEventListener("click", renderWrongQuestions);
+      $("exportBtn").addEventListener("click", () => {
+        if (last) showReport(last, records.length - 2 >= 0 ? records[records.length - 2] : null, false, true);
+        else showModal("暂无测评记录", "还没有测评记录，无法导出。");
+      });
+      if (draftValid) {
+        $("resumeBtn").addEventListener("click", resumeDraft);
+        $("discardBtn").addEventListener("click", () => { clearDraft(); renderHome(); });
+      }
+      showView("home");
+    }
+
+    function startNickEdit() {
+      const show = $("nickShow");
+      const input = document.createElement("input");
+      input.className = "nick-input";
+      input.value = profile.nickname || "";
+      input.maxLength = 16;
+      input.placeholder = "输入昵称";
+      show.replaceWith(input);
+      input.focus();
+      const commit = () => {
+        profile.nickname = input.value.trim();
+        saveJSON(LS_PROFILE, profile);
+        renderHome();
+      };
+      input.addEventListener("keydown", (e) => { if (e.key === "Enter") commit(); if (e.key === "Escape") renderHome(); });
+      input.addEventListener("blur", commit);
+    }
+
+    // ════════════ 开始测评（复测目标引导） ════════════
+    function beginAssessment(fromResume) {
+      const last = records.length ? records[records.length - 1] : null;
+      if (last && !fromResume) { renderRetest(last); }
+      else { renderSelf(); }
+    }
+
+    function renderRetest(last) {
+      const targetRank = Math.min(RATING_ORDER.length - 1, RATING_ORDER.indexOf(last.rating) + 1);
+      const targetRating = RATING_ORDER[targetRank];
+      const goalText = targetRating === last.rating
+        ? `上次已达 <span class="hl">${last.rating}</span> 级 · 捍卫你的巅峰！`
+        : `上次 <span class="hl">${last.rating}</span> 级 · 冲击 <span class="hl">${targetRating}</span> 级！`;
+
+      $("view-retest").innerHTML = `
+        <div class="panel">
+          <div class="panel-title">复测目标引导</div>
+          <div class="goal-banner">
+            <div class="goal-badge" style="background:${RATING_COLOR[last.rating]}">
+              <div class="g">${last.rating}</div><div class="l">上次评级</div>
+            </div>
+            <div style="flex:1 1 240px">
+              <div class="goal-text">${goalText}</div>
+              <div class="mini-bars">
+                ${DIMS.map((d) => {
+                  const v = last.dims[d.key] || 0;
+                  return `<div class="mini-bar">
+                    <div>${esc(d.name)} <b style="color:${d.color}">${v}</b></div>
+                    <div class="mb-track"><div class="mb-fill" style="width:${v}%;background:${d.color}"></div></div>
+                  </div>`;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+          <p style="font-size:14px;color:#2a3548;line-height:1.8;margin-bottom:16px">
+            这是你的第 <b>${records.length + 1}</b> 次测评。对比上次，找到最想突破的维度，给自己定一个小目标——新鲜感来自“变得更强”。
+          </p>
+          <div class="sc-actions">
+            <button class="sc-btn" id="retestGo">接受挑战，开始 ${ARROW}</button>
+            <button class="sc-btn ghost" id="retestSkip">直接开始</button>
+          </div>
+        </div>`;
+      $("retestGo").addEventListener("click", renderSelf);
+      $("retestSkip").addEventListener("click", renderSelf);
+      showView("retest");
+    }
+
+    // ════════════ 能力自评 ════════════
+    let selfState = null;
+    function renderSelf() {
+      if (!selfState) {
+        selfState = { idx: 0, answers: [], baseline: 1 };
+      }
+      if (draft && draft.selfAnswers && draft.selfAnswers.length < 3 && !draft.qOrder) {
+        // 续测：恢复自评进度
+        selfState = { idx: draft.selfAnswers.length, answers: draft.selfAnswers.slice(), baseline: draft.selfBaseline || 1 };
+      }
+      const i = selfState.idx;
+      const total = SELF_Q.length;
+      const item = SELF_Q[i];
+      $("view-self").innerHTML = `
+        <div class="panel">
+          <div class="panel-title">能力自评 · 初始难度定位</div>
+          <div class="q-progress">
+            <span class="qp-label">第 ${i + 1} / ${total} 题</span>
+            <span class="qp-count">用于为你匹配适宜的题难度</span>
+          </div>
+          <div class="qstem">${esc(item.q)}</div>
+          <div class="opts" id="selfOpts">
+            ${item.opts.map((o, k) => `<button class="opt" data-k="${k}"><span class="key">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`).join("")}
+          </div>
+        </div>`;
+      $("selfOpts").querySelectorAll(".opt").forEach((b) => {
+        b.addEventListener("click", () => {
+          const k = parseInt(b.dataset.k, 10);
+          selfState.answers[i] = k;
+          const diffs = SELF_Q.map((q, qi) => q.diff[selfState.answers[qi] ?? 0]);
+          const valid = selfState.answers.filter((x) => x !== undefined);
+          if (valid.length === SELF_Q.length) {
+            const mean = avg(valid.map((qi) => SELF_Q[qi].diff[qi]));
+            selfState.baseline = mean <= 2 ? 0 : mean === 3 ? 1 : 2;
+          }
+          if (draft) { draft.selfAnswers = selfState.answers.slice(); draft.selfBaseline = selfState.baseline; flushDraft(); }
+          if (i + 1 < total) { selfState.idx += 1; renderSelf(); }
+          else { startQuiz(); }
+        });
+      });
+      showView("self");
+    }
+
+    // ════════════ 抽题计划 ════════════
+    function buildPlan(baseline) {
+      const diffs = ["low", "medium", "hard"];
+      const target = diffs[baseline];
+      const plan = [];
+      DIMS.forEach((d) => {
+        let pool = BANK.filter((q) => q.dim === d.key);
+        const same = pool.filter((q) => q.difficulty === target);
+        const pick = (same.length >= 2 ? shuffle(same) : shuffle(pool)).slice(0, 2);
+        pick.forEach((q) => plan.push(q.id));
+      });
+      return plan;
+    }
+
+    // ════════════ 测评 ════════════
+    let quizState = null;
+    function startQuiz() {
+      const plan = draft && draft.qOrder && draft.qOrder.length ? draft.qOrder.slice() : buildPlan(selfState.baseline);
+      quizState = {
+        plan,
+        idx: draft && typeof draft.qIndex === "number" ? draft.qIndex : 0,
+        answers: draft && draft.answers ? draft.answers : {},
+        baseline: selfState.baseline
+      };
+      if (!draft) {
+        draft = { startedAt: Date.now(), selfAnswers: selfState.answers.slice(), selfBaseline: selfState.baseline, qOrder: plan, qIndex: 0, answers: {} };
+        flushDraft();
+      }
+      selfState = null;
+      renderQuiz();
+    }
+
+    function renderQuiz() {
+      const id = quizState.plan[quizState.idx];
+      const q = BANK_MAP[id];
+      const total = quizState.plan.length;
+      const done = !!quizState.answers[id];
+      const ans = quizState.answers[id];
+      const isLast = quizState.idx === total - 1;
+
+      $("view-quiz").innerHTML = `
+        <div class="panel">
+          <div class="q-progress">
+            <span class="qp-label">能力测评 · ${DIM_MAP[q.dim].name}</span>
+            <span class="qp-count">第 ${quizState.idx + 1} / ${total} 题</span>
+          </div>
+          <div class="qstem">${esc(q.q)}</div>
+          <div class="opts" id="quizOpts">
+            ${q.options.map((o) => `<button class="opt" data-key="${o.key}"><span class="key">${o.key}</span><span>${esc(o.text)}</span></button>`).join("")}
+          </div>
+          <div class="q-feedback" id="qfb"></div>
+          <div class="sc-actions" id="quizNext"></div>
+        </div>`;
+
+      const optEls = $("quizOpts").querySelectorAll(".opt");
+      const fb = $("qfb");
+
+      function lockAndShow() {
+        optEls.forEach((b) => {
+          b.classList.add("locked");
+          const k = b.dataset.key;
+          if (ans.correct && k === ans.selected) b.classList.add("correct");
+          else if (!ans.correct && k === ans.selected) b.classList.add("wrong");
+          else if (ans.correct && q.answer.includes(k)) b.classList.add("correct");
+        });
+        fb.innerHTML = `<div class="fa">解析：</div>${esc(q.analysis)}<br><span class="ca">正确答案：${q.answer.join("、")}</span>`;
+        fb.classList.add("show");
+        const next = $("quizNext");
+        const btn = document.createElement("button");
+        btn.className = "sc-btn";
+        btn.innerHTML = (isLast ? "完成测评 " : "下一题 ") + ARROW;
+        btn.addEventListener("click", () => {
+          if (isLast) finishQuiz();
+          else { quizState.idx += 1; if (draft) { draft.qIndex = quizState.idx; flushDraft(); } renderQuiz(); }
+        });
+        next.appendChild(btn);
+      }
+
+      if (done) { lockAndShow(); }
+      else {
+        optEls.forEach((b) => {
+          b.addEventListener("click", () => {
+            const selected = b.dataset.key;
+            const correct = q.answer.includes(selected);
+            quizState.answers[id] = { selected, correct };
+            if (draft) { draft.answers[id] = { selected, correct }; flushDraft(); }
+            lockAndShow();
+          });
+        });
+      }
+      showView("quiz");
+    }
+
+    // ════════════ 完成测评 → 计分 → 存档 ════════════
+    function finishQuiz() {
+      const dims = {}; DIMS.forEach((d) => (dims[d.key] = 0));
+      const perDimCount = {};
+      quizState.plan.forEach((id) => {
+        const q = BANK_MAP[id]; const a = quizState.answers[id];
+        perDimCount[q.dim] = (perDimCount[q.dim] || 0) + 1;
+        if (a && a.correct) dims[q.dim] += 1;
+      });
+      DIMS.forEach((d) => {
+        const n = perDimCount[d.key] || 1;
+        dims[d.key] = Math.round((dims[d.key] / n) * 100);
+      });
+      const overall = Math.round(avg(DIMS.map((d) => dims[d.key])));
+      const rating = ratingOf(overall);
+
+      const prev = records.length ? records[records.length - 1] : null;
+      const prevMax = {};
+      DIMS.forEach((d) => { prevMax[d.key] = records.length ? Math.max(...records.map((r) => r.dims[d.key])) : 0; });
+
+      // 维度突破
+      const breaks = [];
+      DIMS.forEach((d) => {
+        if (dims[d.key] > (prevMax[d.key] || 0)) {
+          breaks.push({ key: d.key, name: d.name, score: dims[d.key] });
+        }
+      });
+
+      // 成就
+      const unlocked = computeAchievements(dims, rating, breaks.length > 0, records.length);
+      const newAch = prev ? unlocked.filter((u) => !(prev.achievements || []).includes(u.id)) : unlocked;
+
+      const record = {
+        id: "r" + Date.now(),
+        date: new Date().toISOString(),
+        rating, overall, dims,
+        selfBaseline: quizState.baseline,
+        achievements: unlocked.map((u) => u.id)
+      };
+      records.push(record);
+      saveJSON(LS_RECORDS, records);
+      clearDraft();
+      selfState = null; quizState = null;
+
+      showReport(record, prev, true, false, { breaks, newAch, unlocked });
+    }
+
+    function computeAchievements(dims, rating, hasBreak, prevCount) {
+      const out = [];
+      out.push({ id: "first", name: "首次觉醒", desc: "完成第一次智核测评" });
+      if (DIMS.every((d) => dims[d.key] >= 70)) out.push({ id: "allpass", name: "全维达标", desc: "六大维度均≥70" });
+      if (DIMS.some((d) => dims[d.key] >= 90)) out.push({ id: "master", name: "维度大师", desc: "单维度突破90分" });
+      if (hasBreak) out.push({ id: "break", name: "维度突破", desc: "刷新历史最高分" });
+      if (prevCount > 0 && rating !== "D") out.push({ id: "rise", name: "持续精进", desc: "完成多次测评" });
+      return out;
+    }
+
+    // ════════════ 能力报告 ════════════
+    function genSuggestions(dims) {
+      const out = [];
+      DIMS.forEach((d) => {
+        const v = dims[d.key];
+        let tip;
+        if (v >= 85) tip = `已是你的强项，可尝试用 ${d.name} 解决更复杂、跨领域的真实任务，并带动他人成长。`;
+        else if (v >= 60) tip = `基础扎实，建议针对薄弱场景做针对性练习，把 ${d.name} 从“会用”推向“用好”。`;
+        else tip = `${d.name} 仍是短板，建议从概念与日常小任务入手，先建立正确心智模型再逐步进阶。`;
+        out.push({ dim: d, tip });
+      });
+      out.sort((a, b) => a.dim ? (dims[a.dim.key] - dims[b.dim.key]) : 0);
+      return out;
+    }
+
+    function showReport(record, prev, justFinished, wantExport, extra) {
+      extra = extra || {};
+      const breaks = extra.breaks || [];
+      const newAch = extra.newAch || [];
+      const unlocked = extra.unlocked || [];
+      const sugg = genSuggestions(record.dims);
+      const dimDeltaRows = DIMS.map((d) => {
+        const v = record.dims[d.key];
+        const pv = prev ? prev.dims[d.key] : null;
+        let delta = "";
+        if (pv !== null) {
+          const diff = v - pv;
+          const cls = diff > 0 ? "up" : diff < 0 ? "down" : "flat";
+          const txt = diff > 0 ? "▲+" + diff : diff < 0 ? "▼" + diff : "—";
+          delta = `<span class="dim-delta ${cls}">${txt}</span>`;
+        }
+        return `<div class="dim-row">
+          <div class="dn">${esc(d.name)}</div>
+          <div class="dt"><div class="df" data-w="${v}" style="width:0;background:${d.color}"></div></div>
+          <div class="dv">${v}${delta}</div>
+        </div>`;
+      }).join("");
+
+      const breakHtml = breaks.length ? `
+        <div class="panel">
+          <div class="panel-title">维度突破</div>
+          <div class="break-box">
+            ${breaks.map((b) => `<div class="break-item">
+              <div class="bstar">${STAR_SVG}</div>
+              <div class="bt">${esc(b.name)}突破历史最高！达到 ${b.score} 分</div>
+            </div>`).join("")}
+          </div>
+        </div>` : "";
+
+      const achHtml = unlocked.length ? `
+        <div class="panel">
+          <div class="panel-title">成就${newAch.length ? " · 新解锁 " + newAch.length + " 项" : ""}</div>
+          <div class="ach-row">
+            ${unlocked.map((u) => `<span class="ach ${newAch.some((n) => n.id === u.id) ? "new" : ""}"><span class="medal">${MEDAL_SVG}</span>${esc(u.name)}</span>`).join("")}
+          </div>
+        </div>` : "";
+
+      const growthHtml = records.length >= 2 ? `
+        <div class="panel">
+          <div class="panel-title">成长对比 · 多次测评曲线</div>
+          <div class="growth-box"><canvas id="growthCanvas"></canvas></div>
+          <div class="legend">
+            ${DIMS.map((d) => `<span class="lg"><span class="lc" style="background:${d.color}"></span>${esc(d.name)}</span>`).join("")}
+          </div>
+        </div>` : "";
+
+      const ratingChangeHtml = (prev && prev.rating !== record.rating) ? `
+        <div class="panel" style="border-color:rgba(254,92,67,.4)">
+          <div class="panel-title">评级变化</div>
+          <p style="font-size:15px;line-height:1.8;color:#2a3548">
+            上次 <b style="color:${RATING_COLOR[prev.rating]}">${prev.rating}</b> 级（${esc(RATING_DESC[prev.rating])}）
+            → 本次 <b style="color:${RATING_COLOR[record.rating]}">${record.rating}</b> 级（${esc(RATING_DESC[record.rating])}）。
+            ${RATING_ORDER.indexOf(record.rating) > RATING_ORDER.indexOf(prev.rating) ? "评级提升，继续保持！" : "略有波动，找准方向再冲一次。"}
+          </p>
+        </div>` : "";
+
+      $("view-report").innerHTML = `
+        <div id="printArea">
+          <div class="panel">
+            <div class="panel-title">能力报告 · ${fmtDate(record.date)}</div>
+            <div class="report-top">
+              <div class="radar-box"><canvas id="radarCanvas"></canvas></div>
+              <div>
+                <div class="rating-big">
+                  <div class="rating-badge" style="background:${RATING_COLOR[record.rating]}">${record.rating}</div>
+                  <div class="rating-meta">
+                    <div class="rt">综合评级 · ${record.overall} 分</div>
+                    <div class="rs">${esc(RATING_DESC[record.rating])}</div>
+                  </div>
+                </div>
+                <div class="dim-list">${dimDeltaRows}</div>
+              </div>
+            </div>
+          </div>
+
+          ${breakHtml}
+          ${ratingChangeHtml}
+          ${achHtml}
+
+          <div class="panel">
+            <div class="panel-title">个性化学习建议${justFinished ? " · 已为你自动推送" : ""}</div>
+            <div class="suggest">
+              ${sugg.map((s) => `<div class="sug"><div class="sl" style="color:${s.dim.color}">${esc(s.dim.name)}</div><div class="st">${esc(s.tip)}</div></div>`).join("")}
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn" id="goPractice">去练习巩固 ${ARROW}</button>
+            </div>
+          </div>
+
+          ${growthHtml}
+        </div>
+
+        <div class="panel nonprint">
+          <div class="panel-title">报告导出</div>
+          <div class="sc-actions">
+            <button class="sc-btn" id="expPng">导出为图片（PNG）</button>
+            <button class="sc-btn ghost" id="expPdf">导出为 PDF</button>
+            <button class="sc-btn ghost" id="backHome">返回个人中心</button>
+          </div>
+        </div>
+      `;
+
+      // 渲染图表
+      drawRadar($("radarCanvas"), DIMS.map((d) => record.dims[d.key]), true);
+      requestAnimationFrame(() => {
+        document.querySelectorAll("#view-report .df").forEach((el) => { el.style.width = el.dataset.w + "%"; });
+      });
+      if (records.length >= 2) drawGrowth($("growthCanvas"), records);
+
+      $("goPractice").addEventListener("click", () => { window.location.href = "level.html"; });
+      $("expPng").addEventListener("click", () => exportPng(record));
+      $("expPdf").addEventListener("click", () => window.print());
+      $("backHome").addEventListener("click", renderHome);
+
+      showView("report");
+      if (wantExport) window.print();
+    }
+
+    // ════════════ 测评历史 ════════════
+    function renderHistory() {
+      const list = records.slice().reverse();
+      const html = list.length ? list.map((r, i) => {
+        const origIdx = records.length - 1 - i;
+        return `<div class="hist-item" data-idx="${origIdx}">
+          <div class="hb" style="background:${RATING_COLOR[r.rating]}">${r.rating}</div>
+          <div class="hi">
+            <div class="hd">第 ${origIdx + 1} 次测评 · ${r.overall} 分</div>
+            <div class="hm">${fmtDate(r.date)}</div>
+          </div>
+          <div class="ha">查看详情 ${ARROW}</div>
+        </div>`;
+      }).join("") : `<div class="empty">还没有测评记录，先去完成一次能力测评吧。</div>`;
+
+      $("view-history").innerHTML = `
+        <div class="panel">
+          <div class="panel-title">测评历史 · 共 ${records.length} 次</div>
+          <div class="hist-list">${html}</div>
+        </div>`;
+      $("view-history").querySelectorAll(".hist-item").forEach((it) => {
+        it.addEventListener("click", () => {
+          const idx = parseInt(it.dataset.idx, 10);
+          showDetail(records[idx], idx);
+        });
+      });
+      enterHistoryNav();
+      showView("history");
+    }
+
+    async function renderWrongQuestions() {
+      enterHistoryNav();
+      $("view-wrong").innerHTML = `
+        <div class="panel">
+          <div class="panel-title">错题集</div>
+          <div class="empty">正在整理错题……</div>
+        </div>`;
+      showView("wrong");
+
+      try {
+        const data = await authedJson("/api/students/me/wrong-questions");
+        const questions = data.questions || [];
+        const cards = questions.map((item) => {
+          const selected = new Set(Array.isArray(item.selected) ? item.selected : []);
+          const answers = new Set(Array.isArray(item.answer) ? item.answer : []);
+          const options = (item.options || []).map((option) => {
+            const state = answers.has(option.key)
+              ? "correct"
+              : selected.has(option.key) ? "wrong" : "";
+            return `<button class="opt ${state}" type="button"><span class="key">${esc(option.key)}</span><span>${esc(option.text)}</span></button>`;
+          }).join("");
+          const answerText = (item.options || [])
+            .filter((option) => answers.has(option.key))
+            .map((option) => `${option.key}. ${option.text}`).join("；");
+          const selectedText = (item.options || [])
+            .filter((option) => selected.has(option.key))
+            .map((option) => `${option.key}. ${option.text}`).join("；");
+          const sourceLabel = item.sourceLabel || (item.source === "training" ? "能力训练" : "闯关");
+          const levelText = item.levelId ? ` · 第 ${esc(item.levelId)} 关` : "";
+          const dims = (item.dims || []).map((dim) => `<span class="dim">${esc(dim)}</span>`).join("");
+          const when = item.lastWrongAt || item.wrongAt || new Date().toISOString();
+
+          return `
+            <article class="wrong-card">
+              <div class="wrong-head">
+                <span class="wrong-source">${esc(sourceLabel)}${levelText} · 错 ${esc(item.wrongCount || 1)} 次</span>
+                <span class="wrong-meta">${fmtDate(when)}</span>
+              </div>
+              <div class="qstem">${esc(item.stem)}</div>
+              <div class="opts">${options}</div>
+              <div class="q-feedback show">
+                <div class="fa">正确答案：${esc(answerText || "暂无")}</div>
+                <div class="ca">你的答案：${esc(selectedText || "未作答")}</div>
+                <div class="fb-analysis"><b>解析：</b>${esc(item.analysis || "暂无解析")}</div>
+                <div class="fb-dims"><span>能力维度：</span>${dims}</div>
+              </div>
+            </article>`;
+        }).join("");
+
+        $("view-wrong").innerHTML = `
+          <div class="panel">
+            <div class="panel-title">错题集 · 共 ${questions.length} 题</div>
+            <div class="wrong-scroll">
+              ${questions.length
+                ? `<div class="wrong-list">${cards}</div>`
+                : `<div class="empty">太棒了，目前没有错题记录。</div>`}
+            </div>
+          </div>`;
+      } catch (e) {
+        $("view-wrong").innerHTML = `
+          <div class="panel">
+            <div class="panel-title">错题集</div>
+            <div class="empty">${esc(e.message || "错题加载失败，请稍后再试。")}</div>
+          </div>`;
+      }
+    }
+
+    function showDetail(record, idx) {
+      const prev = idx > 0 ? records[idx - 1] : null;
+      const sugg = genSuggestions(record.dims);
+      exitHistoryNav();
+      $("view-detail").innerHTML = `
+        <div class="back-link" id="detBack">${ARROW} 返回个人中心</div>
+        <div class="panel">
+          <div class="panel-title">第 ${idx + 1} 次测评详情 · ${fmtDate(record.date)}</div>
+          <div class="report-top">
+            <div class="radar-box"><canvas id="detRadar"></canvas></div>
+            <div>
+              <div class="rating-big">
+                <div class="rating-badge" style="background:${RATING_COLOR[record.rating]}">${record.rating}</div>
+                <div class="rating-meta"><div class="rt">综合评级 · ${record.overall} 分</div><div class="rs">${esc(RATING_DESC[record.rating])}</div></div>
+              </div>
+              <div class="dim-list">
+                ${DIMS.map((d) => {
+                  const v = record.dims[d.key];
+                  const pv = prev ? prev.dims[d.key] : null;
+                  let delta = "";
+                  if (pv !== null) { const diff = v - pv; const cls = diff > 0 ? "up" : diff < 0 ? "down" : "flat"; const txt = diff > 0 ? "▲+" + diff : diff < 0 ? "▼" + diff : "—"; delta = `<span class="dim-delta ${cls}">${txt}</span>`; }
+                  return `<div class="dim-row"><div class="dn">${esc(d.name)}</div><div class="dt"><div class="df" data-w="${v}" style="width:0;background:${d.color}"></div></div><div class="dv">${v}${delta}</div></div>`;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">个性化学习建议</div>
+          <div class="suggest">${sugg.map((s) => `<div class="sug"><div class="sl" style="color:${s.dim.color}">${esc(s.dim.name)}</div><div class="st">${esc(s.tip)}</div></div>`).join("")}</div>
+        </div>`;
+      drawRadar($("detRadar"), DIMS.map((d) => record.dims[d.key]), true);
+      requestAnimationFrame(() => { document.querySelectorAll("#view-detail .df").forEach((el) => { el.style.width = el.dataset.w + "%"; }); });
+      $("detBack").addEventListener("click", renderHome);
+      showView("detail");
+    }
+
+    // ════════════ 断点续测 ════════════
+    function resumeDraft() {
+      if (!draft) { renderHome(); return; }
+      // 自评已完成（已生成抽题计划）→ 续做测评；否则续做自评
+      if (draft.qOrder && draft.qOrder.length) {
+        quizState = { plan: draft.qOrder.slice(), idx: draft.qIndex || 0, answers: draft.answers || {}, baseline: draft.selfBaseline || 1 };
+        renderQuiz();
+      } else {
+        selfState = { idx: (draft.selfAnswers || []).length, answers: (draft.selfAnswers || []).slice(), baseline: draft.selfBaseline || 1 };
+        renderSelf();
+      }
+    }
+
+    // ════════════ 雷达图 ════════════
+    function drawRadarCore(ctx, cx, cy, R, scores) {
+      const n = scores.length;
+      const step = (Math.PI * 2) / n;
+      // 网格
+      ctx.strokeStyle = "rgba(27,40,70,0.18)";
+      ctx.fillStyle = "rgba(27,40,70,0.05)";
+      ctx.lineWidth = 1;
+      for (let ring = 1; ring <= 5; ring++) {
+        const rr = (R * ring) / 5;
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const a = -Math.PI / 2 + i * step;
+          const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        if (ring === 5) ctx.fill();
+        ctx.stroke();
+      }
+      // 轴线 + 标签
+      ctx.fillStyle = "#2a3548";
+      ctx.font = "600 12px system-ui, sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      for (let i = 0; i < n; i++) {
+        const a = -Math.PI / 2 + i * step;
+        const x = cx + R * Math.cos(a), y = cy + R * Math.sin(a);
+        ctx.strokeStyle = "rgba(27,40,70,0.14)";
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke();
+        const lx = cx + (R + 22) * Math.cos(a), ly = cy + (R + 18) * Math.sin(a);
+        ctx.fillStyle = DIMS[i].color;
+        ctx.fillText(DIMS[i].name, lx, ly);
+      }
+      // 数据多边形
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const idx = i % n;
+        const a = -Math.PI / 2 + idx * step;
+        const rr = (R * scores[idx]) / 100;
+        const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      const grad = ctx.createRadialGradient(cx, cy, 4, cx, cy, R);
+      grad.addColorStop(0, "rgba(254,92,67,0.42)");
+      grad.addColorStop(1, "rgba(254,92,67,0.18)");
+      ctx.fillStyle = grad; ctx.fill();
+      ctx.strokeStyle = "rgb(254,92,67)"; ctx.lineWidth = 2.4; ctx.stroke();
+      // 顶点
+      for (let i = 0; i < n; i++) {
+        const a = -Math.PI / 2 + i * step;
+        const rr = (R * scores[i]) / 100;
+        const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = DIMS[i].color; ctx.fill();
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.stroke();
+      }
+    }
+
+    function drawRadar(canvas, scores, animate) {
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const size = 300;
+      canvas.width = size * dpr; canvas.height = size * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const cx = size / 2, cy = size / 2, R = size / 2 - 42;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!animate || reduce) { drawRadarCore(ctx, cx, cy, R, scores); return; }
+      const t0 = performance.now();
+      function frame(t) {
+        const k = Math.min(1, (t - t0) / 700);
+        const e = 1 - Math.pow(1 - k, 3);
+        ctx.clearRect(0, 0, size, size);
+        drawRadarCore(ctx, cx, cy, R, scores.map((s) => s * e));
+        if (k < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // ════════════ 成长折线图 ════════════
+    function drawGrowth(canvas, recs) {
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || 600, h = 260;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      const padL = 36, padR = 14, padT = 16, padB = 28;
+      const plotW = w - padL - padR, plotH = h - padT - padB;
+      // 网格
+      ctx.strokeStyle = "rgba(27,40,70,0.14)"; ctx.fillStyle = "#5a6884";
+      ctx.font = "11px system-ui, sans-serif"; ctx.lineWidth = 1;
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      for (let g = 0; g <= 100; g += 25) {
+        const y = padT + plotH * (1 - g / 100);
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+        ctx.fillText(String(g), padL - 6, y);
+      }
+      const n = recs.length;
+      const xAt = (i) => padL + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1));
+      ctx.textAlign = "center"; ctx.textBaseline = "top";
+      recs.forEach((r, i) => { ctx.fillText("第" + (i + 1) + "次", xAt(i), h - padB + 6); });
+      DIMS.forEach((d) => {
+        ctx.strokeStyle = d.color; ctx.lineWidth = 2.2; ctx.beginPath();
+        recs.forEach((r, i) => {
+          const x = xAt(i), y = padT + plotH * (1 - r.dims[d.key] / 100);
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        recs.forEach((r, i) => {
+          const x = xAt(i), y = padT + plotH * (1 - r.dims[d.key] / 100);
+          ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fillStyle = d.color; ctx.fill();
+        });
+      });
+    }
+
+    // ════════════ 导出图片 ════════════
+    function exportPng(record) {
+      const W = 920, H = 1180;
+      const c = document.createElement("canvas");
+      c.width = W; c.height = H;
+      const ctx = c.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = "#16213a"; ctx.font = "800 30px system-ui, sans-serif"; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+      ctx.fillText("智核觉醒 · 能力报告", 40, 56);
+      ctx.fillStyle = "#5a6884"; ctx.font = "14px system-ui, sans-serif";
+      ctx.fillText(fmtDate(record.date) + "   综合评级 " + record.rating + " · " + record.overall + " 分", 40, 82);
+
+      // 雷达
+      drawRadarCore(ctx, 250, 360, 190, DIMS.map((d) => record.dims[d.key]));
+
+      // 维度分
+      let y = 200;
+      ctx.textAlign = "left";
+      DIMS.forEach((d) => {
+        const v = record.dims[d.key];
+        ctx.fillStyle = "#2a3548"; ctx.font = "700 15px system-ui, sans-serif";
+        ctx.fillText(d.name, 500, y);
+        ctx.fillStyle = "rgba(27,40,70,0.12)";
+        ctx.fillRect(500, y + 8, 340, 12);
+        ctx.fillStyle = d.color;
+        ctx.fillRect(500, y + 8, 340 * v / 100, 12);
+        ctx.fillStyle = "#16213a"; ctx.font = "800 15px system-ui, sans-serif"; ctx.textAlign = "right";
+        ctx.fillText(String(v), 860, y + 6);
+        ctx.textAlign = "left";
+        y += 46;
+      });
+
+      // 评级描述
+      ctx.fillStyle = "#16213a"; ctx.font = "800 18px system-ui, sans-serif";
+      ctx.fillText("综合评级：" + record.rating + " 级 — " + RATING_DESC[record.rating], 40, 600);
+
+      // 建议
+      ctx.fillStyle = "#5a6884"; ctx.font = "800 15px system-ui, sans-serif";
+      ctx.fillText("个性化学习建议", 40, 640);
+      const sugg = genSuggestions(record.dims);
+      ctx.font = "14px system-ui, sans-serif";
+      let sy = 666;
+      sugg.forEach((s) => {
+        ctx.fillStyle = s.dim.color; ctx.font = "700 14px system-ui, sans-serif";
+        const label = s.dim.name + "：";
+        ctx.fillText(label, 40, sy);
+        ctx.fillStyle = "#2a3548"; ctx.font = "14px system-ui, sans-serif";
+        const text = s.tip;
+        const maxW = 820, x0 = 40 + ctx.measureText(label).width;
+        wrapText(ctx, text, x0, sy, W - x0 - 40, 20);
+        sy += 20 * (Math.ceil(ctx.measureText(text).width / (W - x0 - 40)) || 1) + 8;
+      });
+
+      ctx.fillStyle = "#c9d2e0"; ctx.font = "12px system-ui, sans-serif"; ctx.textAlign = "right";
+      ctx.fillText("AIQUOS · 智核觉醒", W - 40, H - 24);
+
+      c.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "智核觉醒能力报告_" + record.rating + ".png";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }, "image/png");
+    }
+
+    // ════════════ 弹窗提示（替代 alert）══════════
+    function showModal(title, msg) {
+      $("modalTitle").textContent = title;
+      $("modalMsg").textContent = msg;
+      $("modal").hidden = false;
+    }
+    function closeModal() { $("modal").hidden = true; }
+    $("modalX").addEventListener("click", closeModal);
+    $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeModal(); });
+    $("accountForm").addEventListener("submit", (e) => { e.preventDefault(); updateAccount(); });
+    $("accountModalX").addEventListener("click", closeAccountModal);
+    $("accountModal").addEventListener("click", (e) => { if (e.target === $("accountModal")) closeAccountModal(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !$("accountModal").hidden) closeAccountModal();
+    });
+
+    // 右上角按钮切换：默认显示「返回」(main.html)；进入测评历史时改为「返回个人中心」
+    function enterHistoryNav() {
+      $("navBackWrap").hidden = true;
+      const w = $("navHomeWrap");
+      w.hidden = false;
+      w.classList.add("in-nav");
+    }
+    function exitHistoryNav() {
+      $("navBackWrap").hidden = false;
+      const w = $("navHomeWrap");
+      w.hidden = true;
+      w.classList.remove("in-nav");
+    }
+    $("navHomeBtn").addEventListener("click", (e) => { e.preventDefault(); exitHistoryNav(); renderHome(); });
+
+    function wrapText(ctx, text, x, y, maxW, lh) {
+      let line = "", yy = y;
+      for (const ch of text) {
+        if (ctx.measureText(line + ch).width > maxW && line) { ctx.fillText(line, x, yy); line = ch; yy += lh; }
+        else line += ch;
+      }
+      if (line) ctx.fillText(line, x, yy);
+      return yy;
+    }
+
+    // ════════════ 启动 ════════════
+    renderHome();
+    loadServerData();
+  })();
+  </script>
+</body>
+</html>

@@ -1,19 +1,70 @@
 import { DIMENSION_IDS, DIMENSIONS, LEVELS, QUESTION_TYPES } from "../constants.js";
 import { classDashboard, ratingFor, starsFor, suggestionFor } from "../domain.js";
+import { randomBytes } from "node:crypto";
+import { hashPassword } from "../security.js";
 import { httpError } from "../server.js";
+
+const JOIN_CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+const JOIN_CODE_LENGTH = 6;
+const JOIN_CODE_TTL_MS = 24 * 60 * 60 * 1000;
+const LETTERS = ["A", "B", "C", "D", "E", "F"];
+const DISPLAY_KEY_TO_INTERNAL = { D1: "basics", D2: "prompting", D3: "tools", D4: "evaluation", D5: "collaboration", D6: "ethics" };
+const DIMENSION_NAME = {
+  D1: "AI基础认知",
+  D2: "提示词工程",
+  D3: "AI工具使用",
+  D4: "AI结果评估与优化",
+  D5: "人机协同解决问题",
+  D6: "AI伦理与合规"
+};
+const DIMENSION_KEY_BY_NAME = Object.fromEntries(
+  Object.entries(DIMENSION_NAME).map(([key, name]) => [name, key])
+);
 
 export function registerTeacherRoutes(router, { store }) {
   registerClassRoutes(router, store);
   registerAssessmentManagementRoutes(router, store);
+  registerTaskRoutes(router, store);
   registerAnalyticsRoutes(router, store);
   registerQuestionRoutes(router, store);
 }
 
 function registerClassRoutes(router, store) {
+  function activitySummary(studentId) {
+    const quiz = (store.data.quizAttempts || []).filter((item) => item.studentId === studentId);
+    const practice = (store.data.practiceAttempts || []).filter((item) => item.studentId === studentId);
+    const levelCounts = quiz.reduce((groups, item) => {
+      groups[item.levelId] = (groups[item.levelId] || 0) + 1;
+      return groups;
+    }, {});
+    return {
+      quizAnsweredCount: quiz.length,
+      quizCorrectCount: quiz.filter((item) => item.correct).length,
+      quizCompletedLevels: Object.values(levelCounts).filter((count) => count >= 5).length,
+      practiceAnsweredCount: practice.length,
+      practiceCorrectCount: practice.filter((item) => item.correct).length,
+      lastQuizAt: quiz.map((item) => item.answeredAt).sort().pop() || null,
+      lastPracticeAt: practice.map((item) => item.answeredAt).sort().pop() || null
+    };
+  }
+
   router.get("/api/classes", () => {
     const classes = store.data.classes.map((item) => ({
       ...item,
       studentCount: store.data.students.filter((student) => student.classId === item.id).length,
+      ...store.data.students
+        .filter((student) => student.classId === item.id)
+        .reduce((totals, student) => {
+          const summary = activitySummary(student.id);
+          totals.quizAnsweredCount += summary.quizAnsweredCount;
+          totals.quizCorrectCount += summary.quizCorrectCount;
+          totals.practiceAnsweredCount += summary.practiceAnsweredCount;
+          return totals;
+        }, {
+          quizAnsweredCount: 0,
+          quizCorrectCount: 0,
+          practiceAnsweredCount: 0
+        }),
       dashboard: classDashboard(store, item.id)
     }));
     return { classes };
@@ -23,12 +74,26 @@ function registerClassRoutes(router, store) {
     const name = String(ctx.body?.name || "").trim();
     if (!name) throw httpError(400, "班级名称不能为空");
     return store.update((data) => {
+      const expiresAt = new Date(Date.now() + JOIN_CODE_TTL_MS).toISOString();
+      const taken = new Set(
+        data.classes
+          .filter((item) => new Date(item.joinCodeExpiresAt || 0).getTime() > Date.now())
+          .map((item) => item.joinCode)
+      );
+      let joinCode = "";
+      do {
+        joinCode = Array.from(randomBytes(JOIN_CODE_LENGTH))
+          .map((value) => JOIN_CODE_ALPHABET[value % JOIN_CODE_ALPHABET.length])
+          .join("");
+      } while (taken.has(joinCode));
       const item = {
         id: store.id("c"),
         name,
         grade: String(ctx.body.grade || "未分组").trim(),
         headTeacher: String(ctx.body.headTeacher || ctx.user.name).trim(),
         ownerTeacherId: ctx.user.role === "teacher" ? ctx.user.teacherId : null,
+        joinCode,
+        joinCodeExpiresAt: expiresAt,
         createdAt: new Date().toISOString()
       };
       data.classes.push(item);
@@ -48,18 +113,113 @@ function registerClassRoutes(router, store) {
 
   router.delete("/api/classes/:id", (ctx) => {
     const item = findClass(store, ctx.params.id);
-    if (store.data.students.some((student) => student.classId === item.id)) {
-      throw httpError(409, "班级下仍有学生，不能删除");
-    }
     return store.update((data) => {
+      const students = data.students.filter((student) => student.classId === item.id);
+      const studentIds = students.map((student) => student.id);
+      const userIds = students.map((student) => student.userId).filter(Boolean);
+      const sessions = data.sessions.filter((session) => studentIds.includes(session.studentId));
+      const sessionIds = sessions.map((session) => session.id);
       data.classes = data.classes.filter((classItem) => classItem.id !== item.id);
+      data.students = data.students.filter((student) => student.classId !== item.id);
+      data.users = data.users.filter((user) => !userIds.includes(user.id));
+      data.tokens = (data.tokens || []).filter((token) => !userIds.includes(token.userId));
+      data.assessments = (data.assessments || []).map((assessment) => ({
+        ...assessment,
+        classIds: (assessment.classIds || []).filter((classId) => classId !== item.id)
+      })).filter((assessment) => assessment.classIds.length);
+      data.tasks = (data.tasks || []).map((task) => ({
+        ...task,
+        classIds: (task.classIds || []).filter((classId) => classId !== item.id)
+      })).filter((task) => task.classIds.length);
+      data.sessions = data.sessions.filter((session) => !studentIds.includes(session.studentId));
+      data.reports = data.reports.filter((report) => !studentIds.includes(report.studentId));
+      data.selfAssessments = data.selfAssessments.filter((record) => !studentIds.includes(record.studentId));
+      data.practicalSubmissions = (data.practicalSubmissions || []).filter((record) =>
+        !studentIds.includes(record.studentId) && !sessionIds.includes(record.sessionId)
+      );
+      data.quizAttempts = (data.quizAttempts || []).filter((record) => !studentIds.includes(record.studentId));
+      data.practiceAttempts = (data.practiceAttempts || []).filter((record) => !studentIds.includes(record.studentId));
+      data.wrongQuestions = (data.wrongQuestions || []).filter((record) => !studentIds.includes(record.studentId));
+      removeForumAuthors(data, userIds);
       return { ok: true };
     });
   }, { auth: true, roles: ["teacher", "admin"] });
 
   router.get("/api/classes/:id/students", (ctx) => ({
-    students: store.data.students.filter((item) => item.classId === ctx.params.id)
+    students: store.data.students
+      .filter((item) => item.classId === ctx.params.id)
+      .map((student) => {
+        const account = store.data.users.find((user) => user.id === student.userId);
+        return {
+          id: student.id,
+          name: student.name,
+          studentNo: student.studentNo,
+          account: account?.account || null,
+          accountStatus: account ? "active" : "local-only",
+          ...activitySummary(student.id)
+        };
+      })
   }), { auth: true, roles: ["teacher", "admin"] });
+
+  router.post("/api/classes/:id/students", (ctx) => {
+    const klass = findClass(store, ctx.params.id);
+    const account = String(ctx.body?.account || "").trim();
+    const name = String(ctx.body?.name || "").trim();
+    const password = String(ctx.body?.password || "");
+    if (account.length < 3) throw httpError(400, "学员账号至少3个字符");
+
+    return store.update((data) => {
+      const existingUser = data.users.find((user) => user.role === "student" && user.account === account);
+      if (existingUser) {
+        const existingStudent = data.students.find((student) =>
+          student.userId === existingUser.id || student.studentNo === account
+        );
+        if (existingStudent && existingStudent.classId && existingStudent.classId !== klass.id) {
+          const currentClass = data.classes.find((item) => item.id === existingStudent.classId);
+          throw httpError(409, `该学员账号已加入${currentClass?.name || "其他班级"}`);
+        }
+        if (!existingStudent) {
+          const created = {
+            id: store.id("s"),
+            userId: existingUser.id,
+            studentNo: account,
+            name: name || existingUser.name,
+            classId: klass.id
+          };
+          data.students.push(created);
+          return { student: created, created: false };
+        }
+        existingStudent.userId = existingUser.id;
+        existingStudent.classId = klass.id;
+        if (name) existingStudent.name = name;
+        return { student: existingStudent, created: false };
+      }
+
+      if (!name) throw httpError(400, "新学员账号需要填写姓名");
+      if (password.length < 6) throw httpError(400, "新学员账号密码至少6位");
+      const userId = store.id("u");
+      const { salt, hash } = hashPassword(password);
+      data.users.push({
+        id: userId,
+        account,
+        role: "student",
+        name,
+        createdAt: new Date().toISOString(),
+        passwordSalt: salt,
+        passwordHash: hash
+      });
+      const student = {
+        id: store.id("s"),
+        userId,
+        studentNo: account,
+        name,
+        classId: klass.id,
+        avatarId: "sage"
+      };
+      data.students.push(student);
+      return { student, created: true };
+    });
+  }, { auth: true, roles: ["teacher", "admin"] });
 
   router.post("/api/classes/:id/students/import", (ctx) => {
     const klass = findClass(store, ctx.params.id);
@@ -84,6 +244,55 @@ function registerClassRoutes(router, store) {
   }, { auth: true, roles: ["teacher", "admin"] });
 }
 
+function registerTaskRoutes(router, store) {
+  router.get("/api/teacher/tasks", () => ({
+    tasks: store.data.tasks || []
+  }), { auth: true, roles: ["teacher", "admin"] });
+
+  router.post("/api/teacher/tasks", (ctx) => {
+    const title = String(ctx.body?.title || "").trim();
+    if (!title) throw httpError(400, "训练任务名称不能为空");
+    if (!Array.isArray(ctx.body?.classIds) || !ctx.body.classIds.length) throw httpError(400, "请选择目标班级");
+    ctx.body.classIds.forEach((id) => findClass(store, id));
+    return store.update((data) => {
+      if (!Array.isArray(data.tasks)) data.tasks = [];
+      const item = {
+        id: store.id("task"),
+        title,
+        type: String(ctx.body.type || "客观题练习"),
+        classIds: ctx.body.classIds,
+        deadline: ctx.body.deadline || null,
+        description: String(ctx.body.description || ""),
+        autoGrade: ctx.body.autoGrade !== false,
+        notifyStudents: ctx.body.notifyStudents !== false,
+        status: "published",
+        createdBy: ctx.user.id,
+        createdAt: new Date().toISOString()
+      };
+      data.tasks.push(item);
+      return item;
+    });
+  }, { auth: true, roles: ["teacher", "admin"] });
+
+  router.patch("/api/teacher/tasks/:id", (ctx) => {
+    const item = (store.data.tasks || []).find((task) => task.id === ctx.params.id);
+    if (!item) throw httpError(404, "训练任务不存在");
+    return store.update(() => {
+      if (ctx.body.title !== undefined) item.title = String(ctx.body.title).trim();
+      if (ctx.body.deadline !== undefined) item.deadline = ctx.body.deadline;
+      if (["published", "disabled"].includes(ctx.body.status)) item.status = ctx.body.status;
+      return item;
+    });
+  }, { auth: true, roles: ["teacher", "admin"] });
+
+  router.delete("/api/teacher/tasks/:id", (ctx) => store.update((data) => {
+    const before = (data.tasks || []).length;
+    data.tasks = (data.tasks || []).filter((task) => task.id !== ctx.params.id);
+    if (data.tasks.length === before) throw httpError(404, "训练任务不存在");
+    return { ok: true };
+  }), { auth: true, roles: ["teacher", "admin"] });
+}
+
 function registerAssessmentManagementRoutes(router, store) {
   router.get("/api/teacher/assessments", () => {
     const list = store.data.assessments.map((item) => {
@@ -98,6 +307,18 @@ function registerAssessmentManagementRoutes(router, store) {
     });
     return { assessments: list };
   }, { auth: true, roles: ["teacher", "admin"] });
+
+  router.delete("/api/teacher/assessments/:id", (ctx) => store.update((data) => {
+    const assessment = findAssessment(store, ctx.params.id);
+    const sessionIds = data.sessions.filter((item) => item.assessmentId === assessment.id).map((item) => item.id);
+    data.assessments = data.assessments.filter((item) => item.id !== assessment.id);
+    data.sessions = data.sessions.filter((item) => item.assessmentId !== assessment.id);
+    data.reports = data.reports.filter((item) => item.assessmentId !== assessment.id);
+    data.practicalSubmissions = (data.practicalSubmissions || []).filter((item) => !sessionIds.includes(item.sessionId));
+    data.quizAttempts = (data.quizAttempts || []).filter((item) => !sessionIds.includes(item.sessionId));
+    data.practiceAttempts = (data.practiceAttempts || []).filter((item) => !sessionIds.includes(item.sessionId));
+    return { ok: true };
+  }), { auth: true, roles: ["teacher", "admin"] });
 
   router.post("/api/teacher/assessments", (ctx) => {
     const title = String(ctx.body?.title || "").trim();
@@ -203,6 +424,55 @@ function registerAssessmentManagementRoutes(router, store) {
 }
 
 function registerAnalyticsRoutes(router, store) {
+  router.get("/api/teacher/quiz-results", (ctx) => {
+    const classId = ctx.query.get("classId");
+    const reports = (store.data.reports || [])
+      .filter((item) => item.source === "level-quiz")
+      .filter((item) => !classId || item.classId === classId)
+      .slice()
+      .sort((left, right) => new Date(right.completedAt) - new Date(left.completedAt));
+
+    const rows = reports.map((report) => {
+      const student = store.data.students.find((item) => item.id === report.studentId) || null;
+      const klass = store.data.classes.find((item) => item.id === (student?.classId || report.classId)) || null;
+      return {
+        reportId: report.id,
+        studentId: student?.id || report.studentId,
+        userId: report.userId,
+        name: student?.name || report.studentName || "已删除学员",
+        studentNo: student?.studentNo || report.studentNo || "-",
+        classId: klass?.id || null,
+        className: klass?.name || report.className || "未分班",
+        status: "completed",
+        completedAt: report.completedAt,
+        rating: report.rating,
+        stars: report.stars,
+        overall: report.overall,
+        scores: report.scores,
+        displayScores: report.displayScores,
+        activity: report.activity,
+        levelResults: report.levelResults,
+        report
+      };
+    });
+
+    const totals = rows.reduce((acc, row) => {
+      acc.answeredCount += Number(row.activity?.answeredCount) || 0;
+      acc.correctCount += Number(row.activity?.correctCount) || 0;
+      return acc;
+    }, { answeredCount: 0, correctCount: 0 });
+
+    return {
+      rows,
+      summary: {
+        reportCount: rows.length,
+        completedStudentCount: new Set(rows.map((row) => row.studentId)).size,
+        answeredCount: totals.answeredCount,
+        correctCount: totals.correctCount
+      }
+    };
+  }, { auth: true, roles: ["teacher", "admin"] });
+
   router.get("/api/teacher/classes/:id/dashboard", (ctx) => {
     findClass(store, ctx.params.id);
     return classDashboard(store, ctx.params.id);
@@ -225,7 +495,7 @@ function registerAnalyticsRoutes(router, store) {
 
   router.get("/api/teacher/students/:id/profile", (ctx) => {
     const student = store.data.students.find((item) => item.id === ctx.params.id);
-    if (!student) throw httpError(404, "学生不存在");
+    if (!student) throw httpError(404, "学员不存在");
     const klass = store.data.classes.find((item) => item.id === student.classId);
     const reports = store.data.reports
       .filter((item) => item.studentId === student.id)
@@ -238,11 +508,25 @@ function registerAnalyticsRoutes(router, store) {
     const latestStandalonePractical = (store.data.practicalSubmissions || [])
       .filter((item) => item.studentId === student.id)
       .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt))[0] || null;
+    const quizAttempts = (store.data.quizAttempts || []).filter((item) => item.studentId === student.id);
+    const practiceAttempts = (store.data.practiceAttempts || []).filter((item) => item.studentId === student.id);
+    const quizLevelCounts = quizAttempts.reduce((groups, item) => {
+      groups[item.levelId] = (groups[item.levelId] || 0) + 1;
+      return groups;
+    }, {});
     const practical = [latestSession?.practical || null, latestStandalonePractical]
       .filter(Boolean)
       .sort((a, b) => new Date(b.updatedAt || b.submittedAt) - new Date(a.updatedAt || a.submittedAt))[0] || null;
     return {
       student: { ...student, className: klass?.name || null },
+      activity: {
+        quizAnsweredCount: quizAttempts.length,
+        quizCorrectCount: quizAttempts.filter((item) => item.correct).length,
+        quizCompletedLevels: Object.values(quizLevelCounts).filter((count) => count >= 5).length,
+        quizLevelCounts,
+        practiceAnsweredCount: practiceAttempts.length,
+        practiceCorrectCount: practiceAttempts.filter((item) => item.correct).length
+      },
       latestReport,
       growth: reports.map((item) => ({
         reportId: item.id,
@@ -290,7 +574,7 @@ function registerAnalyticsRoutes(router, store) {
   }, { auth: true, roles: ["teacher", "admin"] });
 
   router.get("/api/teacher/export/raw", () => {
-    const header = ["报告ID", "学生", "学号", "班级", "测评", "完成时间", "综合分", "评级", ...DIMENSIONS.map((item) => item.name)];
+    const header = ["报告ID", "学员", "学号", "班级", "测评", "完成时间", "综合分", "评级", ...DIMENSIONS.map((item) => item.name)];
     const rows = store.data.reports.map((item) => {
       const student = store.data.students.find((entry) => entry.id === item.studentId);
       const klass = store.data.classes.find((entry) => entry.id === student?.classId);
@@ -319,7 +603,7 @@ function registerAnalyticsRoutes(router, store) {
 
   router.delete("/api/teacher/students/:id/data", (ctx) => {
     const student = store.data.students.find((item) => item.id === ctx.params.id);
-    if (!student) throw httpError(404, "学生不存在");
+    if (!student) throw httpError(404, "学员不存在");
     return store.update((data) => {
       data.sessions = data.sessions.filter((item) => item.studentId !== student.id);
       data.reports = data.reports.filter((item) => item.studentId !== student.id);
@@ -328,7 +612,30 @@ function registerAnalyticsRoutes(router, store) {
       student.studentNo = `anon_${student.id}`;
       return { ok: true };
     });
-  }, { auth: true, roles: ["admin"] });
+  }, { auth: true, roles: ["teacher", "admin"] });
+
+  router.delete("/api/teacher/students/:id", (ctx) => {
+    const student = store.data.students.find((item) => item.id === ctx.params.id);
+    if (!student) throw httpError(404, "学员不存在");
+    return store.update((data) => {
+      const sessions = data.sessions.filter((item) => item.studentId === student.id);
+      const sessionIds = sessions.map((item) => item.id);
+      data.students = data.students.filter((item) => item.id !== student.id);
+      data.users = data.users.filter((item) => item.id !== student.userId);
+      data.tokens = (data.tokens || []).filter((item) => item.userId !== student.userId);
+      data.sessions = data.sessions.filter((item) => item.studentId !== student.id);
+      data.reports = data.reports.filter((item) => item.studentId !== student.id);
+      data.selfAssessments = data.selfAssessments.filter((item) => item.studentId !== student.id);
+      data.practicalSubmissions = (data.practicalSubmissions || []).filter((item) =>
+        item.studentId !== student.id && !sessionIds.includes(item.sessionId)
+      );
+      data.quizAttempts = (data.quizAttempts || []).filter((item) => item.studentId !== student.id);
+      data.practiceAttempts = (data.practiceAttempts || []).filter((item) => item.studentId !== student.id);
+      data.wrongQuestions = (data.wrongQuestions || []).filter((item) => item.studentId !== student.id);
+      removeForumAuthors(data, [student.userId].filter(Boolean));
+      return { ok: true };
+    });
+  }, { auth: true, roles: ["teacher", "admin"] });
 }
 
 function registerQuestionRoutes(router, store) {
@@ -340,7 +647,7 @@ function registerQuestionRoutes(router, store) {
     const status = ctx.query.get("status");
     if (keyword) {
       list = list.filter((item) =>
-        item.stem.toLowerCase().includes(keyword) ||
+        questionText(item).toLowerCase().includes(keyword) ||
         item.knowledgePoints.some((point) => point.toLowerCase().includes(keyword))
       );
     }
@@ -352,9 +659,9 @@ function registerQuestionRoutes(router, store) {
 
   router.get("/api/questions/template", () => {
     const csv = toCSV([[
-      "levelId", "type", "difficulty", "stem", "options", "answer", "dimensions", "knowledgePoints", "estimatedSeconds"
+      "levelId", "type", "difficulty", "dimKeys", "stem", "options", "answer", "analysis"
     ], [
-      "academy", "single", 2, "题干内容", "选项A|选项B|选项C", "1", "basics:1,prompting:2", "知识点1|知识点2", 90
+      "academy", "single", "low", "D1,D2", "题干内容", "选项A|选项B|选项C|选项D", "A", "答案解析"
     ]]);
     return {
       statusCode: 200,
@@ -372,7 +679,7 @@ function registerQuestionRoutes(router, store) {
       const item = {
         ...question,
         id: store.id("q"),
-        status: ctx.user.role === "admin" ? "approved" : "pending",
+        status: "approved",
         createdBy: ctx.user.id,
         createdAt: new Date().toISOString()
       };
@@ -385,12 +692,12 @@ function registerQuestionRoutes(router, store) {
     const item = findQuestion(store, ctx.params.id);
     const next = validateQuestion({ ...item, ...ctx.body });
     return store.update(() => Object.assign(item, next, { updatedAt: new Date().toISOString() }));
-  }, { auth: true, roles: ["admin"] });
+  }, { auth: true, roles: ["teacher", "admin"] });
 
   router.delete("/api/questions/:id", (ctx) => store.update((data) => {
     data.questions = data.questions.filter((item) => item.id !== ctx.params.id);
     return { ok: true };
-  }), { auth: true, roles: ["admin"] });
+  }), { auth: true, roles: ["teacher", "admin"] });
 
   router.patch("/api/questions/:id/review", (ctx) => {
     const item = findQuestion(store, ctx.params.id);
@@ -403,7 +710,7 @@ function registerQuestionRoutes(router, store) {
       item.reviewComment = String(ctx.body.reviewComment || "");
       return item;
     });
-  }, { auth: true, roles: ["admin"] });
+  }, { auth: true, roles: ["teacher", "admin"] });
 
   router.post("/api/questions/import", (ctx) => {
     const rows = parseImportRows(ctx.body);
@@ -413,23 +720,17 @@ function registerQuestionRoutes(router, store) {
       const failed = [];
       for (const row of rows) {
         try {
-          const dimensions = Object.fromEntries(String(row.dimensions || "").split(",").map((pair) => {
-            const [id, weight] = pair.split(":");
-            return [id.trim(), Number(weight) || 1];
-          }));
           const question = validateQuestion({
             ...row,
-            difficulty: Number(row.difficulty),
-            estimatedSeconds: Number(row.estimatedSeconds),
+            difficulty: String(row.difficulty || "low"),
+            dimKeys: String(row.dimKeys || "D1,D2").split(",").map((value) => value.trim()).filter(Boolean),
             options: String(row.options || "").split("|"),
-            answer: row.type === "multi" || row.type === "sort" ? String(row.answer).split(",").map(Number) : row.type === "single" || row.type === "judge" || row.type === "scene" ? Number(row.answer) : row.answer,
-            knowledgePoints: String(row.knowledgePoints || "").split("|").filter(Boolean),
-            dimensions
+            answer: row.type === "multi" ? String(row.answer || "").split(",").map((value) => value.trim()) : String(row.answer || "").trim()
           });
           const item = {
             ...question,
             id: store.id("q"),
-            status: ctx.user.role === "admin" ? "approved" : "pending",
+            status: "approved",
             createdBy: ctx.user.id,
             createdAt: new Date().toISOString()
           };
@@ -449,38 +750,93 @@ function validateQuestion(input) {
   const type = String(input.type || "");
   if (!LEVELS.some((item) => item.id === levelId)) throw httpError(400, "关卡不合法");
   if (!QUESTION_TYPES.includes(type)) throw httpError(400, "题型不合法");
-  const difficulty = Number(input.difficulty);
-  if (!Number.isInteger(difficulty) || difficulty < 1 || difficulty > 5) throw httpError(400, "难度必须为1-5");
-  const stem = String(input.stem || "").trim();
+  if (!["single", "judge", "multi"].includes(type)) throw httpError(400, "题库格式仅支持单选题、判断题和多选题");
+  const difficulty = ["low", "medium", "high"].includes(input.difficulty) ? input.difficulty : difficultyKey(input.difficulty);
+  if (!difficulty) throw httpError(400, "难度必须为低、中或高");
+  const stem = String(input.stem || input.q || "").trim();
   if (!stem) throw httpError(400, "题干不能为空");
-  const dimensions = input.dimensions && typeof input.dimensions === "object"
-    ? input.dimensions
-    : {};
-  const validDimensions = Object.entries(dimensions).filter(([id, weight]) => DIMENSION_IDS.includes(id) && Number(weight) > 0);
-  if (!validDimensions.length) throw httpError(400, "至少标注一个有效能力维度");
+  const dimKeys = normalizeDimKeys(input.dimKeys || Object.keys(input.dimensions || {}));
+  if (dimKeys.length !== 2) throw httpError(400, "请选择两个考察维度");
+  const rawOptions = Array.isArray(input.options) ? input.options : [];
+  const options = rawOptions.map((option, index) => {
+    const key = input.choiceOptions?.[index]?.key || option?.key || LETTERS[index];
+    const text = String(option?.text ?? option ?? "").trim();
+    if (!text) throw httpError(400, "选项内容不能为空");
+    return { key, text };
+  });
+  const expected = type === "judge" ? 2 : 0;
+  if (options.length < Math.max(2, expected) || options.length > 6) throw httpError(400, "选项数量不合法");
+  const answerKeys = normalizeAnswerKeys(input.answer ?? input.answerKeys, options, type);
   const item = {
     levelId,
     type,
     difficulty,
     stem,
-    scenario: input.scenario || undefined,
-    options: Array.isArray(input.options) ? input.options : undefined,
-    answer: input.answer,
-    fillAnswers: input.fillAnswers,
-    script: input.script,
-    requirements: input.requirements,
-    dimensions: Object.fromEntries(validDimensions),
-    explanation: String(input.explanation || "").trim(),
-    knowledgePoints: Array.isArray(input.knowledgePoints) ? input.knowledgePoints : [String(input.knowledgePoints || "综合能力")],
-    estimatedSeconds: Number(input.estimatedSeconds) || 90
+    q: stem,
+    options,
+    choiceOptions: options,
+    answer: answerKeys,
+    answerKeys,
+    analysis: String(input.analysis || input.explanation || "").trim(),
+    explanation: String(input.analysis || input.explanation || "").trim(),
+    dims: dimKeys.map((key) => DIMENSION_NAME[key] || key),
+    dimKeys,
+    dimensions: Object.fromEntries(dimKeys.map((key) => [DISPLAY_KEY_TO_INTERNAL[key], 1])),
+    knowledgePoints: dimKeys.map((key) => DIMENSION_NAME[key] || key)
   };
+  if (!item.analysis) throw httpError(400, "答案解析不能为空");
   return item;
+}
+
+function questionText(item) {
+  return String(item.stem || item.q || "");
+}
+
+function difficultyKey(value) {
+  const map = { 1: "low", 2: "low", 3: "medium", 4: "high", 5: "high", low: "low", medium: "medium", hard: "high", high: "high", "低": "low", "中": "medium", "高": "high" };
+  const numeric = Number(value);
+  return map[numeric] || map[String(value).trim()] || null;
+}
+
+function normalizeDimKeys(input) {
+  const values = Array.isArray(input) ? input : String(input || "").split(/[,，、]/);
+  const keys = values.map((value) => {
+    const text = String(value).trim();
+    if (/^D[1-6]$/.test(text)) return text;
+    return DIMENSION_KEY_BY_NAME[text] || null;
+  }).filter(Boolean);
+  return [...new Set(keys)];
+}
+
+function normalizeAnswerKeys(input, options, type) {
+  const valid = new Set(options.map((item) => item.key));
+  let values = Array.isArray(input) ? input : String(input ?? "").split(/[,，]/);
+  values = values.map((value) => String(value).trim()).filter(Boolean).map((value) => {
+    if (valid.has(value)) return value;
+    const index = Number(value);
+    return Number.isInteger(index) && index >= 1 && index <= options.length ? options[index - 1].key : null;
+  }).filter(Boolean);
+  const keys = [...new Set(values)];
+  if (!keys.length || keys.some((key) => !valid.has(key))) throw httpError(400, "正确答案不合法");
+  if (type !== "multi" && keys.length !== 1) throw httpError(400, "单选题和判断题只能有一个正确答案");
+  return keys;
 }
 
 function findClass(store, id) {
   const item = store.data.classes.find((classItem) => classItem.id === id);
   if (!item) throw httpError(404, "班级不存在");
   return item;
+}
+
+function removeForumAuthors(data, userIds) {
+  const removed = new Set(userIds.filter(Boolean));
+  if (!removed.size) return;
+  data.forumPosts = (data.forumPosts || []).filter((post) => !removed.has(post.authorId));
+  for (const post of data.forumPosts) {
+    if (!Array.isArray(post.comments)) continue;
+    post.comments = post.comments.filter((comment) => !removed.has(comment.authorId));
+    post.commentCount = post.comments.length;
+  }
 }
 
 function findAssessment(store, id) {
